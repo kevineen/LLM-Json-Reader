@@ -1,0 +1,91 @@
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 321
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 75
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:pygls.protocol.json_rpc:Exception occurred in notification: "{'code': -32603, 'message': 'RuntimeError: Cannot close a running event loop', 'data': '{\'traceback\': [\'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\protocol\\\\json_rpc.py", line 158, in _execute_notification_callback\\n    raise future.exception()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\feature_manager.py", line 81, in wrapped\\n    return await f(server, *args, **kwargs)\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\uniteai\\\\config.py", line 165, in initialized_callback\\n    await ls.shutdown()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\server.py", line 245, in shutdown\\n    self.loop.close()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\asyncio\\\\proactor_events.py", line 681, in close\\n    raise RuntimeError("Cannot close a running event loop")\\n\']}'}"
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 158, in _execute_notification_callback
+    raise future.exception()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 165, in initialized_callback
+    await ls.shutdown()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\server.py", line 245, in shutdown
+    self.loop.close()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py", line 681, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop
+DEBUG:pygls.server:Content length: 708
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 75
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:pygls.protocol.json_rpc:Exception occurred in notification: "{'code': -32603, 'message': 'RuntimeError: Cannot close a running event loop', 'data': '{\'traceback\': [\'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\protocol\\\\json_rpc.py", line 158, in _execute_notification_callback\\n    raise future.exception()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\feature_manager.py", line 81, in wrapped\\n    return await f(server, *args, **kwargs)\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\uniteai\\\\config.py", line 165, in initialized_callback\\n    await ls.shutdown()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\server.py", line 245, in shutdown\\n    self.loop.close()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\asyncio\\\\proactor_events.py", line 681, in close\\n    raise RuntimeError("Cannot close a running event loop")\\n\']}'}"
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 158, in _execute_notification_callback
+    raise future.exception()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 165, in initialized_callback
+    await ls.shutdown()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\server.py", line 245, in shutdown
+    self.loop.close()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py", line 681, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop
+DEBUG:pygls.server:Content length: 172
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 219586
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 256852
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 75
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:pygls.protocol.json_rpc:Exception occurred in notification: "{'code': -32603, 'message': 'RuntimeError: Cannot close a running event loop', 'data': '{\'traceback\': [\'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\protocol\\\\json_rpc.py", line 158, in _execute_notification_callback\\n    raise future.exception()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\feature_manager.py", line 81, in wrapped\\n    return await f(server, *args, **kwargs)\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\uniteai\\\\config.py", line 165, in initialized_callback\\n    await ls.shutdown()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\server.py", line 245, in shutdown\\n    self.loop.close()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\asyncio\\\\proactor_events.py", line 681, in close\\n    raise RuntimeError("Cannot close a running event loop")\\n\']}'}"
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 158, in _execute_notification_callback
+    raise future.exception()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 165, in initialized_callback
+    await ls.shutdown()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\server.py", line 245, in shutdown
+    self.loop.close()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py", line 681, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop
+DEBUG:pygls.server:Content length: 1158680
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
