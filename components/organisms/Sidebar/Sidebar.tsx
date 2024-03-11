@@ -7,7 +7,7 @@ const Sidebar: React.FC = () => (
   <div style={{ width: 250, height: '100vh', background: '#f0f0f0' }}>
     <ul>
       <li>
-        <LinkButton href="/" label="ホーム" />a
+        <LinkButton href="/" label="ホーム" />
       </li>
       <li>
         <LinkButton href="/about" label="アバウト" />
