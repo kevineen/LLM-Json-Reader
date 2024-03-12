@@ -1,6 +1,5 @@
 'use client';
 
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -24,11 +23,11 @@ export default function RootLayout({
     <html lang="ja">
       <body className={inter.className}>
         <RecoilRoot>
-        <MainProvider>
-          <MainLayout>
-            <main>{children}</main>
-          </MainLayout>
-        </MainProvider>
+          <MainProvider>
+            <MainLayout>
+              <main>{children}</main>
+            </MainLayout>
+          </MainProvider>
         </RecoilRoot>
       </body>
     </html>
