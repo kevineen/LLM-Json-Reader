@@ -795,3 +795,5 @@ WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "worksp
 DEBUG:pygls.server:Content length: 1177
 WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
 DEBUG:pygls.server:Content length: 64
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
