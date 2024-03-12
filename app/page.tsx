@@ -1,9 +1,19 @@
-import SidebarMenu from "@/components/molecules/SidebarMenu/SidebarMenu";
-import Image from "next/image";
+'use client';
+
+import SidebarMenu from "@/app/components/molecules/SidebarMenu/SidebarMenu";
+import useFileUpload from "@/app/hooks/useFileUpload";
+import { useEffect } from "react";
 
 const featuresItems = [{ icon: '🏎️', name: 'XML対応' }];
 
-const HomePage = () => (
+const HomePage = () => {
+  const { fileData } = useFileUpload();
+
+  useEffect(() => {
+    console.log(fileData);
+  }, [fileData]);
+  
+  return (
   <div>
     <section className="bg-white px-4 dark:bg-gray-900">
       <div className="mx-auto grid max-w-screen-xl px-4 py-8 text-center lg:py-16">
@@ -22,6 +32,16 @@ const HomePage = () => (
     </section>
     <div className="mx-auto mt-4 px-4 max-w-screen-lg">
       <SidebarMenu />
+      {fileData ? (
+  <div className="flex justify-center">
+    <pre>{JSON.stringify(fileData.name, null, 2)}</pre>
+  </div>
+) : (
+  <div className="flex justify-center">
+    <p>ファイルデータがまだ読み込まれていません。<br />
+    jsonファイルをアップロードしてください。</p>
+  </div>
+)}
       <h2 className="text-bold mt-8 mb-10 text-3xl">🚀 Features:</h2>
       <ul className="grid grid-cols-1 grid-rows-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
         {featuresItems.map(({ icon, name }) => (
@@ -36,6 +56,7 @@ const HomePage = () => (
       </ul>
     </div>
   </div>
-);
+  )
+};
 
 export default HomePage;

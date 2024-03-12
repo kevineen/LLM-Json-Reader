@@ -10,10 +10,10 @@ const useFileUpload = () => {
 
     if (file && file.type === 'application/json') {
       setFileData(file);
-      console.log(file);
+      // console.log(file);
     } else {
       // ここでエラーメッセージを表示するか、不正なファイルタイプであることをユーザーに知らせる
-      console.error("Invalid file type. Please select a .txt or .json file.");
+      console.error("Invalid file type. Please select a　.json file.");
     }
   };
 

@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 'use client';
 
-import useFileUpload from '@/hooks/useFileUpload';
+import UploadButton from '@/app/components/atoms/UploadButton/UploadButton';
+import useFileUpload from '@/app/hooks/useFileUpload';
 import React from 'react';
 
-import UploadButton from '@/components/atoms/UploadButton/UploadButton';
 
 const SidebarMenu: React.FC = () => {
   const { fileData, handleFileUpload } = useFileUpload();
