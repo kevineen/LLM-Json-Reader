@@ -1,54 +1,102 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { jsonDataAtom, indexAtom } from '@/app/state/atmos/jsonDataAtom';
-import { useEffect } from 'react';
-
-const Card = ({ data, index }: { data: any; index: number }) => (
-  <div style={{ border: '1px solid black', margin: '10px', padding: '10px' }}>
-    <p><strong>Index:</strong> {index}</p>
-    <p>{JSON.stringify(data, null, 2)}</p>
-  </div>
-);
+import { useCallback, useEffect } from 'react';
+import React from 'react';
 
 const JsonCardViewer = () => {
   const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
-  const pageSize = 3; // 1ページあたりのアイテム数
+
+  // useCallbackフックをuseEffectの外で定義
+  const handleArrowKey = useCallback((event: KeyboardEvent) => {
+    console.log(index)
+    if (event.key === 'ArrowRight') {
+      setIndex((index) => Math.min(index + 1, jsonData.length - 1));
+    } else if (event.key === 'ArrowLeft') {
+      setIndex((index) => Math.max(index - 1, 0));
+    }
+  }, [index, jsonData.length]);
 
   useEffect(() => {
-    const handleArrowKey = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') {
-        setIndex((prevIndex) => Math.min(prevIndex + pageSize, jsonData.length - pageSize));
-      } else if (event.key === 'ArrowLeft') {
-        setIndex((prevIndex) => Math.max(prevIndex - pageSize, 0));
-      }
-    };
-
     window.addEventListener('keydown', handleArrowKey);
-
     return () => {
       window.removeEventListener('keydown', handleArrowKey);
     };
-  }, [setIndex, jsonData.length]);
+  }, [handleArrowKey]); // useCallbackでメモ化された関数を依存配列に追加
 
-  const renderCard = (item: any, i: number) => {
-    // 選択中のアイテムは全て表示
-    if (i === index) {
-      return (<div key={i.toString()}><div>{JSON.stringify(item, null, 2)}</div></div>);
+  const previousCard = (item: any, originalIndex: number) => {
+    // 選択中のアイテムの1つ前のアイテムを表示
+    if (originalIndex === index - 1) {
+      return (
+        <div key={originalIndex}>
+          <div>Category: {item.category}</div>
+          <div>Instruction: {item.instruction}</div>
+        </div>
+      );
     }
-    // １つ前と次のアイテムはcategoryとinstructionのみを表示
-    return (
-      <div key={i}>
-        <div>Category: {item.category}</div>
-        <div>Instruction: {item.instruction}</div>
-      </div>
-    );
+    return null;
   };
 
-  return (
+  const nowCard = (item: any, originalIndex: number) => {
+    // 選択中のアイテムを表示
+    if (originalIndex === index) {
+      return (
+        <div key={originalIndex.toString()}>
+          <div>{JSON.stringify(item, null, 2)}</div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const nextCard = (item: any, originalIndex: number) => {
+    // 選択中のアイテムの1つ後のアイテムを表示
+    if (originalIndex === index + 1) {
+      return (
+        <div key={originalIndex}>
+          <div>Category: {item.category}</div>
+          <div>Instruction: {item.instruction}</div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const renderCards = (jsonData: any[], index: number) => {
+
+  return jsonData.map((item, i) => {
+    return (
+        <React.Fragment key={index}>
+        {previousCard(item, index)}
+        {nowCard(item, index)}
+        {nextCard(item, index)}
+      </React.Fragment>
+    );
+  });
+};
+
+return (
     <div>
       {jsonData && jsonData.length > 0 ? (
-        jsonData.slice(index - 1, index + pageSize - 1).map(renderCard)
+        <>
+          {index > 0 && (
+            <div key={index - 1}>
+              {/* 最初のカードに "Start" を表示 */}
+              {index === 1 ? <div>Start</div> : previousCard(jsonData[index - 1], index - 1)}
+            </div>
+          )}
+          <div key={index}>
+            {/* 現在のカードを表示 */}
+            {nowCard(jsonData[index], index)}
+          </div>
+          {index < jsonData.length - 1 && (
+            <div key={index + 1}>
+              {/* 最後のカードに "Last" を表示 */}
+              {index === jsonData.length - 2 ? <div>Last</div> : nextCard(jsonData[index + 1], index + 1)}
+            </div>
+          )}
+        </>
       ) : (
         <div>
           <p>ファイルデータがまだ読み込まれていません。<br />
@@ -58,5 +106,5 @@ const JsonCardViewer = () => {
     </div>
   );
 };
-export default JsonCardViewer;
 
+export default JsonCardViewer;

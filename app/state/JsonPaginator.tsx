@@ -5,39 +5,26 @@ const JsonPaginator = () => {
   const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
 
-  // 次の3つのアイテムを表示する関数
+  // 次のアイテムを表示する関数
   const showNextItems = () => {
-    if (index + 3 < jsonData.length) {
-      setIndex(index + 3);
+    if (index + 1 < jsonData.length) {
+      setIndex(index + 1);
     }
   };
 
-  // 前の3つのアイテムを表示する関数
+  // 前のアイテムを表示する関数
   const showPreviousItems = () => {
-    if (index - 3 >= 0) {
-      setIndex(index - 3);
+    if (index - 1 >= 0) {
+      setIndex(index - 1);
     }
   };
 
-  console.log(jsonData)
+  // console.log(jsonData)
 
   return (
     <div>
       {jsonData && jsonData.length > 0 ? (<button onClick={showPreviousItems} disabled={index === 0}>前へ</button>): null}
-      {jsonData && jsonData.length > 0 ? (<button onClick={showNextItems} disabled={index + 3 >= jsonData.length}>次へ</button>): null }
-      {/* {jsonData && jsonData.length > 0 ? (
-        jsonData.slice(index, index + 3).map((item, i) => (
-          <div>
-            <a>{index}</a>
-            <div key={i}>{JSON.stringify(item, null, 2)}</div>
-          </div>
-        ))
-      ) : (
-        <div>
-          <p>ファイルデータがまだ読み込まれていません。<br />
-          jsonlファイルをアップロードしてください。</p>
-        </div>
-      )} */}
+      {jsonData && jsonData.length > 0 ? (<button onClick={showNextItems} disabled={index + 1 >= jsonData.length}>次へ</button>): null }
     </div>
   );
 };

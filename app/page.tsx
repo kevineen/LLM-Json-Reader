@@ -11,7 +11,7 @@ const HomePage = () => {
   return (
   <div>
     <section className="bg-white px-4 dark:bg-gray-900">
-      <div className="mx-auto grid max-w-screen-xl px-4 py-4 text-center lg:py-6">
+      <div className="mx-auto grid max-w-screen-xl px-4 py-4 text-center lg:py-2">
         <div className="mx-auto place-self-center">
           <h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight dark:text-white md:text-5xl xl:text-2xl">
             Json Reader for LLM Dataset

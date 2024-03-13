@@ -7,5 +7,5 @@ export const jsonDataAtom = atom<any[]>({
 
 export const indexAtom = atom({
   key: 'index',
-  default: 0,
+  default: 1,
 });
