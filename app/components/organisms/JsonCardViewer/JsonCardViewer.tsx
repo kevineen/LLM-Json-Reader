@@ -25,19 +25,6 @@ const JsonCardViewer = () => {
     };
   }, [handleArrowKey]); // useCallbackでメモ化された関数を依存配列に追加
 
-  const previousCard = (item: any, originalIndex: number) => {
-    // 選択中のアイテムの1つ前のアイテムを表示
-    if (originalIndex === index - 1) {
-      return (
-        <div key={originalIndex}>
-          <div>Category: {item.category}</div>
-          <div>Instruction: {item.instruction}</div>
-        </div>
-      );
-    }
-    return null;
-  };
-
   const nowCard = (item: any, originalIndex: number) => {
     // 選択中のアイテムを表示
     if (originalIndex === index) {
@@ -50,52 +37,56 @@ const JsonCardViewer = () => {
     return null;
   };
 
-  const nextCard = (item: any, originalIndex: number) => {
-    // 選択中のアイテムの1つ後のアイテムを表示
-    if (originalIndex === index + 1) {
-      return (
-        <div key={originalIndex}>
-          <div>Category: {item.category}</div>
-          <div>Instruction: {item.instruction}</div>
-        </div>
-      );
-    }
+  const previousCard = (item: any, originalIndex: number) => {
+  // 選択中のアイテムの1つ前のアイテムを表示
+  if (index === 0) {
+    // インデックスが0の場合は "Start" を表示
+    return (
+      <div key={originalIndex}>
+        <div>Start</div>
+      </div>
+    );
+  } else if (originalIndex === index - 1) {
+    return (
+      <div key={originalIndex}>
+        <div>Category: {item.category}</div>
+        <div>Instruction: {item.instruction}</div>
+      </div>
+    );
+  }
     return null;
   };
 
-  const renderCards = (jsonData: any[], index: number) => {
-
-  return jsonData.map((item, i) => {
+const nextCard = (item: any, originalIndex: number) => {
+  // 選択中のアイテムの1つ後のアイテムを表示
+  if (originalIndex === jsonData.length) {
+    // インデックスがjsonDataの最後の要素の場合は "Last" を表示
     return (
-        <React.Fragment key={index}>
-        {previousCard(item, index)}
-        {nowCard(item, index)}
-        {nextCard(item, index)}
-      </React.Fragment>
+      <div key={originalIndex}>
+        <div>Last</div>
+      </div>
     );
-  });
-};
+  } else if (originalIndex === index + 1) {
+    return (
+      <div key={originalIndex}>
+        <div>Category: {item.category}</div>
+        <div>Instruction: {item.instruction}</div>
+      </div>
+    );
+  }
+    return null;
+  };
 
-return (
+  return (
     <div>
       {jsonData && jsonData.length > 0 ? (
         <>
-          {index > 0 && (
-            <div key={index - 1}>
-              {/* 最初のカードに "Start" を表示 */}
-              {index === 1 ? <div>Start</div> : previousCard(jsonData[index - 1], index - 1)}
-            </div>
-          )}
+          {previousCard(jsonData[index - 1], index - 1)}
           <div key={index}>
             {/* 現在のカードを表示 */}
             {nowCard(jsonData[index], index)}
           </div>
-          {index < jsonData.length - 1 && (
-            <div key={index + 1}>
-              {/* 最後のカードに "Last" を表示 */}
-              {index === jsonData.length - 2 ? <div>Last</div> : nextCard(jsonData[index + 1], index + 1)}
-            </div>
-          )}
+          {nextCard(jsonData[index + 1], index + 1)}
         </>
       ) : (
         <div>

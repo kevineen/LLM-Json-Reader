@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
-import { cn } from '@/app/lib/utils';
+import { cn } from '@/app/lib/utils/cn';
 import Sidebar from '@/app/components/organisms/Sidebar/Sidebar';
 
 

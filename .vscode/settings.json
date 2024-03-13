@@ -15,4 +15,7 @@
     "typescript",
     "typescriptreact"
   ],
+  "[typescript]": {
+    "editor.tabSize": 2
+  },
 }
