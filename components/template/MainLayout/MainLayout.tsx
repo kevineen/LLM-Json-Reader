@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
-import { cn } from '@/app/lib/utils/cn';
-import Sidebar from '@/app/components/organisms/Sidebar/Sidebar';
+import { cn } from '@/lib/utils/cn';
+import Sidebar from '@/components/organisms/Sidebar/Sidebar';
 
 
 interface MainLayoutProps {

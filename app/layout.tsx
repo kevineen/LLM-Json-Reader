@@ -5,8 +5,8 @@ import "./globals.css";
 
 import React from "react";
 import { RecoilRoot } from 'recoil';
-import { MainProvider } from "@/app/components/providers/MainProvider";
-import { MainLayout } from "@/app/components/template/MainLayout";
+import { MainProvider } from "@/components/providers/MainProvider";
+import { MainLayout } from "@/components/template/MainLayout";
 const inter = Inter({ subsets: ["latin"] });
 
 // export const metadata: Metadata = {

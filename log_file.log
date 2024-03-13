@@ -2519,3 +2519,557 @@ DEBUG:pygls.server:Content length: 2866
 WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
 DEBUG:pygls.server:Content length: 971
 WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 338
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 343
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2040
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 218690
+DEBUG:pygls.server:Content length: 207
+DEBUG:pygls.server:Content length: 338
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 345
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 329
+DEBUG:pygls.server:Content length: 329
+DEBUG:pygls.server:Content length: 329
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 334
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 2866
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 333
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 2464
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 894
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2816
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 313
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1203
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 340
+DEBUG:pygls.server:Content length: 372
+DEBUG:pygls.server:Content length: 1184
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1888
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 328
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 372
+DEBUG:pygls.server:Content length: 206
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2866
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1085
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 660
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 357
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 328
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 342
+DEBUG:pygls.server:Content length: 372
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 329
+DEBUG:pygls.server:Content length: 329
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1008
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 539
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 539
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 2866
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 332
+DEBUG:pygls.server:Content length: 2866
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 332
+DEBUG:pygls.server:Content length: 370
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 332
+DEBUG:pygls.server:Content length: 370
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 660
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 331
+DEBUG:pygls.server:Content length: 557
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 539
+DEBUG:pygls.server:Content length: 206
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2877
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1084
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 329
+DEBUG:pygls.server:Content length: 2989
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 206
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2341
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 64
+DEBUG:pygls.server:Content length: 859
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 280
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1244
+DEBUG:pygls.server:Content length: 5089
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 318
+DEBUG:pygls.server:Content length: 704
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 482
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 200
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 897
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 151
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 418
+DEBUG:pygls.server:Content length: 163
+DEBUG:pygls.server:Content length: 418
+DEBUG:pygls.server:Content length: 163
+DEBUG:pygls.server:Content length: 1457
+DEBUG:pygls.server:Content length: 158
+DEBUG:pygls.server:Content length: 1233
+DEBUG:pygls.server:Content length: 295
+DEBUG:pygls.server:Content length: 296
+DEBUG:pygls.server:Content length: 2969
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 159
+DEBUG:pygls.server:Content length: 44
+DEBUG:pygls.server:Content length: 161
+ERROR:asyncio:Exception in callback JsonRPCProtocol._execute_notification_callback(<Task cancell...anager.py:80>>)
+handle: <Handle JsonRPCProtocol._execute_notification_callback(<Task cancell...anager.py:80>>)>
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 162, in initialized_callback
+    await handle_missing_config(ls)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 123, in handle_missing_config
+    response = await ask_user_with_message_request(server)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 114, in ask_user_with_message_request
+    response = await asyncio.wrap_future(response)
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 156, in _execute_notification_callback
+    if future.exception():
+asyncio.exceptions.CancelledError
+WARNING:pygls.protocol.json_rpc:Server shutting down. No more requests!
+DEBUG:pygls.server:Content length: 33
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 3533
+DEBUG:pygls.server:Content length: 990
+DEBUG:pygls.server:Content length: 237
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 75
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:pygls.protocol.json_rpc:Exception occurred in notification: "{'code': -32603, 'message': 'RuntimeError: Cannot close a running event loop', 'data': '{\'traceback\': [\'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\protocol\\\\json_rpc.py", line 158, in _execute_notification_callback\\n    raise future.exception()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\feature_manager.py", line 81, in wrapped\\n    return await f(server, *args, **kwargs)\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\uniteai\\\\config.py", line 165, in initialized_callback\\n    await ls.shutdown()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\server.py", line 245, in shutdown\\n    self.loop.close()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\asyncio\\\\proactor_events.py", line 681, in close\\n    raise RuntimeError("Cannot close a running event loop")\\n\']}'}"
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 158, in _execute_notification_callback
+    raise future.exception()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 165, in initialized_callback
+    await ls.shutdown()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\server.py", line 245, in shutdown
+    self.loop.close()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py", line 681, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop
+DEBUG:pygls.server:Content length: 160
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 3533
+DEBUG:pygls.server:Content length: 990
+DEBUG:pygls.server:Content length: 75
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:pygls.protocol.json_rpc:Exception occurred in notification: "{'code': -32603, 'message': 'RuntimeError: Cannot close a running event loop', 'data': '{\'traceback\': [\'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\protocol\\\\json_rpc.py", line 158, in _execute_notification_callback\\n    raise future.exception()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\feature_manager.py", line 81, in wrapped\\n    return await f(server, *args, **kwargs)\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\uniteai\\\\config.py", line 165, in initialized_callback\\n    await ls.shutdown()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\server.py", line 245, in shutdown\\n    self.loop.close()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\asyncio\\\\proactor_events.py", line 681, in close\\n    raise RuntimeError("Cannot close a running event loop")\\n\']}'}"
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 158, in _execute_notification_callback
+    raise future.exception()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 165, in initialized_callback
+    await ls.shutdown()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\server.py", line 245, in shutdown
+    self.loop.close()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py", line 681, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop
+DEBUG:pygls.server:Content length: 747
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 3533
+DEBUG:pygls.server:Content length: 990
+DEBUG:pygls.server:Content length: 765
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 3276
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 4672
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2031
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 75
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:pygls.protocol.json_rpc:Exception occurred in notification: "{'code': -32603, 'message': 'RuntimeError: Cannot close a running event loop', 'data': '{\'traceback\': [\'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\protocol\\\\json_rpc.py", line 158, in _execute_notification_callback\\n    raise future.exception()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\feature_manager.py", line 81, in wrapped\\n    return await f(server, *args, **kwargs)\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\uniteai\\\\config.py", line 165, in initialized_callback\\n    await ls.shutdown()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\server.py", line 245, in shutdown\\n    self.loop.close()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\asyncio\\\\proactor_events.py", line 681, in close\\n    raise RuntimeError("Cannot close a running event loop")\\n\']}'}"
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 158, in _execute_notification_callback
+    raise future.exception()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 165, in initialized_callback
+    await ls.shutdown()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\server.py", line 245, in shutdown
+    self.loop.close()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py", line 681, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop
+DEBUG:pygls.server:Content length: 1567
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 3533
+DEBUG:pygls.server:Content length: 990
+DEBUG:pygls.server:Content length: 75
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:pygls.protocol.json_rpc:Exception occurred in notification: "{'code': -32603, 'message': 'RuntimeError: Cannot close a running event loop', 'data': '{\'traceback\': [\'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\protocol\\\\json_rpc.py", line 158, in _execute_notification_callback\\n    raise future.exception()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\feature_manager.py", line 81, in wrapped\\n    return await f(server, *args, **kwargs)\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\uniteai\\\\config.py", line 165, in initialized_callback\\n    await ls.shutdown()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\server.py", line 245, in shutdown\\n    self.loop.close()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\asyncio\\\\proactor_events.py", line 681, in close\\n    raise RuntimeError("Cannot close a running event loop")\\n\']}'}"
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 158, in _execute_notification_callback
+    raise future.exception()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 165, in initialized_callback
+    await ls.shutdown()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\server.py", line 245, in shutdown
+    self.loop.close()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py", line 681, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop
+DEBUG:pygls.server:Content length: 145
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 3533
+DEBUG:pygls.server:Content length: 106
+ERROR:CONFIG:Please manually copy and update the file `.uniateai.yml.example` from https://github.com/freckletonj/uniteai.
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+ERROR:asyncio:Task exception was never retrieved
+future: <Task finished name='Task-3' coro=<wrap_with_server.<locals>.wrapped() done, defined at C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py:80> exception=SystemExit(0)>
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\server.py", line 258, in start_io
+    self.loop.run_until_complete(
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1909, in _run_once
+    handle._run()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 162, in initialized_callback
+    await handle_missing_config(ls)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 133, in handle_missing_config
+    sys.exit(0)
+SystemExit: 0
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 3533
+DEBUG:pygls.server:Content length: 75
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:pygls.protocol.json_rpc:Exception occurred in notification: "{'code': -32603, 'message': 'RuntimeError: Cannot close a running event loop', 'data': '{\'traceback\': [\'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\protocol\\\\json_rpc.py", line 158, in _execute_notification_callback\\n    raise future.exception()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\feature_manager.py", line 81, in wrapped\\n    return await f(server, *args, **kwargs)\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\uniteai\\\\config.py", line 165, in initialized_callback\\n    await ls.shutdown()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\pygls\\\\server.py", line 245, in shutdown\\n    self.loop.close()\\n\', \'  File "C:\\\\Users\\\\kevin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\asyncio\\\\proactor_events.py", line 681, in close\\n    raise RuntimeError("Cannot close a running event loop")\\n\']}'}"
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 158, in _execute_notification_callback
+    raise future.exception()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 165, in initialized_callback
+    await ls.shutdown()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\server.py", line 245, in shutdown
+    self.loop.close()
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py", line 681, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop
+DEBUG:pygls.server:Content length: 695
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 3533
+DEBUG:pygls.server:Content length: 695
+DEBUG:pygls.server:Content length: 313
+DEBUG:pygls.server:Content length: 2876
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 312
+DEBUG:pygls.server:Content length: 192
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 192
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2524
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 3966
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1105
+DEBUG:pygls.server:Content length: 146
+DEBUG:pygls.server:Content length: 2088
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 202
+DEBUG:pygls.server:Content length: 240
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 4700
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1743
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 407
+DEBUG:pygls.server:Content length: 287
+DEBUG:pygls.server:Content length: 287
+DEBUG:pygls.server:Content length: 287
+DEBUG:pygls.server:Content length: 287
+DEBUG:pygls.server:Content length: 287
+DEBUG:pygls.server:Content length: 1918
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 770
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 150
+DEBUG:pygls.server:Content length: 144
+DEBUG:pygls.server:Content length: 176
+DEBUG:pygls.server:Content length: 190
+DEBUG:pygls.server:Content length: 1570
+DEBUG:pygls.server:Content length: 181
+DEBUG:pygls.server:Content length: 554
+DEBUG:pygls.server:Content length: 164
+DEBUG:pygls.server:Content length: 240
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 165
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 44
+ERROR:asyncio:Exception in callback JsonRPCProtocol._execute_notification_callback(<Task cancell...anager.py:80>>)
+handle: <Handle JsonRPCProtocol._execute_notification_callback(<Task cancell...anager.py:80>>)>
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\feature_manager.py", line 81, in wrapped
+    return await f(server, *args, **kwargs)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 162, in initialized_callback
+    await handle_missing_config(ls)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 123, in handle_missing_config
+    response = await ask_user_with_message_request(server)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\uniteai\config.py", line 114, in ask_user_with_message_request
+    response = await asyncio.wrap_future(response)
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\asyncio\events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\kevin\AppData\Local\Programs\Python\Python310\lib\site-packages\pygls\protocol\json_rpc.py", line 156, in _execute_notification_callback
+    if future.exception():
+asyncio.exceptions.CancelledError
+DEBUG:pygls.server:Content length: 161
+WARNING:pygls.protocol.json_rpc:Server shutting down. No more requests!
+DEBUG:pygls.server:Content length: 33
+INFO:pygls.server:Shutting down the server
+INFO:pygls.server:Closing the event loop.
+ERROR:CONFIG:Config couldnt be found, nor created. Please copy the example from the github repo and locate it at `~/.uniteai.yml`
+INFO:CONFIG:Starting the Config Creation Server
+INFO:pygls.server:Starting IO server
+DEBUG:pygls.server:Content length: 5828
+INFO:CONFIG:Initialize Called
+DEBUG:pygls.server:Content length: 52
+INFO:CONFIG:Config Creation Server successfully initialized
+INFO:CONFIG:Asking user to create new config.
+DEBUG:pygls.server:Content length: 1105
+DEBUG:pygls.server:Content length: 284
+DEBUG:pygls.server:Content length: 241
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 992
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 436
+DEBUG:pygls.server:Content length: 1788
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 241
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 284
+DEBUG:pygls.server:Content length: 417
+DEBUG:pygls.server:Content length: 241
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2442
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2088
+DEBUG:pygls.server:Content length: 280
+DEBUG:pygls.server:Content length: 280
+DEBUG:pygls.server:Content length: 280
+DEBUG:pygls.server:Content length: 280
+DEBUG:pygls.server:Content length: 280
+DEBUG:pygls.server:Content length: 280
+DEBUG:pygls.server:Content length: 280
+DEBUG:pygls.server:Content length: 280
+DEBUG:pygls.server:Content length: 281
+DEBUG:pygls.server:Content length: 281
+DEBUG:pygls.server:Content length: 281
+DEBUG:pygls.server:Content length: 281
+DEBUG:pygls.server:Content length: 237
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 144

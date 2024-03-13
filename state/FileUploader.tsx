@@ -1,4 +1,4 @@
-import { jsonDataAtom } from '@/app/state/atmos/jsonDataAtom';
+import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { useSetRecoilState } from 'recoil';
 
 const FileUploader = () => {

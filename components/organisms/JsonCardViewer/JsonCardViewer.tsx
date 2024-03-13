@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { jsonDataAtom, indexAtom } from '@/app/state/atmos/jsonDataAtom';
+import { jsonDataAtom, indexAtom } from '@/state/atmos/jsonDataAtom';
 import { useCallback, useEffect } from 'react';
 import React from 'react';
 

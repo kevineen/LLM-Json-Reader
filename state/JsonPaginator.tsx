@@ -1,4 +1,4 @@
-import { indexAtom, jsonDataAtom } from '@/app/state/atmos/jsonDataAtom';
+import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { useRecoilState } from 'recoil';
 
 const JsonPaginator = () => {
@@ -18,8 +18,6 @@ const JsonPaginator = () => {
       setIndex(index - 1);
     }
   };
-
-  // console.log(jsonData)
 
   return (
     <div>
