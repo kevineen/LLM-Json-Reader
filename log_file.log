@@ -7113,3 +7113,158 @@ WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "worksp
 DEBUG:pygls.server:Content length: 64
 DEBUG:pygls.server:Content length: 163
 WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 7290
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 578
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 303
+DEBUG:pygls.server:Content length: 303
+DEBUG:pygls.server:Content length: 303
+DEBUG:pygls.server:Content length: 303
+DEBUG:pygls.server:Content length: 304
+DEBUG:pygls.server:Content length: 304
+DEBUG:pygls.server:Content length: 304
+DEBUG:pygls.server:Content length: 304
+DEBUG:pygls.server:Content length: 304
+DEBUG:pygls.server:Content length: 304
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 309
+DEBUG:pygls.server:Content length: 306
+DEBUG:pygls.server:Content length: 302
+DEBUG:pygls.server:Content length: 301
+DEBUG:pygls.server:Content length: 3061
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 393
+DEBUG:pygls.server:Content length: 2028
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 171
+DEBUG:pygls.server:Content length: 177
+DEBUG:pygls.server:Content length: 174
+DEBUG:pygls.server:Content length: 4485
+DEBUG:pygls.server:Content length: 1224
+DEBUG:pygls.server:Content length: 1266
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 1149
+DEBUG:pygls.server:Content length: 319
+DEBUG:pygls.server:Content length: 319
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 351
+DEBUG:pygls.server:Content length: 1340306
+DEBUG:pygls.server:Content length: 207
+DEBUG:pygls.server:Content length: 1340306
+DEBUG:pygls.server:Content length: 207
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 3091
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 181
+DEBUG:pygls.server:Content length: 4386
+DEBUG:pygls.server:Content length: 3420
+DEBUG:pygls.server:Content length: 3478
+DEBUG:pygls.server:Content length: 3552
+DEBUG:pygls.server:Content length: 3091
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 311
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2461
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 322
+DEBUG:pygls.server:Content length: 721
+DEBUG:pygls.server:Content length: 322
+DEBUG:pygls.server:Content length: 322
+DEBUG:pygls.server:Content length: 322
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 321
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 426
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 3091
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1180
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 330
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 1528
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1868
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 196
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 652
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 3161
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 163
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1957
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 3320
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 984
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 323
+DEBUG:pygls.server:Content length: 3091
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 334
+DEBUG:pygls.server:Content length: 438
+DEBUG:pygls.server:Content length: 598
+DEBUG:pygls.server:Content length: 196111
+DEBUG:pygls.server:Content length: 216
+DEBUG:pygls.server:Content length: 197
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 1052
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 2008
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 2385
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 1013
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 320
+DEBUG:pygls.server:Content length: 197
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 3887
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"
+DEBUG:pygls.server:Content length: 160
+WARNING:pygls.protocol.json_rpc:Ignoring notification for unknown method "workspace/didChangeWatchedFiles"

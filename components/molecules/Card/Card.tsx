@@ -7,14 +7,19 @@ interface CardProps {
   onClick?: () => void;
 }
 
-export default function Card({ title, content, onClick }: CardProps) {
+export default function Card({ title, content, displayMode, onClick }: CardProps) {
+  const maxHeightClass = displayMode === 'selected' ? '' : 'max-h-40';
+  const preClass = displayMode === 'selected' ? 'whitespace-pre-wrap break-words' : 'overflow-auto whitespace-pre-wrap';
+
   return (
     <div
-      className="bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden cursor-pointer hover:bg-gray-200 transition-colors duration-300"
+      className={`bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden cursor-pointer hover:bg-gray-200 transition-colors duration-300 ${maxHeightClass}`}
       onClick={onClick}
     >
       <h3 className="text-xl font-bold mb-2 text-gray-800">{title}</h3>
-      <pre className="text-sm text-gray-700">{content}</pre>
+      <pre className={`text-sm text-gray-700 ${preClass}`}>
+        {displayMode === 'selected' ? content : `${content.slice(0, 100)}...`}
+      </pre>
     </div>
   );
 }

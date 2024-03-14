@@ -68,57 +68,80 @@ export const JsonMainView = () => {
   return (
     <div>
       <div className="mb-4 flex justify-between items-center">
-        <ArrowButton
-          direction="left"
-          onClick={handlePrevClick}
-          disabled={index === 0}
-        />
-        <Button onClick={handleLoadJsonFile}>
-          Load JSON File
-        </Button>
-        <input
-          type="file"
-          accept=".json,.jsonl"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          style={{ display: 'none' }}
-        />
-        <ArrowButton
-          direction="right"
-          onClick={handleNextClick}
-          disabled={index === jsonData.length - 1}
-        />
+        <div className="w-1/3 flex justify-start">
+          <ArrowButton
+            direction="left"
+            onClick={handlePrevClick}
+            disabled={index === 0}
+          />
+        </div>
+        <div className="w-1/3 flex justify-center">
+          <Button onClick={handleLoadJsonFile}>
+            Load JSON File
+          </Button>
+          <input
+            type="file"
+            accept=".json,.jsonl"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+        </div>
+        <div className="w-1/3 flex justify-end">
+          <ArrowButton
+            direction="right"
+            onClick={handleNextClick}
+            disabled={index === jsonData.length - 1}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* 前のデータを表示 */}
-        {index > 0 && (
-          <div className="relative">
+        <div className="col-span-1">
+          {index === 0 ? (
+            <Card
+              title="開始位置"
+              content=""
+              displayMode="prev"
+            />
+          ) : (
             <Card
               title="Previous Data"
-              content={JSON.stringify(jsonData[index - 1], null, 2).slice(0, 100) + '...'}
+              content={JSON.stringify(jsonData[index - 1], null, 2)}
+              displayMode="prev"
               onClick={() => setIndex(index - 1)}
             />
-          </div>
-        )}
+          )}
+        </div>
 
         {/* 次のデータを表示 */}
-        {index < jsonData.length - 1 && (
-          <div className="relative">
+        <div className="col-span-1">
+          {index === jsonData.length - 1 ? (
+            <Card
+              title="最終位置"
+              content=""
+              displayMode="next"
+            />
+          ) : (
             <Card
               title="Next Data"
-              content={JSON.stringify(jsonData[index + 1], null, 2).slice(0, 100) + '...'}
+              content={JSON.stringify(jsonData[index + 1], null, 2)}
+              displayMode="next"
               onClick={() => setIndex(index + 1)}
             />
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
-      {/* 選択中のデータを表示 */}
-      <Card
-        title="Selected Data"
-        content={JSON.stringify(jsonData[index], null, 2)}
-      />
+        {/* 選択中のデータを表示 */}
+        <div className="col-span-2">
+          <Card
+            title="Selected Data"
+            content={JSON.stringify(jsonData[index], null, 2)}
+            displayMode="selected"
+          />
+        </div>
+      </div>
     </div>
   );
 }
