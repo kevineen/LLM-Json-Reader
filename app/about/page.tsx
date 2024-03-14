@@ -2,7 +2,6 @@
 export default function About() {
   const featuresItems = [{ icon: '🏎️', name: 'XML対応' }];
 
-  
   return (
     <div>
     <section className="bg-white px-4 dark:bg-gray-900">

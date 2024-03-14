@@ -5,8 +5,7 @@ import "./globals.css";
 
 import React from "react";
 import { RecoilRoot } from 'recoil';
-import { MainProvider } from "@/components/providers/MainProvider";
-import { MainLayout } from "@/components/template/MainLayout";
+import { MainProvider } from "@/components/providers/MainProvider";import { MainLayout } from "@/components/template/MainLayout";
 const inter = Inter({ subsets: ["latin"] });
 
 // export const metadata: Metadata = {
@@ -24,9 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <RecoilRoot>
           <MainProvider>
-            <MainLayout>
-              <main>{children}</main>
-            </MainLayout>
+            <MainLayout>{children}</MainLayout>
           </MainProvider>
         </RecoilRoot>
       </body>

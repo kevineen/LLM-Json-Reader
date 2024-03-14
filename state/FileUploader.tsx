@@ -27,7 +27,7 @@ const FileUploader = () => {
   return (
     <div>
       <p>JSONLファイルを選択してください。</p>
-      <input type="file" onChange={handleFileChange} accept=".jsonl" />
+      <input type="file" onChange={handleFileChange} accept=".json,.jsonl" />
     </div>
   );
 };

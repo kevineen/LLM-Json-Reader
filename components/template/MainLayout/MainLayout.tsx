@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils/cn';
-import Sidebar from '@/components/organisms/Sidebar/Sidebar';
+import Sidebar from '@/components/template/Sidebar/Sidebar';
 
 
 interface MainLayoutProps {
@@ -15,15 +15,13 @@ const links = [
   { slug: '/about', label: 'About' }
 ];
 
-// This is the place responsible for wrapping your app.
-// Add here components like Footer, Nav etc.
 export const MainLayout = ({ children, className }: MainLayoutProps) => {
-  const wrapperStyles = cn('flex flex-col min-h-screen', className);
+  const wrapperStyles = cn('layout flex flex-col h-screen', className);
 
   return (
     <div className={wrapperStyles}>
-      <header className="bg-slate-900 p-4">
-        <ul className="flex items-center gap-10 text-gray-50">
+      <header className="bg-gray-200 py-4 px-6">
+        <ul className="flex items-center gap-10 text-gray-500">
           {links.map(({ slug, label }) => (
             <li key={slug}>
               <Link href={slug} className="inline-block p-2 transition-colors hover:text-green-300">
@@ -33,11 +31,17 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
           ))}
         </ul>
       </header>
-      <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <div className="flex flex-1 h-full">
         <Sidebar />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 p-6">
+          {children}
+        </main>
       </div>
-      <footer className="flex items-center justify-center p-4">© kevin28gou Copyright 2024</footer>
+      <footer className="flex items-center justify-center p-4">
+        © kevin28gou Copyright 2024
+      </footer>
     </div>
   );
 };
+
+export default MainLayout;
