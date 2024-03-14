@@ -2,12 +2,12 @@ import React from 'react';
 
 interface CardProps {
   title: string;
-  content: string;
+  content?: string;
   displayMode: 'selected' | 'prev' | 'next';
   onClick?: () => void;
 }
 
-export default function Card({ title, content, displayMode, onClick }: CardProps) {
+export default function Card({ title, content = '', displayMode, onClick }: CardProps) {
   const maxHeightClass = displayMode === 'selected' ? '' : 'max-h-40';
   const preClass = displayMode === 'selected' ? 'whitespace-pre-wrap break-words' : 'overflow-auto whitespace-pre-wrap';
 
@@ -18,7 +18,11 @@ export default function Card({ title, content, displayMode, onClick }: CardProps
     >
       <h3 className="text-xl font-bold mb-2 text-gray-800">{title}</h3>
       <pre className={`text-sm text-gray-700 ${preClass}`}>
-        {displayMode === 'selected' ? content : `${content.slice(0, 100)}...`}
+        {displayMode === 'selected'
+          ? content || 'ファイルを読み込んでください'
+          : content
+          ? `${content.slice(0, 100)}...`
+          : 'ファイルを読み込んでください'}
       </pre>
     </div>
   );
