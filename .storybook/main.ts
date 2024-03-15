@@ -2,8 +2,7 @@ import { StorybookConfig } from '@storybook/nextjs';
 
 const config: StorybookConfig = {
   // ...
-  // framework: '@storybook/react-webpack5', 👈 Remove this
-  framework: '@storybook/nextjs', // 👈 Add this
+  framework: '@storybook/nextjs',
 };
 
 export default config;
