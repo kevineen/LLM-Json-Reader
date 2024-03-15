@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --text-color: #000;
+  --bg-color: #fff;
+}
+
+.dark {
+  --text-color: #fff;
+  --bg-color: #000;
+}
+
 body {
+  color: var(--text-color);
+  background-color: var(--bg-color);
   font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, メイリオ, Osaka, 'MS PGothic', arial, helvetica, sans-serif;
 }

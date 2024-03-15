@@ -1,0 +1,21 @@
+﻿https://zenn.dev/toshi_456/articles/957518bef2317b,https://llm-jp.github.io/awesome-japanese-llm/,
+
+jglue
+
+"jamp: JAMPDatasetProcessor,"
+"janli: JaNLIDatasetProcessor,"
+"jcommonsenseqa: JCommonsenseQADatasetProcessor,"
+"jemhopqa: JEMHopQADatasetProcessor,"
+"jnli: JNLIDatasetProcessor,"
+"jsem: JSeMDatasetProcessor,"
+"jsick: JSICKDatasetProcessor,"
+"jsquad: JSQuADDatasetProcessor,"
+"jsts: JSTSDatasetProcessor,"
+"niilc: NIILCDatasetProcessor,"
+"chabsa: ChabsaDatasetProcessor,"
+"mawps: MawpsDatasetProcessor,"
+"wiki_reading: WikipediaReadingDatasetProcessor,"
+"wiki_ner: WikipediaNERDatasetProcessor,"
+"wiki_dependency: WikipediaDependencyDatasetProcessor,"
+"wiki_pas: WikipediaPASDatasetProcessor,"
+"wiki_coreference: WikipediaCoreferenceDatasetProcessor,"

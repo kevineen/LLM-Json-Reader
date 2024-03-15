@@ -1,0 +1,1223 @@
+# llm-json-reader
+
+## Directory Structure
+
+- llm-json-reader/
+  - .editorconfig
+  - .eslintignore
+  - .eslintrc.json
+  - .prettierignore
+  - .prettierrc
+  - .vscode/
+    - settings.json
+  - app/
+    - about/
+      - page.tsx
+    - favicon.ico (binary file)
+    - globals.css
+    - layout.tsx
+    - page.tsx
+  - components/
+    - atoms/
+      - ArrowButton/
+        - ArrowButton.tsx
+        - index.ts
+      - Button/
+        - Button.tsx
+        - index.ts
+      - FileUploadButton/
+        - FileUploadButton.tsx
+        - index.ts
+      - LinkButton/
+        - index.ts
+        - LinkButton.tsx
+    - molecules/
+      - Card/
+        - Card.tsx
+        - index.ts
+      - MainCard/
+        - index.ts
+        - MainCard.tsx
+      - SideAccordionItem/
+        - index.ts
+        - SideAccordionItem.tsx
+      - SubCard/
+        - index.ts
+        - SubCard.tsx
+    - organisms/
+      - JsonCardViewer/
+        - index.ts
+        - JsonCardViewer.tsx
+      - SideAccordion/
+        - index.ts
+        - SideAccordion.tsx
+    - providers/
+      - MainProvider/
+        - index.ts
+        - MainProvider.tsx
+    - template/
+      - JsonMainView/
+        - index.ts
+        - JsonMainView.tsx
+      - JsonReadLayout/
+        - index.ts
+        - JsonReadLayout.tsx
+      - MainLayout/
+        - index.ts
+        - MainLayout.tsx
+      - Sidebar/
+        - index.ts
+        - Sidebar.tsx
+  - dist/
+  - hooks/
+    - useFileUpload.ts
+  - lib/
+    - db.ts
+    - declarations/
+    - env/
+      - env.mjs
+      - index.ts
+    - utils/
+      - cn/
+        - cn.ts
+        - index.ts
+      - helpers/
+        - countOccurrences.ts
+        - helpers.ts
+        - index.tx
+  - log_file.log
+  - next.config.mjs
+  - package-lock.json
+  - package.json
+  - pnpm-lock.yaml
+  - postcss.config.js
+  - public/
+    - next.svg
+    - vercel.svg
+  - README.md
+  - state/
+    - atmos/
+      - jsonDataAtom.ts
+    - FileUploader.tsx
+    - JsonPaginator.tsx
+    - selectors/
+      - filteredDataSelector.ts
+  - styles/
+    - globals.css
+  - tailwind.config.ts
+  - tsconfig.json
+  - yarn.lock
+
+## File Contents
+
+### .editorconfig
+
+```
+# http://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{md,markdown}]
+trim_trailing_whitespace = false
+```
+
+### .eslintignore
+
+```
+node_modules/
+.next/
+.nuxt/
+.astro/
+build/
+dist/
+out/
+public/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+vite.config.ts
+next.config.js
+tsconfig.json
+src/env.d.ts
+*.cjs
+*.mjs
+```
+
+### .eslintrc.json
+
+```
+{
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:tailwindcss/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "fixStyle": "separate-type-imports"
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "object-shorthand": "error",
+    "tailwindcss/no-custom-classname": "off",
+    "react/jsx-curly-brace-presence": "error",
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": true,
+        "html": false
+      }
+    ],
+    "@next/next/no-img-element": "off",
+  }
+}
+```
+
+### .prettierignore
+
+```
+node_modules/
+.next/
+.nuxt/
+.astro/
+build/
+dist/
+out/
+public/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+next.config.js
+```
+
+### .prettierrc
+
+```
+{
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "jsxSingleQuote": false,
+    "arrowParens": "always",
+    "printWidth": 80,
+    "bracketSpacing": true,
+    "plugins": ["prettier-plugin-organize-imports"],
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "printWidth": 360
+        }
+      },
+      {
+        "files": ["*.css", "*.scss"],
+        "options": {
+          "singleQuote": false
+        }
+      }
+    ]
+  }
+```
+
+### .vscode\settings.json
+
+```
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.addMissingImports": "explicit",
+    "source.fixAll.eslint": "explicit",
+  },
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "eslint.validate": [
+    "html",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "[typescript]": {
+    "editor.tabSize": 2
+  },
+}
+```
+
+### app\about\page.tsx
+
+```
+// `app/page.tsx` is the UI for the `/` URL
+export default function About() {
+  const featuresItems = [{ icon: '🏎️', name: 'XML対応' }];
+
+  return (
+    <div>
+    <section className="bg-white px-4 dark:bg-gray-900">
+      <div className="mx-auto grid max-w-screen-xl px-4 py-4 text-center lg:py-2">
+        <div className="mx-auto place-self-center">
+          <h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight dark:text-white md:text-5xl xl:text-2xl">
+            Json Reader for LLM Dataset
+            <br /> (Large Language Models)
+          </h1>
+          <p className="mb-6 max-w-2xl font-light text-gray-500 dark:text-gray-400 md:text-lg lg:mb-8 lg:text-md">
+            LLM開発用に、json・jsonl形式であるデータセットを閲覧見るためのアプリです。
+          </p>
+        </div>
+      </div>
+    </section>
+    <h2 className="text-bold mt-8 mb-10 text-3xl">🚀 Features:</h2>
+      <ul className="grid grid-cols-1 grid-rows-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
+        {featuresItems.map(({ icon, name }) => (
+          <li
+            key={name}
+            className="flex flex-col text-center items-center hover:scale-105 transition-all hover:shadow-xl duration-300 justify-center gap-2 px-4 py-6 border rounded-lg shadow"
+          >
+            <span className="text-xl">{icon}</span>
+            <span>{name}</span>
+          </li>
+        ))}
+      </ul>
+      </div>
+    );
+};
+```
+
+### app\globals.css
+
+```
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+```
+
+### app\layout.tsx
+
+```
+'use client';
+
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+import React from "react";
+import { RecoilRoot } from 'recoil';
+import { MainProvider } from "@/components/providers/MainProvider";import { MainLayout } from "@/components/template/MainLayout";
+const inter = Inter({ subsets: ["latin"] });
+
+// export const metadata: Metadata = {
+//   title: "LLM-Json-Reader",
+//   description: "Jsonファイルを読むだけの物",
+// };
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="ja">
+      <body className={inter.className}>
+        <RecoilRoot>
+          <MainProvider>
+            <MainLayout>{children}</MainLayout>
+          </MainProvider>
+        </RecoilRoot>
+      </body>
+    </html>
+  );
+}
+
+```
+
+### app\page.tsx
+
+```
+'use client';
+
+import JsonMainView from "@/components/template/JsonMainView/JsonMainView";
+import JsonReadLayout from "@/components/template/JsonReadLayout/JsonReadLayout";
+
+const HomePage = () => {
+
+  return (
+    <div>
+      <JsonReadLayout>
+        <JsonMainView />
+      </JsonReadLayout>
+    </div>
+  )
+};
+
+export default HomePage;
+```
+
+### components\atoms\ArrowButton\ArrowButton.tsx
+
+```
+import React from 'react';
+
+interface ArrowButtonProps {
+  onClick?: () => void;
+  disabled?: boolean;
+  direction: 'left' | 'right';
+}
+
+export default function ArrowButton({ onClick, disabled, direction }: ArrowButtonProps) {
+  const arrowIcon = direction === 'left' ? '←' : '→';
+
+  return (
+    <button
+      className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-2 rounded"
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {arrowIcon}
+    </button>
+  );
+}
+```
+
+### components\atoms\ArrowButton\index.ts
+
+```
+export * from './ArrowButton';
+
+```
+
+### components\atoms\Button\Button.tsx
+
+```
+import React from 'react';
+
+interface ButtonProps {
+  onClick?: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+}
+
+export default function Button({ onClick, disabled, children }: ButtonProps) {
+  return (
+    <button
+      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+### components\atoms\Button\index.ts
+
+```
+export * from './Button';
+
+```
+
+### components\atoms\FileUploadButton\FileUploadButton.tsx
+
+```
+import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { useSetRecoilState } from 'recoil';
+
+const FileUploadButton = () => {
+  const setJsonData = useSetRecoilState(jsonDataAtom);
+
+  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileReader = new FileReader();
+
+    if (event.target.files?.length) {
+      const file = event.target.files[0];
+
+      fileReader.readAsText(file);
+      fileReader.onload = () => {
+        try {
+          // JSONまたはJSONLファイルの内容をパース
+          const content = fileReader.result as string;
+          const lines = content.split(/\r?\n/);
+          const jsonData = lines.map(line => line ? JSON.parse(line) : null).filter(line => line);
+          setJsonData(jsonData);
+        } catch (error) {
+          console.error('ファイルの読み込みに失敗しました。', error);
+        }
+      };
+    }
+  };
+
+  return (
+    <div>
+      <input type="file" onChange={handleUpload} accept=".json,.jsonl" title="JsonまたはJsonlファイルを選択してください。"/>
+    </div>
+  );
+};
+
+export default FileUploadButton;
+```
+
+### components\atoms\FileUploadButton\index.ts
+
+```
+export * from './FileUploadButton';
+
+```
+
+### components\atoms\LinkButton\index.ts
+
+```
+export * from './LinkButton';
+
+```
+
+### components\atoms\LinkButton\LinkButton.tsx
+
+```
+// components/atoms/LinkButton.tsx
+import Link from 'next/link';
+import React from 'react';
+
+interface LinkButtonProps {
+  href: string;
+  label: string;
+}
+
+const LinkButton: React.FC<LinkButtonProps> = ({ href, label }) => <Link href={href}>{label}</Link>;
+
+export default LinkButton;
+
+```
+
+### components\molecules\Card\Card.tsx
+
+```
+import React from 'react';
+
+interface CardProps {
+  title: string;
+  content?: string;
+  displayMode: 'selected' | 'prev' | 'next';
+  onClick?: () => void;
+}
+
+export default function Card({ title, content = '', displayMode, onClick }: CardProps) {
+  const maxHeightClass = displayMode === 'selected' ? '' : 'max-h-40';
+  const preClass = displayMode === 'selected' ? 'whitespace-pre-wrap break-words' : 'overflow-auto whitespace-pre-wrap';
+
+  return (
+    <div
+      className={`bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden cursor-pointer hover:bg-gray-200 transition-colors duration-300 ${maxHeightClass}`}
+      onClick={onClick}
+    >
+      <h3 className="text-xl font-bold mb-2 text-gray-800">{title}</h3>
+      <pre className={`text-sm text-gray-700 ${preClass}`}>
+        {displayMode === 'selected'
+          ? content || 'ファイルを読み込んでください'
+          : content
+          ? `${content.slice(0, 100)}...`
+          : 'ファイルを読み込んでください'}
+      </pre>
+    </div>
+  );
+}
+```
+
+### components\molecules\Card\index.ts
+
+```
+export * from "./Card";
+```
+
+### components\molecules\MainCard\index.ts
+
+```
+export * from "./MainCard";
+```
+
+### components\molecules\MainCard\MainCard.tsx
+
+```
+const MainCard = ({ children }: any) => {
+  return (
+    <div className="card">
+      {children}
+    </div>
+  );
+};
+
+export default MainCard;
+```
+
+### components\molecules\SideAccordionItem\index.ts
+
+```
+export * from "./SideAccordionItem";
+```
+
+### components\molecules\SideAccordionItem\SideAccordionItem.tsx
+
+```
+import { useRecoilState } from "recoil";
+import { indexAtom } from "@/state/atmos/jsonDataAtom";
+
+const SideAccordionItem = ({ children }: any) => {
+  const [index, setIndex] = useRecoilState(indexAtom);
+
+  return (
+    <div onClick={() => setIndex(index)}>
+      <div>Index: {index}</div>
+      <div>Category: {children.category}</div>
+    </div>
+  );
+};
+
+export default SideAccordionItem;
+```
+
+### components\molecules\SubCard\index.ts
+
+```
+export * from "./SubCard";
+```
+
+### components\molecules\SubCard\SubCard.tsx
+
+```
+const SubCard = ({ children }: any) => {
+  return (
+    <div className="card">
+      {children}
+    </div>
+  );
+};
+
+export default SubCard;
+```
+
+### components\organisms\JsonCardViewer\index.ts
+
+```
+export * from './JsonCardViewer';
+
+```
+
+### components\organisms\JsonCardViewer\JsonCardViewer.tsx
+
+```
+import { useRecoilState, useRecoilValue } from 'recoil';
+
+import { jsonDataAtom, indexAtom } from '@/state/atmos/jsonDataAtom';
+import { useCallback, useEffect } from 'react';
+import React from 'react';
+
+const JsonCardViewer = () => {
+  const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
+  const [index, setIndex] = useRecoilState(indexAtom);
+
+  // useCallbackフックをuseEffectの外で定義
+  const handleArrowKey = useCallback((event: KeyboardEvent) => {
+    console.log(index)
+    if (event.key === 'ArrowRight') {
+      setIndex((index) => Math.min(index + 1, jsonData.length - 1));
+    } else if (event.key === 'ArrowLeft') {
+      setIndex((index) => Math.max(index - 1, 0));
+    }
+  }, [index, jsonData.length]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleArrowKey);
+    return () => {
+      window.removeEventListener('keydown', handleArrowKey);
+    };
+  }, [handleArrowKey]); // useCallbackでメモ化された関数を依存配列に追加
+
+  const nowCard = (item: any, originalIndex: number) => {
+    // 選択中のアイテムを表示
+    if (originalIndex === index) {
+      return (
+        <div key={originalIndex.toString()}>
+          <div>{JSON.stringify(item, null, 2)}</div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const previousCard = (item: any, originalIndex: number) => {
+  // 選択中のアイテムの1つ前のアイテムを表示
+  if (index === 0) {
+    // インデックスが0の場合は "Start" を表示
+    return (
+      <div key={originalIndex}>
+        <div>Start</div>
+      </div>
+    );
+  } else if (originalIndex === index - 1) {
+    return (
+      <div key={originalIndex}>
+        <div>Category: {item.category}</div>
+        <div>Instruction: {item.instruction}</div>
+      </div>
+    );
+  }
+    return null;
+  };
+
+const nextCard = (item: any, originalIndex: number) => {
+  // 選択中のアイテムの1つ後のアイテムを表示
+  if (originalIndex === jsonData.length) {
+    // インデックスがjsonDataの最後の要素の場合は "Last" を表示
+    return (
+      <div key={originalIndex}>
+        <div>Last</div>
+      </div>
+    );
+  } else if (originalIndex === index + 1) {
+    return (
+      <div key={originalIndex}>
+        <div>Category: {item.category}</div>
+        <div>Instruction: {item.instruction}</div>
+      </div>
+    );
+  }
+    return null;
+  };
+
+  return (
+    <div>
+      {jsonData && jsonData.length > 0 ? (
+        <>
+          {previousCard(jsonData[index - 1], index - 1)}
+          <div key={index}>
+            {/* 現在のカードを表示 */}
+            {nowCard(jsonData[index], index)}
+          </div>
+          {nextCard(jsonData[index + 1], index + 1)}
+        </>
+      ) : (
+        <div>
+          <p>ファイルデータがまだ読み込まれていません。<br />
+          jsonlファイルをアップロードしてください。</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default JsonCardViewer;
+```
+
+### components\organisms\SideAccordion\index.ts
+
+```
+export * from './SideAccordion';
+
+```
+
+### components\organisms\SideAccordion\SideAccordion.tsx
+
+```
+const SideAccordion = () => {
+  return (
+    <div>
+
+    </div>
+  );
+}
+
+export default SideAccordion;
+```
+
+### components\providers\MainProvider\index.ts
+
+```
+export * from './MainProvider';
+
+```
+
+### components\providers\MainProvider\MainProvider.tsx
+
+```
+import { ReactNode } from 'react';
+
+interface Props {
+  children: ReactNode;
+}
+
+// This is the place responsible for grouping all providers from the app
+export const MainProvider = ({ children }: Props) => <>{children}</>;
+
+```
+
+### components\template\JsonMainView\index.ts
+
+```
+export * from './JsonMainView';
+
+```
+
+### components\template\JsonMainView\JsonMainView.tsx
+
+```
+import { useCallback, useEffect, useRef } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+
+import { indexAtom, jsonDataAtom } from "@/state/atmos/jsonDataAtom";
+
+import Button from "@/components/atoms/Button/Button";
+import Card from "@/components/molecules/Card/Card";
+import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
+
+export const JsonMainView = () => {
+  const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
+
+  const [index, setIndex] = useRecoilState(indexAtom);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handlePrevClick = () => {
+    setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
+  };
+
+  const handleNextClick = () => {
+    setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
+  };
+
+  // useCallbackフックをuseEffectの外で定義
+  const handleArrowKey = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'ArrowRight') {
+      setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
+    } else if (event.key === 'ArrowLeft') {
+      setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
+    }
+  }, [setIndex, jsonData.length]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleArrowKey);
+    return () => {
+      window.removeEventListener('keydown', handleArrowKey);
+    };
+  }, [handleArrowKey]);
+
+  const handleLoadJsonFile = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileReader = new FileReader();
+
+    if (event.target.files?.length) {
+      const file = event.target.files[0];
+
+      fileReader.readAsText(file);
+      fileReader.onload = () => {
+        try {
+          // JSONまたはJSONLファイルの内容をパース
+          const content = fileReader.result as string;
+          const lines = content.split(/\r?\n/);
+          const jsonData = lines.map(line => line ? JSON.parse(line) : null).filter(line => line);
+          setJsonData(jsonData);
+        } catch (error) {
+          console.error('ファイルの読み込みに失敗しました。', error);
+        }
+      };
+    }
+  };
+
+  return (
+    <div>
+      <div className="mb-4 flex justify-between items-center">
+        <div className="w-1/3 flex justify-start">
+          <ArrowButton
+            direction="left"
+            onClick={handlePrevClick}
+            disabled={index === 0}
+          />
+        </div>
+        <div className="w-1/3 flex justify-center">
+          <Button onClick={handleLoadJsonFile}>
+            Load JSON File
+          </Button>
+          <input
+            type="file"
+            accept=".json,.jsonl"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+        </div>
+        <div className="w-1/3 flex justify-end">
+          <ArrowButton
+            direction="right"
+            onClick={handleNextClick}
+            disabled={index === jsonData.length - 1}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        {/* 前のデータを表示 */}
+        <div className="col-span-1">
+          {index === 0 ? (
+            <Card
+              title="開始位置"
+              content=""
+              displayMode="prev"
+            />
+          ) : (
+            <Card
+              title="Previous Data"
+              content={JSON.stringify(jsonData[index - 1], null, 2)}
+              displayMode="prev"
+              onClick={() => setIndex(index - 1)}
+            />
+          )}
+        </div>
+
+        {/* 次のデータを表示 */}
+        <div className="col-span-1">
+          {index === jsonData.length - 1 ? (
+            <Card
+              title="最終位置"
+              content=""
+              displayMode="next"
+            />
+          ) : (
+            <Card
+              title="Next Data"
+              content={JSON.stringify(jsonData[index + 1], null, 2)}
+              displayMode="next"
+              onClick={() => setIndex(index + 1)}
+            />
+          )}
+        </div>
+
+        {/* 選択中のデータを表示 */}
+        <div className="col-span-2">
+          <Card
+            title="Selected Data"
+            content={JSON.stringify(jsonData[index], null, 2)}
+            displayMode="selected"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default JsonMainView;
+```
+
+### components\template\JsonReadLayout\index.ts
+
+```
+export * from './JsonReadLayout';
+
+```
+
+### components\template\JsonReadLayout\JsonReadLayout.tsx
+
+```
+import React from 'react';
+import Sidebar from '@/components/template/Sidebar/Sidebar';
+
+const JsonReadLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+   return <div className="flex-1 p-6">{children}</div>;
+};
+
+export default JsonReadLayout;
+```
+
+### components\template\MainLayout\index.ts
+
+```
+export * from './MainLayout';
+
+```
+
+### components\template\MainLayout\MainLayout.tsx
+
+```
+import Link from 'next/link';
+import { ReactNode } from 'react';
+
+import { cn } from '@/lib/utils/cn';
+import Sidebar from '@/components/template/Sidebar/Sidebar';
+
+
+interface MainLayoutProps {
+  children: ReactNode;
+  className?: string;
+}
+
+const links = [
+  { slug: '/', label: 'Home' },
+  { slug: '/about', label: 'About' }
+];
+
+export const MainLayout = ({ children, className }: MainLayoutProps) => {
+  const wrapperStyles = cn('layout flex flex-col h-screen', className);
+
+  return (
+    <div className={wrapperStyles}>
+      <header className="bg-gray-200 py-4 px-6">
+        <ul className="flex items-center gap-10 text-gray-500">
+          {links.map(({ slug, label }) => (
+            <li key={slug}>
+              <Link href={slug} className="inline-block p-2 transition-colors hover:text-green-300">
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </header>
+      <div className="flex flex-1 h-full">
+        <Sidebar />
+        <main className="flex-1 p-6">
+          {children}
+        </main>
+      </div>
+      <footer className="flex items-center justify-center p-4">
+        © kevin28gou Copyright 2024
+      </footer>
+    </div>
+  );
+};
+
+export default MainLayout;
+```
+
+### components\template\Sidebar\index.ts
+
+```
+export * from './Sidebar';
+
+```
+
+### components\template\Sidebar\Sidebar.tsx
+
+```
+// components/organisms/Sidebar.tsx
+import { useRecoilState, useRecoilValue } from 'recoil';
+
+import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+
+const Sidebar = () =>{
+  const jsonData = useRecoilValue(jsonDataAtom);
+  const [index, setIndex] = useRecoilState(indexAtom);
+
+  return (
+    <div className="sidebar bg-gray-100 text-gray-800 p-4 h-full overflow-y-auto">
+      <div>データ件数: {jsonData.length}</div>
+      {jsonData.map((data, i) => (
+        <div
+          key={i}
+          onClick={() => setIndex(i)}
+          className={`py-2 px-4 cursor-pointer hover:bg-gray-200 ${
+            index === i ? 'bg-gray-300' : ''
+          }`}
+        >
+          <p className="truncate">{`${i}: ${data.category}`}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Sidebar;
+```
+
+### hooks\useFileUpload.ts
+
+```
+'use client';
+
+import { useState } from 'react';
+
+const useFileUpload = () => {
+  const [fileData, setFileData] = useState<File | null>(null);
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+
+    if (file && file.type === 'application/json') {
+      setFileData(file);
+    } else {
+      // ここでエラーメッセージを表示するか、不正なファイルタイプであることをユーザーに知らせる
+      console.error("Invalid file type. Please select a json or jsonl file.");
+    }
+  };
+
+  return { fileData, handleFileUpload };
+};
+
+export default useFileUpload;
+
+```
+
+### lib\db.ts
+
+```
+import { Database } from 'sqlite3';
+
+const sqlite3 = require('sqlite3').verbose();
+
+const db = new sqlite3.Database(':memory:');
+
+export async function query(sql: string, params?: any[]) {
+  return new Promise((resolve, reject) => {
+    db.all(sql, params, (err: Error | null, rows: any[]) => { // Added type annotation for 'err' parameter
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+}
+```
+
+### lib\env\env.mjs
+
+```
+import { createEnv } from '@t3-oss/env-nextjs';
+// import { z } from 'zod';
+
+const skipValidation =
+  !!process.env.SKIP_ENV_VALIDATION &&
+  process.env.SKIP_ENV_VALIDATION !== 'false' &&
+  process.env.SKIP_ENV_VALIDATION !== '0';
+
+export const env = createEnv({
+  skipValidation,
+  server: {},
+  client: {
+    // NEXT_PUBLIC_EXAMPLE: z.string()
+  },
+  runtimeEnv: {
+    // NEXT_PUBLIC_EXAMPLE: process.env.NEXT_PUBLIC_EXAMPLE
+  }
+});
+
+```
+
+### lib\env\index.ts
+
+```
+export * from './env.mjs';
+
+```
+
+### lib\utils\cn\cn.ts
+
+```
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+/**
+ * The function `cn` is a TypeScript function that merges multiple class lists into a single class
+ * list.
+ * @param {ClassValue[]} classLists - classLists is a rest parameter that allows you to pass in
+ * multiple class lists as arguments. Each class list is represented by the ClassValue type.
+ */
+export const cn = (...classLists: ClassValue[]) => twMerge(clsx(classLists));
+
+```
+
+### lib\utils\cn\index.ts
+
+```
+export * from './cn';
+
+```
+
+### lib\utils\helpers\countOccurrences.ts
+
+```
+export function countOccurrences(array: any[], key: string): { [key: string]: number } {
+  return array.reduce((acc, obj) => {
+    const property = obj[key];
+    acc[property] = (acc[property] || 0) + 1;
+    return acc;
+  }, {});
+}
+```
+
+### lib\utils\helpers\helpers.ts
+
+```
+// helpers.js
+export default function processJsonData(jsonData : JSON | any) {
+}
+
+export function countOccurrences(array: any[], key: string): { [key: string]: number } {
+  return array.reduce((acc, obj) => {
+    const property = obj[key];
+    acc[property] = (acc[property] || 0) + 1;
+    return acc;
+  }, {});
+}
+```
+
+### lib\utils\helpers\index.tx
+
+```
+export * from './helpers';
+
+```

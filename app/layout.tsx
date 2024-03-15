@@ -2,10 +2,11 @@
 
 import { Inter } from "next/font/google";
 import "./globals.css";
+import '@/styles/globals.scss';
 
 import React from "react";
 import { RecoilRoot } from 'recoil';
-import { MainProvider } from "@/components/providers/MainProvider";import { MainLayout } from "@/components/template/MainLayout";
+import { MainProvider } from "@/components/providers/MainProvider"; import { MainLayout } from "@/components/template/MainLayout";
 const inter = Inter({ subsets: ["latin"] });
 
 // export const metadata: Metadata = {
