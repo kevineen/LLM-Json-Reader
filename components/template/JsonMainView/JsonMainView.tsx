@@ -6,6 +6,7 @@ import { indexAtom, jsonDataAtom } from "@/state/atmos/jsonDataAtom";
 import Button from "@/components/atoms/Button/Button";
 import Card from "@/components/molecules/Card/Card";
 import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
+import { parseJsonData } from "@/lib/utils/helpers/helpers";
 
 export const JsonMainView = () => {
   const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
@@ -53,10 +54,8 @@ export const JsonMainView = () => {
       fileReader.readAsText(file);
       fileReader.onload = () => {
         try {
-          // JSONまたはJSONLファイルの内容をパース
           const content = fileReader.result as string;
-          const lines = content.split(/\r?\n/);
-          const jsonData = lines.map(line => line ? JSON.parse(line) : null).filter(line => line);
+          const jsonData = parseJsonData(content);
           setJsonData(jsonData);
         } catch (error) {
           console.error('ファイルの読み込みに失敗しました。', error);

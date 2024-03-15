@@ -1,4 +1,5 @@
 import { useRecoilState } from 'recoil';
+import ThemeIcon from '@/components/atoms/ThemeIcon/ThemeIcon';
 import { themeAtom } from '@/state/atmos/themeAtom';
 
 const ThemeToggle = () => {
@@ -10,7 +11,7 @@ const ThemeToggle = () => {
 
   return (
     <button onClick={toggleTheme}>
-      {theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+      <ThemeIcon theme={theme} />
     </button>
   );
 };

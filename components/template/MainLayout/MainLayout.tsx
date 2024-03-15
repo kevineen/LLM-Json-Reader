@@ -8,6 +8,7 @@ import { themeAtom } from '@/state/atmos/themeAtom';
 
 import Sidebar from '@/components/template/Sidebar/Sidebar';
 import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
+import { lightColors, darkColors, originalColors } from '@/styles/colorPalette';
 
 
 interface MainLayoutProps {
@@ -24,34 +25,54 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
   const theme = useRecoilValue(themeAtom);
   const wrapperStyles = cn('layout flex flex-col h-screen', className);
 
+  const getColors = () => {
+    switch (theme) {
+      case 'light':
+        return lightColors;
+      case 'dark':
+        return darkColors;
+      default:
+        const originalIndex = parseInt(theme.replace('original', ''), 10);
+        return originalColors[originalIndex];
+    }
+  };
+
+  const colors = getColors();
+
   return (
-    <div className={theme === 'dark' ? 'dark' : ''}>
+    <div>
       <div className={wrapperStyles}>
-        <header className="bg-gray-200 py-4 px-6 dark:bg-gray-800">
-          <ul className="flex items-center gap-10 text-gray-500 ">
-            {links.map(({ slug, label }) => (
-              <li key={slug}>
-                <Link href={slug} className="inline-block p-2 transition-colors hover:text-green-300">
-                  {label}
-                </Link>
-              </li>
-            ))}
-            <li>
-              {/* ... */}
+        <div style={{ backgroundColor: colors.main, color: colors.text }}>
+          <header className="py-4 px-6" style={{ backgroundColor: colors.header }}>
+            <div className="flex justify-between items-center">
+              <ul className="flex items-center gap-10 text-gray-500">
+                {links.map(({ slug, label }) => (
+                  <li key={slug}>
+                    <Link href={slug} className="inline-block p-2 transition-colors hover:text-green-300">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
               <ThemeToggle />
-              {/* ... */}
-            </li>
-          </ul>
-        </header>
-        <div className="flex flex-1 h-full dark:bg-gray-800">
-          <Sidebar />
-          <main className="flex-1 p-6">
-            {children}
-          </main>
+            </div>
+          </header>
+          <div className="flex flex-1 h-full" style={{ backgroundColor: colors.sidebar }}>
+            <Sidebar
+              backgroundColor={colors.sidebar}
+              textColor={colors.text}
+              selectedBackgroundColor={colors.sidebarSelected}
+              selectedTextColor={colors.text}
+              hoverBackgroundColor={colors.sidebarHover}
+            />
+            <main className="flex-1 p-6">
+              {children}
+            </main>
+          </div>
+          <footer className="flex items-center justify-center p-4" style={{ backgroundColor: colors.footer }}>
+            ファイル名
+          </footer>
         </div>
-        <footer className="flex items-center justify-center p-4 dark:bg-gray-800">
-          © kevin28gou Copyright 2024
-        </footer>
       </div>
     </div>
   );

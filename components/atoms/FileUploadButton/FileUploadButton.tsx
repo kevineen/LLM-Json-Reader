@@ -1,3 +1,4 @@
+// components/atoms/FileUploadButton/FileUploadButton.tsx
 import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { useSetRecoilState } from 'recoil';
 
@@ -13,13 +14,29 @@ const FileUploadButton = () => {
       fileReader.readAsText(file);
       fileReader.onload = () => {
         try {
-          // JSONまたはJSONLファイルの内容をパース
           const content = fileReader.result as string;
-          const lines = content.split(/\r?\n/);
-          const jsonData = lines.map(line => line ? JSON.parse(line) : null).filter(line => line);
-          setJsonData(jsonData);
+
+          if (!content.trim()) {
+            console.error('Empty JSON file.');
+            return;
+          }
+
+          let jsonData = JSON.parse(content);
+
+          if (Array.isArray(jsonData)) {
+            // JSONデータが配列の場合、バックスラッシュをエスケープする
+            const escapedContent = content.replace(/\\/g, '\\\\');
+            jsonData = JSON.parse(escapedContent);
+            setJsonData(jsonData);
+          } else {
+            console.error('Invalid file format. Expected an array of objects.');
+          }
         } catch (error) {
-          console.error('ファイルの読み込みに失敗しました。', error);
+          if (error instanceof SyntaxError) {
+            console.error('Invalid JSON syntax:', error.message);
+          } else {
+            console.error('Error parsing JSON file:', error);
+          }
         }
       };
     }
@@ -27,7 +44,7 @@ const FileUploadButton = () => {
 
   return (
     <div>
-      <input type="file" onChange={handleUpload} accept=".json,.jsonl" title="JsonまたはJsonlファイルを選択してください。"/>
+      <input type="file" onChange={handleUpload} accept=".json" title="JSONファイルを選択してください。" />
     </div>
   );
 };

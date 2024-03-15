@@ -1,23 +1,41 @@
 // components/organisms/Sidebar.tsx
 import { useRecoilState, useRecoilValue } from 'recoil';
-
 import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 
-const Sidebar = () => {
+interface SidebarProps {
+  backgroundColor: string;
+  textColor: string;
+  selectedBackgroundColor: string;
+  selectedTextColor: string;
+  hoverBackgroundColor: string;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
+  backgroundColor,
+  textColor,
+  selectedBackgroundColor,
+  selectedTextColor,
+  hoverBackgroundColor,
+}) => {
   const jsonData = useRecoilValue(jsonDataAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
 
   return (
-    <div className="sidebar bg-gray-100 text-gray-800 p-4 h-full overflow-y-auto dark:bg-gray-800">
+    <div
+      className={`p-4 h-full overflow-y-auto`}
+      style={{ backgroundColor, color: textColor }}
+    >
       <div>データ件数: {jsonData.length}</div>
       {jsonData.map((data, i) => (
         <div
           key={i}
-          onClick={() => setIndex(i)}
-          className={`py-2 px-4 cursor-pointer hover:bg-gray-200 ${index === i ? 'bg-gray-300' : ''
+          className={`py-2 px-4 cursor-pointer truncate ${index === i
+            ? `bg-[${selectedBackgroundColor}] text-[${selectedTextColor}]`
+            : `hover:bg-[${hoverBackgroundColor}]`
             }`}
+          onClick={() => setIndex(i)}
         >
-          <p className="truncate">{`${i}: ${data.category}`}</p>
+          {`${i}: ${data.category}`}
         </div>
       ))}
     </div>
