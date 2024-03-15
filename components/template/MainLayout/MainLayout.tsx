@@ -8,7 +8,7 @@ import { themeAtom } from '@/state/atmos/themeAtom';
 
 import Sidebar from '@/components/template/Sidebar/Sidebar';
 import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
-import { lightColors, darkColors, originalColors } from '@/styles/colorPalette';
+import { lightColors, darkColors, originalColors } from '@/styles/themeColorPalette';
 
 
 interface MainLayoutProps {

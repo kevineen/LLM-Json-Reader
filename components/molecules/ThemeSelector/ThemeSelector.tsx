@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil';
-import { originalColors } from '@/styles/colorPalette';
+import { originalColors } from '@/styles/themeColorPalette';
 import { themeAtom, ThemeMode } from '@/state/atmos/themeAtom';
 
 const ThemeSelector = () => {

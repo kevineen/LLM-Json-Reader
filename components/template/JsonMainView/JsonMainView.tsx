@@ -76,7 +76,7 @@ export const JsonMainView = () => {
         </div>
         <div className="w-1/3 flex justify-center">
           <Button onClick={handleLoadJsonFile}>
-            Load JSON File
+            ファイル読込
           </Button>
           <input
             type="file"
