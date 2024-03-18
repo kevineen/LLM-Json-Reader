@@ -4,11 +4,11 @@ import { ReactNode } from 'react';
 import { cn } from '@/lib/utils/cn';
 import { useRecoilValue } from 'recoil';
 
-import { themeAtom } from '@/state/atmos/themeAtom';
+import { customThemeColorsAtom, themeAtom } from '@/state/atmos/themeAtom';
 
 import Sidebar from '@/components/template/Sidebar/Sidebar';
 import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
-import { lightColors, darkColors, originalColors } from '@/styles/themeColorPalette';
+import { lightColors, darkColors } from '@/styles/themeColorPalette';
 
 
 interface MainLayoutProps {
@@ -18,12 +18,13 @@ interface MainLayoutProps {
 
 const links = [
   { slug: '/', label: 'Home' },
-  { slug: '/about', label: 'About' }
+  { slug: '/about', label: 'About' },
 ];
 
 export const MainLayout = ({ children, className }: MainLayoutProps) => {
   const theme = useRecoilValue(themeAtom);
-  const wrapperStyles = cn('layout flex flex-col h-screen', className);
+  const customColors = useRecoilValue(customThemeColorsAtom);
+  const wrapperStyles = cn('layout flex flex-col min-h-screen 100vh', className);
 
   const getColors = () => {
     switch (theme) {
@@ -32,8 +33,11 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
       case 'dark':
         return darkColors;
       default:
-        const originalIndex = parseInt(theme.replace('original', ''), 10);
-        return originalColors[originalIndex];
+        if (theme.startsWith('custom')) {
+          const customIndex = parseInt(theme.replace('custom', ''), 10) - 1;
+          return customColors[customIndex];
+        }
+        return lightColors;
     }
   };
 
@@ -65,7 +69,7 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
               selectedTextColor={colors.text}
               hoverBackgroundColor={colors.sidebarHover}
             />
-            <main className="flex-1 p-6">
+            <main className="flex-grow p-6">
               {children}
             </main>
           </div>
