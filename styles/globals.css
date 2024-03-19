@@ -17,3 +17,12 @@ body {
   background-color: var(--bg-color);
   font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, メイリオ, Osaka, 'MS PGothic', arial, helvetica, sans-serif;
 }
+
+.remaining-seconds {
+  white-space: nowrap;
+}
+
+.remaining-seconds.empty::before {
+  content: "0.0秒";
+  visibility: hidden;
+}

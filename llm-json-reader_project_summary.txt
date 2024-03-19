@@ -20,6 +20,8 @@
     - globals.css
     - layout.tsx
     - page.tsx
+    - themeColors/
+      - page.tsx
   - components/
     - atoms/
       - ArrowButton/
@@ -38,6 +40,9 @@
         - index.ts
         - ThemeIcon.tsx
     - molecules/
+      - AutoModeSelector/
+        - AutoModeSelector.tsx
+        - index.ts
       - Card/
         - Card.tsx
         - index.ts
@@ -68,6 +73,9 @@
         - index.ts
         - MainProvider.tsx
     - template/
+      - Footer/
+        - Footer.tsx
+        - index.ts
       - JsonMainView/
         - index.ts
         - JsonMainView.tsx
@@ -82,7 +90,10 @@
         - Sidebar.tsx
   - data/
     - 1.2.0/
+    - carddesign.jpg (binary file)
     - evalDatasetlist.csv
+    - features.txt
+    - prompt_for_claude.txt
   - dist/
   - hooks/
     - useFileUpload.ts
@@ -100,10 +111,8 @@
         - countOccurrences.ts
         - helpers.ts
         - index.tx
-  - log_file.log
   - next.config.mjs
   - package.json
-  - pnpm-lock.yaml
   - postcss.config.js
   - public/
     - next.svg
@@ -111,6 +120,8 @@
   - README.md
   - state/
     - atmos/
+      - autoModeAtom.ts
+      - fileNameAtom.ts
       - jsonDataAtom.ts
       - themeAtom.ts
     - FileUploader.tsx
@@ -440,7 +451,7 @@ import JsonMainView from "@/components/template/JsonMainView/JsonMainView";
 import JsonReadLayout from "@/components/template/JsonReadLayout/JsonReadLayout";
 
 const HomePage = () => {
-
+  
   return (
     <div>
       <JsonReadLayout>
@@ -451,6 +462,77 @@ const HomePage = () => {
 };
 
 export default HomePage;
+```
+
+### app\themeColors\page.tsx
+
+```
+'use client'
+
+import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { ThemeMode, customThemeColorsAtom, themeAtom } from "@/state/atmos/themeAtom";
+
+const ThemeColors = () => {
+  const [, setTheme] = useRecoilState(themeAtom);
+  const [customColors, setCustomColors] = useRecoilState(customThemeColorsAtom);
+  const [editingThemeIndex, setEditingThemeIndex] = useState<number | null>(null);
+
+  const handleThemeChange = (selectedTheme: ThemeMode) => {
+    setTheme(selectedTheme);
+  };
+
+  const handleColorChange = (themeIndex: number, colorKey: string, colorValue: string) => {
+    setCustomColors((prevColors) => {
+      const newColors = [...prevColors];
+      newColors[themeIndex] = { ...newColors[themeIndex], [colorKey]: colorValue };
+      return newColors;
+    });
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">カスタムテーマ選択</h1>
+      <div className="grid grid-cols-2 gap-4">
+        {customColors.map((theme, index) => (
+          <div
+            key={`custom${index}`}
+            className="p-4 rounded cursor-pointer"
+            onClick={() => handleThemeChange(`custom${index + 1}` as ThemeMode)}
+          >
+            <div className="p-4 rounded" style={{ backgroundColor: theme.main }}>
+              <div className="mb-4">
+                <h2 className="text-xl font-bold mb-2" style={{ color: "#000" }}>{theme.name}</h2>
+              </div>
+              <div className="rounded overflow-hidden">
+                <div className="px-6 py-4" style={{ backgroundColor: theme.header, color: theme.headerText }}>
+                  <div className="font-bold text-xl mb-2" style={{ color: theme.text }}>Header</div>
+                </div>
+                <div className="flex">
+                  <div className="w-1/4 px-6 py-4" style={{ backgroundColor: theme.sidebar, color: theme.sidebarText }}>
+                    <div className="font-bold text-xl mb-2" style={{ color: theme.text }}>Sidebar</div>
+                    <div className="font-bold text-xl mb-2" style={{ color: theme.sidebarSelected }}>選択</div>
+                    <p className="text-base" style={{ color: theme.text }}>Selected</p>
+                  </div>
+                  <div className="w-3/4 px-6 py-4" style={{ backgroundColor: theme.main, color: theme.mainText }}>
+                    <div className="font-bold text-xl mb-2" style={{ color: theme.text }}>Main</div>
+                    <p className="text-base" style={{ color: theme.text }}>Content goes here</p>
+                  </div>
+                </div>
+                <div className="px-6 py-4" style={{ backgroundColor: theme.footer, color: theme.footerText }}>
+                  <div className="font-bold text-xl mb-2" style={{ color: theme.text }}>Footer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ThemeColors;
+
 ```
 
 ### components\atoms\ArrowButton\ArrowButton.tsx
@@ -644,6 +726,141 @@ export default ThemeIcon;
 
 ```
 
+### components\molecules\AutoModeSelector\AutoModeSelector.tsx
+
+```
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { autoModeSpeedAtom, customSpeedAtom, AutoModeSpeed } from '@/state/atmos/autoModeAtom';
+import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { useEffect, useState } from 'react';
+
+const AutoModeSelector: React.FC = () => {
+  const [autoModeSpeed, setAutoModeSpeed] = useRecoilState(autoModeSpeedAtom);
+  const [customSpeed, setCustomSpeed] = useRecoilState(customSpeedAtom);
+  const jsonData = useRecoilValue(jsonDataAtom);
+  const [index, setIndex] = useRecoilState(indexAtom);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAutoModeOn, setIsAutoModeOn] = useState(false);
+  const [currentSecond, setCurrentSecond] = useState(0);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
+
+  useEffect(() => {
+    if (jsonData.samples.length > 0) {
+      setIsLoading(false);
+    }
+  }, [jsonData.samples]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (isAutoModeOn) {
+      let totalSeconds = 0;
+
+      switch (autoModeSpeed) {
+        case '3s':
+          totalSeconds = 3;
+          break;
+        case '5s':
+          totalSeconds = 5;
+          break;
+        case '10s':
+          totalSeconds = 10;
+          break;
+        case 'custom':
+          totalSeconds = customSpeed;
+          break;
+        case 'textLength':
+          const textLength = jsonData.samples[index]?.input.length + jsonData.samples[index]?.output.length || 0;
+          totalSeconds = Math.ceil(textLength / 10); // 10文字あたり1秒
+          break;
+      }
+
+      setCurrentSecond(0);
+      setRemainingSeconds(totalSeconds);
+
+      timer = setInterval(() => {
+        setCurrentSecond((prevSecond) => prevSecond + 0.1); // 500ミリ秒ごとに更新
+        setRemainingSeconds((prevSeconds) => prevSeconds - 0.1);
+      }, 100); // 500ミリ秒ごとに実行
+    }
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [autoModeSpeed, customSpeed, isAutoModeOn, jsonData.samples, index]);
+
+  const handleSpeedChange = (speed: AutoModeSpeed) => {
+    setAutoModeSpeed(speed);
+    setIsAutoModeOn(speed !== 'off');
+  };
+
+  const handleCustomSpeedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10);
+    setCustomSpeed(value);
+  };
+
+  if (isLoading) {
+    return <div></div>;
+  }
+
+  return (
+    <div className="flex items-center">
+      <button
+        className={`px-4 py-2 rounded ${isAutoModeOn ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-800'}`}
+        onClick={() => handleSpeedChange(isAutoModeOn ? 'off' : '3s')}
+      >
+        {isAutoModeOn ? 'オート' : 'オート'}
+      </button>
+      <div className="flex ml-4">
+        <button
+          className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === '3s' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'} whitespace-nowrap`}
+          onClick={() => handleSpeedChange('3s')}
+        >
+          3秒
+        </button>
+        <button
+          className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === '5s' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'} whitespace-nowrap`}
+          onClick={() => handleSpeedChange('5s')}
+        >
+          5秒
+        </button>
+        <button
+          className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === '10s' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}
+          onClick={() => handleSpeedChange('10s')}
+        >
+          10秒
+        </button>
+        <button
+          className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === 'textLength' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}
+          onClick={() => handleSpeedChange('textLength')}
+        >
+          テキストの長さ
+        </button>
+      </div>
+      <div className="ml-4 flex items-center relative">
+        {isAutoModeOn && (
+          <>
+            <progress value={currentSecond} max={currentSecond + remainingSeconds} className="mr-2" />
+            <span className="remaining-seconds">{remainingSeconds.toFixed(1)}秒</span>
+          </>
+        )}
+        <span className="remaining-seconds empty"></span>
+      </div>
+    </div>
+  );
+};
+
+export default AutoModeSelector;
+
+```
+
+### components\molecules\AutoModeSelector\index.ts
+
+```
+export * from "./AutoModeSelector";
+
+```
+
 ### components\molecules\Card\Card.tsx
 
 ```
@@ -718,7 +935,7 @@ import { indexAtom } from "@/state/atmos/jsonDataAtom";
 
 const SideAccordionItem = ({ children }: any) => {
   const [index, setIndex] = useRecoilState(indexAtom);
-
+  
   return (
     <div onClick={() => setIndex(index)}>
       <div>Index: {index}</div>
@@ -798,33 +1015,50 @@ export * from "./ThemeToggle";
 ### components\molecules\ThemeToggle\ThemeToggle.tsx
 
 ```
+'use client'
+
 import { useRecoilState, useRecoilValue } from 'recoil';
 import ThemeIcon from '@/components/atoms/ThemeIcon/ThemeIcon';
-import { themeAtom } from '@/state/atmos/themeAtom';
-import { currentThemeColorsSelector } from '@/state/selectors/currentThemeColorsSelector';
+import { customThemeColorsAtom, themeAtom } from '@/state/atmos/themeAtom';
 
+import Link from 'next/link';
 
 const ThemeToggle = () => {
+
   const [theme, setTheme] = useRecoilState(themeAtom);
+  const customColors = useRecoilValue(customThemeColorsAtom);
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
-  const themeColors = useRecoilValue(currentThemeColorsSelector);
+  const isCustomTheme = theme.startsWith('custom');
 
   return (
-    <div>
-      <button onClick={toggleTheme}>
+    <div className="flex items-center">
+      <button
+        onClick={toggleTheme}
+        className={`p-2 rounded ${isCustomTheme ? 'opacity-50' : ''}`}
+      >
         <ThemeIcon theme={theme} />
       </button>
-      <button onClick={() => toggleOtherThemes('original')}>オリジナルテーマに切り替え</button>
-      <button onClick={() => toggleOtherThemes('trendy1')}>トレンディ1に切り替え</button>
+      <Link href="/themeColors">
+        <button className="ml-4 px-4 py-2 rounded bg-blue-500 text-white">
+          カスタムテーマ
+        </button>
+      </Link>
+      {isCustomTheme && (
+        <div
+          className="ml-4 w-6 h-6 rounded-full"
+          style={{
+            backgroundColor:
+              customColors[parseInt(theme.replace('custom', '')) - 1].main,
+          }}
+        />
+      )}
     </div>
   );
 };
-
-
 
 export default ThemeToggle;
 
@@ -880,42 +1114,42 @@ const JsonCardViewer = () => {
   };
 
   const previousCard = (item: any, originalIndex: number) => {
-  // 選択中のアイテムの1つ前のアイテムを表示
-  if (index === 0) {
-    // インデックスが0の場合は "Start" を表示
-    return (
-      <div key={originalIndex}>
-        <div>Start</div>
-      </div>
-    );
-  } else if (originalIndex === index - 1) {
-    return (
-      <div key={originalIndex}>
-        <div>Category: {item.category}</div>
-        <div>Instruction: {item.instruction}</div>
-      </div>
-    );
-  }
+    // 選択中のアイテムの1つ前のアイテムを表示
+    if (index === 0) {
+      // インデックスが0の場合は "Start" を表示
+      return (
+        <div key={originalIndex}>
+          <div>Start</div>
+        </div>
+      );
+    } else if (originalIndex === index - 1) {
+      return (
+        <div key={originalIndex}>
+          <div>Category: {item.category}</div>
+          <div>Instruction: {item.instruction}</div>
+        </div>
+      );
+    }
     return null;
   };
 
-const nextCard = (item: any, originalIndex: number) => {
-  // 選択中のアイテムの1つ後のアイテムを表示
-  if (originalIndex === jsonData.length) {
-    // インデックスがjsonDataの最後の要素の場合は "Last" を表示
-    return (
-      <div key={originalIndex}>
-        <div>Last</div>
-      </div>
-    );
-  } else if (originalIndex === index + 1) {
-    return (
-      <div key={originalIndex}>
-        <div>Category: {item.category}</div>
-        <div>Instruction: {item.instruction}</div>
-      </div>
-    );
-  }
+  const nextCard = (item: any, originalIndex: number) => {
+    // 選択中のアイテムの1つ後のアイテムを表示
+    if (originalIndex === jsonData.length) {
+      // インデックスがjsonDataの最後の要素の場合は "Last" を表示
+      return (
+        <div key={originalIndex}>
+          <div>Last</div>
+        </div>
+      );
+    } else if (originalIndex === index + 1) {
+      return (
+        <div key={originalIndex}>
+          <div>Category: {item.category}</div>
+          <div>Instruction: {item.instruction}</div>
+        </div>
+      );
+    }
     return null;
   };
 
@@ -933,7 +1167,7 @@ const nextCard = (item: any, originalIndex: number) => {
       ) : (
         <div>
           <p>ファイルデータがまだ読み込まれていません。<br />
-          jsonlファイルをアップロードしてください。</p>
+            jsonlファイルをアップロードしてください。</p>
         </div>
       )}
     </div>
@@ -941,6 +1175,7 @@ const nextCard = (item: any, originalIndex: number) => {
 };
 
 export default JsonCardViewer;
+
 ```
 
 ### components\organisms\SideAccordion\index.ts
@@ -956,7 +1191,7 @@ export * from './SideAccordion';
 const SideAccordion = () => {
   return (
     <div>
-
+      
     </div>
   );
 }
@@ -985,6 +1220,59 @@ export const MainProvider = ({ children }: Props) => <>{children}</>;
 
 ```
 
+### components\template\Footer\Footer.tsx
+
+```
+'use client';
+
+import { useRecoilValue } from 'recoil';
+import { fileNameAtom } from '@/state/atmos/fileNameAtom';
+import { lightColors, darkColors } from '@/styles/themeColorPalette';
+import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
+
+const Footer = () => {
+  const fileName = useRecoilValue(fileNameAtom);
+  const theme = useRecoilValue(themeAtom);
+  const customColors = useRecoilValue(customThemeColorsAtom);
+
+  const getColors = () => {
+    switch (theme) {
+      case 'light':
+        return lightColors;
+      case 'dark':
+        return darkColors;
+      default:
+        if (theme.startsWith('custom')) {
+          const customIndex = parseInt(theme.replace('custom', ''), 10) - 1;
+          return customColors[customIndex];
+        }
+        return lightColors;
+    }
+  };
+
+  const colors = getColors();
+
+  return (
+    <footer
+      className="flex items-center justify-center p-4"
+      style={{ backgroundColor: colors.footer, color: colors.footerText }}
+    >
+      {fileName || 'ファイル名'}
+    </footer>
+  );
+};
+
+export default Footer;
+
+```
+
+### components\template\Footer\index.ts
+
+```
+export * from './Footer';
+
+```
+
 ### components\template\JsonMainView\index.ts
 
 ```
@@ -995,7 +1283,7 @@ export * from './JsonMainView';
 ### components\template\JsonMainView\JsonMainView.tsx
 
 ```
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { indexAtom, jsonDataAtom } from "@/state/atmos/jsonDataAtom";
@@ -1004,11 +1292,22 @@ import Button from "@/components/atoms/Button/Button";
 import Card from "@/components/molecules/Card/Card";
 import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
 import { parseJsonData } from "@/lib/utils/helpers/helpers";
+import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
+import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
 
 export const JsonMainView = () => {
-  const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
 
+  const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
+  const [isFileLoaded, setIsFileLoaded] = useState(false);
   const [index, setIndex] = useRecoilState(indexAtom);
+  const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
+  const customSpeed = useRecoilValue(customSpeedAtom);
+
+  const { samples } = jsonData;
+
+  const currentCard = samples[index];
+  const prevCard = samples[index - 1];
+  const nextCard = samples[index + 1];
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -1017,17 +1316,17 @@ export const JsonMainView = () => {
   };
 
   const handleNextClick = () => {
-    setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
+    setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.samples.length - 1));
   };
 
   // useCallbackフックをuseEffectの外で定義
   const handleArrowKey = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'ArrowRight') {
-      setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
-    } else if (event.key === 'ArrowLeft') {
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.samples.length - 1));
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
       setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
     }
-  }, [setIndex, jsonData.length]);
+  }, [setIndex, jsonData.samples.length]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleArrowKey);
@@ -1054,12 +1353,53 @@ export const JsonMainView = () => {
           const content = fileReader.result as string;
           const jsonData = parseJsonData(content);
           setJsonData(jsonData);
+          setIsFileLoaded(true); // ファイル読み込み完了時にisFileLoadedをtrueに設定
         } catch (error) {
           console.error('ファイルの読み込みに失敗しました。', error);
         }
       };
     }
   };
+
+  useEffect(() => {
+    // ファイル読み込み完了時にコンポーネントをレンダリングする
+  }, [isFileLoaded]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (autoModeSpeed !== 'off') {
+      let delay = 0;
+
+      switch (autoModeSpeed) {
+        case '3s':
+          delay = 3000;
+          break;
+        case '5s':
+          delay = 5000;
+          break;
+        case '10s':
+          delay = 10000;
+          break;
+        case 'custom':
+          delay = customSpeed * 1000;
+          break;
+        case 'textLength':
+          const textLength = jsonData.samples[index]?.input.length || 0;
+          delay = textLength * 50; // 文字数に応じて秒数を計算（例: 1文字あたり50ミリ秒）
+          break;
+      }
+
+      timer = setTimeout(() => {
+        setIndex((prevIndex) => (prevIndex + 1) % jsonData.samples.length);
+      }, delay);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [autoModeSpeed, customSpeed, index, jsonData.samples]);
+
 
   return (
     <div>
@@ -1071,7 +1411,7 @@ export const JsonMainView = () => {
             disabled={index === 0}
           />
         </div>
-        <div className="w-1/3 flex justify-center">
+        <div className="w-1/3 flex">
           <Button onClick={handleLoadJsonFile}>
             ファイル読込
           </Button>
@@ -1087,55 +1427,54 @@ export const JsonMainView = () => {
           <ArrowButton
             direction="right"
             onClick={handleNextClick}
-            disabled={index === jsonData.length - 1}
+            disabled={index === jsonData.samples.length - 1}
           />
         </div>
       </div>
 
+      <AutoModeSelector />
+      <br />
+
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* 前のデータを表示 */}
         <div className="col-span-1">
-          {index === 0 ? (
-            <Card
-              title="開始位置"
-              content=""
-              displayMode="prev"
-            />
-          ) : (
+          {prevCard ? (
             <Card
               title="Previous Data"
-              content={JSON.stringify(jsonData[index - 1], null, 2)}
+              content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
               displayMode="prev"
               onClick={() => setIndex(index - 1)}
             />
+          ) : (
+            <Card title="No Previous Data" content="" displayMode="prev" />
           )}
         </div>
 
         {/* 次のデータを表示 */}
         <div className="col-span-1">
-          {index === jsonData.length - 1 ? (
-            <Card
-              title="最終位置"
-              content=""
-              displayMode="next"
-            />
-          ) : (
+          {nextCard ? (
             <Card
               title="Next Data"
-              content={JSON.stringify(jsonData[index + 1], null, 2)}
+              content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
               displayMode="next"
               onClick={() => setIndex(index + 1)}
             />
+          ) : (
+            <Card title="No Next Data" content="" displayMode="next" />
           )}
         </div>
 
         {/* 選択中のデータを表示 */}
         <div className="col-span-2">
-          <Card
-            title="Selected Data"
-            content={JSON.stringify(jsonData[index], null, 2)}
-            displayMode="selected"
-          />
+          {currentCard ? (
+            <Card
+              title="Selected Data"
+              content={`Input: ${currentCard.input}\nOutput: ${currentCard.output}`}
+              displayMode="selected"
+            />
+          ) : (
+            <Card title="No Data" content="" displayMode="selected" />
+          )}
         </div>
       </div>
     </div>
@@ -1176,18 +1515,18 @@ export * from './MainLayout';
 ### components\template\MainLayout\MainLayout.tsx
 
 ```
-import Link from 'next/link';
 import { ReactNode } from 'react';
+import Link from 'next/link';
 
 import { cn } from '@/lib/utils/cn';
 import { useRecoilValue } from 'recoil';
 
-import { themeAtom } from '@/state/atmos/themeAtom';
-
 import Sidebar from '@/components/template/Sidebar/Sidebar';
 import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
-import { lightColors, darkColors, originalColors } from '@/styles/themeColorPalette';
-
+import { lightColors, darkColors } from '@/styles/themeColorPalette';
+import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
+import { fileNameAtom } from '@/state/atmos/fileNameAtom';
+import Footer from '@/components/template/Footer/Footer';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -1196,12 +1535,13 @@ interface MainLayoutProps {
 
 const links = [
   { slug: '/', label: 'Home' },
-  { slug: '/about', label: 'About' }
+  { slug: '/about', label: 'About' },
 ];
 
 export const MainLayout = ({ children, className }: MainLayoutProps) => {
   const theme = useRecoilValue(themeAtom);
-  const wrapperStyles = cn('layout flex flex-col h-screen', className);
+  const customColors = useRecoilValue(customThemeColorsAtom);
+  const wrapperStyles = cn('layout flex flex-col min-h-screen 100vh', className);
 
   const getColors = () => {
     switch (theme) {
@@ -1210,8 +1550,11 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
       case 'dark':
         return darkColors;
       default:
-        const originalIndex = parseInt(theme.replace('original', ''), 10);
-        return originalColors[originalIndex];
+        if (theme.startsWith('custom')) {
+          const customIndex = parseInt(theme.replace('custom', ''), 10) - 1;
+          return customColors[customIndex];
+        }
+        return lightColors;
     }
   };
 
@@ -1220,8 +1563,8 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
   return (
     <div>
       <div className={wrapperStyles}>
-        <div style={{ backgroundColor: colors.main, color: colors.text }}>
-          <header className="py-4 px-6" style={{ backgroundColor: colors.header }}>
+        <div className="flex flex-col h-screen" style={{ backgroundColor: colors.main, color: colors.text }}>
+          <header className="py-4 px-6" style={{ backgroundColor: colors.header, color: colors.headerText }}>
             <div className="flex justify-between items-center">
               <ul className="flex items-center gap-10 text-gray-500">
                 {links.map(({ slug, label }) => (
@@ -1235,21 +1578,21 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
               <ThemeToggle />
             </div>
           </header>
-          <div className="flex flex-1 h-full" style={{ backgroundColor: colors.sidebar }}>
-            <Sidebar
-              backgroundColor={colors.sidebar}
-              textColor={colors.text}
-              selectedBackgroundColor={colors.sidebarSelected}
-              selectedTextColor={colors.text}
-              hoverBackgroundColor={colors.sidebarHover}
-            />
-            <main className="flex-1 p-6">
+          <div className="flex flex-1 overflow-hidden">
+            <div className="w-full md:w-[300px] lg:block hidden" style={{ backgroundColor: colors.sidebar }}>
+              <Sidebar
+                backgroundColor={colors.sidebar}
+                textColor={colors.text}
+                selectedBackgroundColor={colors.sidebarSelected}
+                selectedTextColor={colors.text}
+                hoverBackgroundColor={colors.sidebarHover}
+              />
+            </div>
+            <main className="flex-grow overflow-y-auto p-6 md:w-[calc(100%-300px)] w-full">
               {children}
             </main>
           </div>
-          <footer className="flex items-center justify-center p-4" style={{ backgroundColor: colors.footer }}>
-            ファイル名
-          </footer>
+          <Footer />
         </div>
       </div>
     </div>
@@ -1270,9 +1613,9 @@ export * from './Sidebar';
 ### components\template\Sidebar\Sidebar.tsx
 
 ```
-// components/organisms/Sidebar.tsx
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { useRef, useEffect } from 'react';
 
 interface SidebarProps {
   backgroundColor: string;
@@ -1291,28 +1634,60 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const jsonData = useRecoilValue(jsonDataAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
+  const selectedItemRef = useRef<HTMLDivElement | null>(null);
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (selectedItemRef.current && sidebarRef.current) {
+      const selectedItemRect = selectedItemRef.current.getBoundingClientRect();
+      const sidebarRect = sidebarRef.current.getBoundingClientRect();
+
+      const itemHeight = selectedItemRect.height;
+      const visibleItemsHeight = itemHeight * 9; // 選択中のアイテムを含めて9つ分の高さ
+
+      const scrollPosition = index * itemHeight - (sidebarRect.height - visibleItemsHeight) / 2;
+
+      const topVisibleIndex = Math.floor(sidebarRef.current.scrollTop / itemHeight);
+      const bottomVisibleIndex = topVisibleIndex + Math.floor(sidebarRect.height / itemHeight) - 1;
+
+      if (index < topVisibleIndex + 4 || index > bottomVisibleIndex - 4) {
+        sidebarRef.current.scrollTop = scrollPosition;
+      }
+    }
+  }, [index, jsonData.samples.length]);
+
 
   return (
     <div
-      className={`p-4 h-full overflow-y-auto`}
+      ref={sidebarRef}
+      className="p-4 h-full overflow-y-auto"
       style={{ backgroundColor, color: textColor }}
     >
-      <div>データ件数: {jsonData.length}</div>
-      {jsonData.map((data, i) => (
-        <div
-          key={i}
-          className={`py-2 px-4 cursor-pointer truncate ${index === i
-            ? `bg-[${selectedBackgroundColor}] text-[${selectedTextColor}]`
-            : `hover:bg-[${hoverBackgroundColor}]`
-            }`}
-          onClick={() => setIndex(i)}
-        >
-          {`${i}: ${data.category}`}
-        </div>
-      ))}
+      {jsonData.samples.length === 0 ? (
+        <div className="text-center">LLM JP Eval<br />ファイルを読み込んでください</div>
+      ) : (
+        jsonData.samples.map((data, i) => (
+          <div
+            key={i}
+            ref={index === i ? selectedItemRef : null}
+            className={`py-2 px-4 cursor-pointer truncate overflow-hidden text-ellipsis whitespace-nowrap
+              ${index === i ? 'selected' : 'hover:bg-gray-200'
+              }`}
+            style={{
+              backgroundColor: index === i ? selectedBackgroundColor : '',
+              color: index === i ? selectedTextColor : '',
+            }}
+            onClick={() => setIndex(i)}
+          >
+            {`${i}: ${data.input}`}
+          </div>
+        ))
+      )}
     </div>
   );
 };
+
+
 
 export default Sidebar;
 
@@ -1342,6 +1717,57 @@ jglue
 "wiki_dependency: WikipediaDependencyDatasetProcessor,"
 "wiki_pas: WikipediaPASDatasetProcessor,"
 "wiki_coreference: WikipediaCoreferenceDatasetProcessor,"
+
+```
+
+### data\features.txt
+
+```
+Storybookの導入 各コンポーネントのデザイン案を視覚的に確認・共有できるようにStorybookを導入しましょう。
+Storybookを使うことで、コンポーネントの再利用性が高まり、保守性も向上します。 日本のデザインを意識したシンプルで美しいUIを目指しましょう。
+SQLiteからPostgreSQLへの移行を見据えたデータ層の設計 現在はSQLiteを使用していますが、将来的にはPostgreSQLへの移行を検討しているとのことです。
+ 移行をスムーズに行えるよう、データアクセス層を抽象化し、DBの差異を吸収できる設計にしておくと良いでしょう。 例えば、リポジトリパターンを採用し、
+ インターフェースを定義しておくことで、DBの変更に柔軟に対応できます。
+機能アイデアについて 以下のような機能があると便利だと思います。
+
+検索機能: ファイル内のテキストを検索できると便利です。
+タグ付け機能: ファイルにタグを付けることで、分類・整理がしやすくなります。
+メモ機能: ファイルに対してメモを残せると、読んだ内容を振り返りやすくなります。
+シェア機能: ファイルを他のユーザーと共有できると、コラボレーションが捗ります。
+音声読み上げ機能: ファイルの内容を音声で読み上げてくれると、目が疲れているときなどに便利です。
+
+```
+
+### data\prompt_for_claude.txt
+
+```
+<system>
+あなたは大手の多国籍企業で30年の経験を得たのち、自分のアイデアで起業し、数々の実績を達成してきたエンジニアです。
+どんな顧客の要求にも相手の立場を考えて、相手の知識レベルに合わせて例をあげて説明してくれる能力に長けています。
+</system>
+<requirement>
+顧客の要求は、JsonまたはJsonlファイルを読むことができるWEBアプリです。
+</requirement>
+<user>
+私はプログラミングを独学で勉強し、現在は、少しわかる程度で経験不足な駆け出しエンジニアです。
+あなたの会社に入社いたしました。
+将来的に必要であればデザインパターンなどを採用します、経験不足な私のようなエンジニアでも、
+勉強すれば分かる程度の採用理由・使い方・将来性を考えたコメントなどを残すようにしてください。
+</user>
+<tech>
+アトミックデザインルールを採用し、TypeScriptメインで、Next.jsのapp router構成でアプリを作成します。
+また、pnpmとgulpを使用します。
+再利用性・保守性を考えたフォルダ構成、ファイル名を使用してください。
+</tech>
+<design>
+デザインはTailwind CSSを採用します。
+デザインはマルチプラットフォームへの拡張を考えたもので、アメリカのデザインのようなシンプルなものよりも、
+日本のデザイン配色を意識した形にしてください。
+</design>
+<features>
+SQLiteでのCRUD機能をつけて10件ほどのモックデータを入れてください。
+ただし、将来的にPostgreSQLに切り替えることができるように、簡単に切り替える仕様にしてください。
+</features>
 
 ```
 
@@ -1512,6 +1938,62 @@ export * from './helpers';
 
 ```
 
+### next.config.mjs
+
+```
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    output: "export",
+    distDir: "dist"
+};
+
+export default nextConfig;
+
+```
+
+### package.json
+
+```
+{
+  "name": "llm-json-reader",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "run-p -l -c --aggregate-output lint:*",
+    "lint:eslint": "eslint .",
+    "lint:prettier": "prettier --check .",
+    "fix": "run-s fix:prettier fix:eslint",
+    "fix:eslint": "npm run lint:eslint -- --fix",
+    "fix:prettier": "npm run lint:prettier -- --write"
+  },
+  "dependencies": {
+    "clsx": "^2.1.0",
+    "next": "14.1.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "recoil": "^0.7.7",
+    "scss": "^0.2.4",
+    "sqlite3": "^5.1.7",
+    "tailwind-merge": "^2.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  }
+}
+
+```
+
 ### postcss.config.js
 
 ```
@@ -1522,18 +2004,7 @@ module.exports = {
   },
 };
 
-```
 
-### public\next.svg
-
-```
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 394 80"><path fill="#000" d="M262 0h68.5v12.7h-27.2v66.6h-13.6V12.7H262V0ZM149 0v12.7H94v20.4h44.3v12.6H94v21h55v12.6H80.5V0h68.7zm34.3 0h-17.8l63.8 79.4h17.9l-32-39.7 32-39.6h-17.9l-23 28.6-23-28.6zm18.3 56.7-9-11-27.1 33.7h17.8l18.3-22.7z"/><path fill="#000" d="M81 79.3 17 0H0v79.3h13.6V17l50.2 62.3H81Zm252.6-.4c-1 0-1.8-.4-2.5-1s-1.1-1.6-1.1-2.6.3-1.8 1-2.5 1.6-1 2.6-1 1.8.3 2.5 1a3.4 3.4 0 0 1 .6 4.3 3.7 3.7 0 0 1-3 1.8zm23.2-33.5h6v23.3c0 2.1-.4 4-1.3 5.5a9.1 9.1 0 0 1-3.8 3.5c-1.6.8-3.5 1.3-5.7 1.3-2 0-3.7-.4-5.3-1s-2.8-1.8-3.7-3.2c-.9-1.3-1.4-3-1.4-5h6c.1.8.3 1.6.7 2.2s1 1.2 1.6 1.5c.7.4 1.5.5 2.4.5 1 0 1.8-.2 2.4-.6a4 4 0 0 0 1.6-1.8c.3-.8.5-1.8.5-3V45.5zm30.9 9.1a4.4 4.4 0 0 0-2-3.3 7.5 7.5 0 0 0-4.3-1.1c-1.3 0-2.4.2-3.3.5-.9.4-1.6 1-2 1.6a3.5 3.5 0 0 0-.3 4c.3.5.7.9 1.3 1.2l1.8 1 2 .5 3.2.8c1.3.3 2.5.7 3.7 1.2a13 13 0 0 1 3.2 1.8 8.1 8.1 0 0 1 3 6.5c0 2-.5 3.7-1.5 5.1a10 10 0 0 1-4.4 3.5c-1.8.8-4.1 1.2-6.8 1.2-2.6 0-4.9-.4-6.8-1.2-2-.8-3.4-2-4.5-3.5a10 10 0 0 1-1.7-5.6h6a5 5 0 0 0 3.5 4.6c1 .4 2.2.6 3.4.6 1.3 0 2.5-.2 3.5-.6 1-.4 1.8-1 2.4-1.7a4 4 0 0 0 .8-2.4c0-.9-.2-1.6-.7-2.2a11 11 0 0 0-2.1-1.4l-3.2-1-3.8-1c-2.8-.7-5-1.7-6.6-3.2a7.2 7.2 0 0 1-2.4-5.7 8 8 0 0 1 1.7-5 10 10 0 0 1 4.3-3.5c2-.8 4-1.2 6.4-1.2 2.3 0 4.4.4 6.2 1.2 1.8.8 3.2 2 4.3 3.4 1 1.4 1.5 3 1.5 5h-5.8z"/></svg>
-```
-
-### public\vercel.svg
-
-```
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 283 64"><path fill="black" d="M141 16c-11 0-19 7-19 18s9 18 20 18c7 0 13-3 16-7l-7-5c-2 3-6 4-9 4-5 0-9-3-10-7h28v-3c0-11-8-18-19-18zm-9 15c1-4 4-7 9-7s8 3 9 7h-18zm117-15c-11 0-19 7-19 18s9 18 20 18c6 0 12-3 16-7l-8-5c-2 3-5 4-8 4-5 0-9-3-11-7h28l1-3c0-11-8-18-19-18zm-10 15c2-4 5-7 10-7s8 3 9 7h-19zm-39 3c0 6 4 10 10 10 4 0 7-2 9-5l8 5c-3 5-9 8-17 8-11 0-19-7-19-18s8-18 19-18c8 0 14 3 17 8l-8 5c-2-3-5-5-9-5-6 0-10 4-10 10zm83-29v46h-9V5h9zM37 0l37 64H0L37 0zm92 5-27 48L74 5h10l18 30 17-30h10zm59 12v10l-3-1c-6 0-10 4-10 10v15h-9V17h9v9c0-5 6-9 13-9z"/></svg>
 ```
 
 ### README.md
@@ -1542,36 +2013,69 @@ module.exports = {
 参考にしたサイト
 # https://zenn.dev/siakas/articles/05481bdefacd13
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# LLM-Json-Reader
 
-## Getting Started
+LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧するためのWebアプリケーションです。大規模言語モデル（LLM）の開発に使用されるデータセットの視覚化と操作に特化しています。
 
-First, run the development server:
+## 特徴
+
+1. JSONおよびJSONL形式のファイルの読み込みと表示
+2. 複数のJSONファイルの統合表示
+3. JSONデータのCSVおよびExcelファイルへのエクスポート
+4. JSONデータのグラフィカルな可視化（棒グラフ、円グラフ、折れ線グラフなど）
+5. JSONデータ内の特定のキーワード検索
+6. JSONデータのソート（特定のキーを基準に昇順または降順）
+7. JSONデータのフィルタリング（特定の条件を満たすデータのみ表示）
+8. JSONデータの編集（値の変更、要素の追加・削除など）
+9. JSONデータのバリデーション（データの整合性チェック）
+10. JSONデータのバージョン管理（変更履歴の追跡、特定のバージョンへの復元など）
+11. ユーザー認証とアクセス制御（ログイン、ロール別のアクセス制限など）
+
+## 使用技術
+
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Recoil
+- SQLite (将来的にはPostgreSQLへの移行を想定)
+- ESLint
+- Prettier
+- Storybook
+- pnpm
+- gulp
+
+## インストール
+
+1. リポジトリをクローンします。
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/llm-json-reader.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. 必要な依存関係をインストールします。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd llm-json-reader
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. 開発サーバーを起動します。
 
-## Learn More
+```bash
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. ブラウザで`http://localhost:3000`を開きます。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 貢献
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+プルリクエストは歓迎します。大きな変更を加える場合は、まずIssueを開いて変更内容について議論してください。
+
+## ライセンス
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+
 
 ## Deploy on Vercel
 
@@ -1579,8 +2083,36 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+```
 
-現在制作中
+### state\atmos\autoModeAtom.ts
+
+```
+import { atom } from 'recoil';
+
+export type AutoModeSpeed = 'off' | '3s' | '5s' | '10s' | 'custom' | 'textLength';
+
+export const autoModeSpeedAtom = atom<AutoModeSpeed>({
+  key: 'autoModeSpeed',
+  default: 'off',
+});
+
+export const customSpeedAtom = atom<number>({
+  key: 'customSpeed',
+  default: 0,
+});
+
+```
+
+### state\atmos\fileNameAtom.ts
+
+```
+import { atom } from 'recoil';
+
+export const fileNameAtom = atom<string>({
+  key: 'fileName',
+  default: '',
+});
 
 ```
 
@@ -1589,68 +2121,149 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ```
 import { atom } from 'recoil';
 
-export const jsonDataAtom = atom<any[]>({
+// dolly json 用
+// export const jsonDataAtom = atom<any[]>({
+//   key: 'jsonData',
+//   default: [],
+// });
+
+// llm json eval用
+export const jsonDataAtom = atom<{
+  instruction: string;
+  output_length: number;
+  metrics: string[];
+  few_shots: any[];
+  samples: { input: string; output: string }[];
+}>({
   key: 'jsonData',
-  default: [],
+  default: {
+    instruction: '',
+    output_length: 0,
+    metrics: [],
+    few_shots: [],
+    samples: [],
+  },
 });
 
 export const indexAtom = atom({
   key: 'index',
   default: 0,
 });
+
 ```
 
 ### state\atmos\themeAtom.ts
 
 ```
-import { darkColors, lightColors, originalColors, trendyColors1, trendyColors2, trendyColors3, trendyColors4, trendyColors5 } from '@/styles/themeColorPalette';
 import { atom } from 'recoil';
+import { ThemeColors } from '@/styles/themeColorPalette';
 
-export type ThemeMode = 'light' | 'dark' | 'original' | 'trendy1' | 'trendy2' | 'trendy3' | 'trendy4' | 'trendy5';
+export type ThemeMode = 'light' | 'dark' | 'custom1' | 'custom2' | 'custom3' | 'custom4' | 'custom5' | 'custom6';
 
 export const themeAtom = atom<ThemeMode>({
   key: 'themeAtom',
   default: 'light',
 });
 
-export const lightThemeColors = atom({
-  key: 'lightThemeColors',
-  default: lightColors,
-});
+export const originalColors = {
+  name: 'Ocean',
+  header: '#2c3e50',
+  sidebar: '#34495e',
+  sidebarSelected: '#2980b9',
+  sidebarHover: '#ced4da',
+  main: '#ecf0f1',
+  footer: '#34495e',
+  text: '#E6E6E6',
+  link: '#3498db',
+  headerText: '#FFFFFF', // 白色
+  footerText: '#FFFFFF', // 白色
+  mainText: '#333333', // 暗いグレー
+  sidebarText: '#FFFFFF', // 白色
+};
 
-export const darkThemeColors = atom({
-  key: 'darkThemeColors',
-  default: darkColors,
-});
+export const trendyColors1 = {
+  name: 'TikTok Marketing Partners',
+  header: '#000000',
+  sidebar: '#74f0ed',
+  sidebarSelected: '#ea445a',
+  sidebarHover: '#ced4da',
+  main: '#ffffff',
+  footer: '#000000',
+  text: '#E6E6E6',
+  link: '#EA445A',
+  headerText: '#FFFFFF', // 白色
+  footerText: '#FFFFFF', // 白色
+  mainText: '#333333', // 暗いグレー
+  sidebarText: '#333333', // 暗いグレー
+};
 
-export const originalThemeColors = atom({
-  key: 'originalThemeColors',
-  default: originalColors,
-});
+export const trendyColors2 = {
+  name: 'Bold by Nature',
+  header: '#172d13',
+  sidebar: '#A0522D',
+  sidebarSelected: '#6bb77b',
+  sidebarHover: '#ced4da',
+  main: '#ffffff',
+  footer: '#172d13',
+  text: '#ffffff',
+  link: '#d76f30',
+  headerText: '#FFFFFF', // 白色
+  footerText: '#FFFFFF', // 白色
+  mainText: '#333333', // 暗いグレー
+  sidebarText: '#333333', // 暗いグレー
+};
 
-export const trendy1ThemeColors = atom({
-  key: 'trendy1ThemeColors',
-  default: trendyColors1,
-});
+export const trendyColors3 = {
+  name: 'Amour',
+  header: '#5ac3b0',
+  sidebar: '#de5935',
+  sidebarSelected: '#f7cd46',
+  sidebarHover: '#ced4da',
+  main: '#ffffff',
+  footer: '#5ac3b0',
+  text: '#333333',
+  link: '#de5935',
+  headerText: '#FFFFFF', // 白色
+  footerText: '#FFFFFF', // 白色
+  mainText: '#333333', // 暗いグレー
+  sidebarText: '#333333', // 暗いグレー
+};
 
-export const trendy2ThemeColors = atom({
-  key: 'trendy2ThemeColors',
-  default: trendyColors2,
-});
+export const trendyColors4 = {
+  name: 'The Authentic Brief',
+  header: '#B2A489',
+  sidebar: '#5ebec4',
+  sidebarSelected: '#f92c85',
+  sidebarHover: '#ced4da',
+  main: '#ffffff',
+  footer: '#B2A489',
+  text: '#2c3e50',
+  link: '#5ebec4',
+  headerText: '#FFFFFF', // 白色
+  footerText: '#FFFFFF', // 白色
+  mainText: '#333333', // 暗いグレー
+  sidebarText: '#333333', // 暗いグレー
+};
 
-export const trendy3ThemeColors = atom({
-  key: 'trendy3ThemeColors',
-  default: trendyColors3,
-});
+export const trendyColors5 = {
+  name: '70s Inspired',
+  header: '#101357',
+  sidebar: '#fea49f',
+  sidebarSelected: '#fbaf08',
+  sidebarHover: '#ced4da',
+  main: '#ffffff',
+  footer: '#101357',
+  text: '#000000',
+  link: '#fea49f',
+  headerText: '#FFFFFF', // 白色
+  footerText: '#FFFFFF', // 白色
+  mainText: '#333333', // 暗いグレー
+  sidebarText: '#333333', // 暗いグレー
+};
 
-export const trendy4ThemeColors = atom({
-  key: 'trendy4ThemeColors',
-  default: trendyColors4,
-});
-
-export const trendy5ThemeColors = atom({
-  key: 'trendy5ThemeColors',
-  default: trendyColors5,
+export const customThemeColorsAtom = atom<ThemeColors[]>({
+  key: 'customThemeColorsAtom',
+  default: [originalColors, trendyColors1, trendyColors2, trendyColors3, trendyColors4, trendyColors5],
 });
 
 ```
@@ -1658,17 +2271,21 @@ export const trendy5ThemeColors = atom({
 ### state\FileUploader.tsx
 
 ```
-import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { useSetRecoilState } from 'recoil';
+
+import { fileNameAtom } from '@/state/atmos/fileNameAtom';
+import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 
 const FileUploader = () => {
   const setJsonData = useSetRecoilState(jsonDataAtom);
+  const setFileName = useSetRecoilState(fileNameAtom); // setFileNameを取得
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
 
     if (event.target.files?.length) {
       const file = event.target.files[0];
+      setFileName(file.name); // ファイル名を設定
 
       fileReader.readAsText(file);
       fileReader.onload = () => {
@@ -1693,6 +2310,7 @@ const FileUploader = () => {
 };
 
 export default FileUploader;
+
 ```
 
 ### state\JsonPaginator.tsx
@@ -1788,19 +2406,49 @@ body {
   font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, メイリオ, Osaka, 'MS PGothic', arial, helvetica, sans-serif;
 }
 
+.remaining-seconds {
+  white-space: nowrap;
+}
+
+.remaining-seconds.empty::before {
+  content: "0.0秒";
+  visibility: hidden;
+}
+
 ```
 
 ### styles\themeColorPalette.ts
 
 ```
+export interface ThemeColors {
+  name: string;
+  header: string;
+  headerText: string;
+  sidebar: string;
+  sidebarText: string;
+  sidebarSelected: string;
+  sidebarHover: string;
+  main: string;
+  mainText: string;
+  footer: string;
+  footerText: string;
+  text: string;
+  link: string;
+}
+
+
 // light テーマカラー
 export const lightColors = {
   header: '#f8f9fa',
+  headerText: '#333333',
   sidebar: '#e9ecef',
+  sidebarText: '#333333',
   sidebarSelected: '#dee2e6',
   sidebarHover: '#ced4da',
   main: '#ffffff',
+  mainText: '#333333',
   footer: '#dee2e6',
+  footerText: '#333333',
   text: '#212529',
   link: '#007bff',
 };
@@ -1808,87 +2456,17 @@ export const lightColors = {
 // dark テーマカラー
 export const darkColors = {
   header: '#343a40',
+  headerText: '#f8f9fa',
   sidebar: '#495057',
+  sidebarText: '#f8f9fa',
   sidebarSelected: '#6c757d',
   sidebarHover: '#ced4da',
   main: '#212529',
+  mainText: '#f8f9fa',
   footer: '#343a40',
+  footerText: '#f8f9fa',
   text: '#f8f9fa',
   link: '#00d4ff',
-};
-
-export const originalColors = [
-  {
-    name: 'Ocean',
-    header: '#2c3e50',
-    sidebar: '#34495e',
-    sidebarSelected: '#2980b9',
-    sidebarHover: '#ced4da',
-    main: '#ecf0f1',
-    footer: '#34495e',
-    text: '#2c3e50',
-    link: '#3498db',
-  },
-];
-
-export const trendyColors1 = {
-  name: 'TikTok Marketing Partners',
-  header: '#000000',
-  sidebar: '#74f0ed',
-  sidebarSelected: '#ea445a',
-  sidebarHover: '#ced4da',
-  main: '#ffffff',
-  footer: '#000000',
-  text: '#000000',
-  link: '#74f0ed',
-};
-
-export const trendyColors2 = {
-  name: 'Bold by Nature',
-  header: '#172d13',
-  sidebar: '#d76f30',
-  sidebarSelected: '#6bb77b',
-  sidebarHover: '#ced4da',
-  main: '#ffffff',
-  footer: '#172d13',
-  text: '#ffffff',
-  link: '#d76f30',
-};
-
-export const trendyColors3 = {
-  name: 'Amour',
-  header: '#5ac3b0',
-  sidebar: '#de5935',
-  sidebarSelected: '#f7cd46',
-  sidebarHover: '#ced4da',
-  main: '#ffffff',
-  footer: '#5ac3b0',
-  text: '#2c3e50',
-  link: '#de5935',
-};
-
-export const trendyColors4 = {
-  name: 'The Authentic Brief',
-  header: '#fdf5df',
-  sidebar: '#5ebec4',
-  sidebarSelected: '#f92c85',
-  sidebarHover: '#ced4da',
-  main: '#ffffff',
-  footer: '#fdf5df',
-  text: '#2c3e50',
-  link: '#5ebec4',
-};
-
-export const trendyColors5 = {
-  name: '70’s Inspired',
-  header: '#101357',
-  sidebar: '#fea49f',
-  sidebarSelected: '#fbaf08',
-  sidebarHover: '#ced4da',
-  main: '#ffffff',
-  footer: '#101357',
-  text: '#ffffff',
-  link: '#fea49f',
 };
 
 ```
@@ -1970,3 +2548,4 @@ export default config;
 }
 
 ```
+

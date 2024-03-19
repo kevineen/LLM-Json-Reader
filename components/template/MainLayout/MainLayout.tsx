@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { ReactNode } from 'react';
+import Link from 'next/link';
 
 import { cn } from '@/lib/utils/cn';
 import { useRecoilValue } from 'recoil';
@@ -8,6 +8,8 @@ import Sidebar from '@/components/template/Sidebar/Sidebar';
 import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
 import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
+import { fileNameAtom } from '@/state/atmos/fileNameAtom';
+import Footer from '@/components/template/Footer/Footer';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -44,7 +46,7 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
   return (
     <div>
       <div className={wrapperStyles}>
-        <div style={{ backgroundColor: colors.main, color: colors.text }}>
+        <div className="flex flex-col h-screen" style={{ backgroundColor: colors.main, color: colors.text }}>
           <header className="py-4 px-6" style={{ backgroundColor: colors.header, color: colors.headerText }}>
             <div className="flex justify-between items-center">
               <ul className="flex items-center gap-10 text-gray-500">
@@ -59,8 +61,8 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
               <ThemeToggle />
             </div>
           </header>
-          <div className="flex flex-1 h-full" style={{ backgroundColor: colors.sidebar }}>
-            <div className="w-full md:w-[300px] lg:block hidden">
+          <div className="flex flex-1 overflow-hidden">
+            <div className="w-full md:w-[300px] lg:block hidden" style={{ backgroundColor: colors.sidebar }}>
               <Sidebar
                 backgroundColor={colors.sidebar}
                 textColor={colors.text}
@@ -69,13 +71,11 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
                 hoverBackgroundColor={colors.sidebarHover}
               />
             </div>
-            <main className="flex-grow p-6 md:w-[calc(100%-300px)] w-full">
+            <main className="flex-grow overflow-y-auto p-6 md:w-[calc(100%-300px)] w-full">
               {children}
             </main>
           </div>
-          <footer className="flex items-center justify-center p-4" style={{ backgroundColor: colors.footer, color: colors.footerText }}>
-            ファイル名
-          </footer>
+          <Footer />
         </div>
       </div>
     </div>

@@ -38,42 +38,42 @@ const JsonCardViewer = () => {
   };
 
   const previousCard = (item: any, originalIndex: number) => {
-  // 選択中のアイテムの1つ前のアイテムを表示
-  if (index === 0) {
-    // インデックスが0の場合は "Start" を表示
-    return (
-      <div key={originalIndex}>
-        <div>Start</div>
-      </div>
-    );
-  } else if (originalIndex === index - 1) {
-    return (
-      <div key={originalIndex}>
-        <div>Category: {item.category}</div>
-        <div>Instruction: {item.instruction}</div>
-      </div>
-    );
-  }
+    // 選択中のアイテムの1つ前のアイテムを表示
+    if (index === 0) {
+      // インデックスが0の場合は "Start" を表示
+      return (
+        <div key={originalIndex}>
+          <div>Start</div>
+        </div>
+      );
+    } else if (originalIndex === index - 1) {
+      return (
+        <div key={originalIndex}>
+          <div>Category: {item.category}</div>
+          <div>Instruction: {item.instruction}</div>
+        </div>
+      );
+    }
     return null;
   };
 
-const nextCard = (item: any, originalIndex: number) => {
-  // 選択中のアイテムの1つ後のアイテムを表示
-  if (originalIndex === jsonData.length) {
-    // インデックスがjsonDataの最後の要素の場合は "Last" を表示
-    return (
-      <div key={originalIndex}>
-        <div>Last</div>
-      </div>
-    );
-  } else if (originalIndex === index + 1) {
-    return (
-      <div key={originalIndex}>
-        <div>Category: {item.category}</div>
-        <div>Instruction: {item.instruction}</div>
-      </div>
-    );
-  }
+  const nextCard = (item: any, originalIndex: number) => {
+    // 選択中のアイテムの1つ後のアイテムを表示
+    if (originalIndex === jsonData.length) {
+      // インデックスがjsonDataの最後の要素の場合は "Last" を表示
+      return (
+        <div key={originalIndex}>
+          <div>Last</div>
+        </div>
+      );
+    } else if (originalIndex === index + 1) {
+      return (
+        <div key={originalIndex}>
+          <div>Category: {item.category}</div>
+          <div>Instruction: {item.instruction}</div>
+        </div>
+      );
+    }
     return null;
   };
 
@@ -91,7 +91,7 @@ const nextCard = (item: any, originalIndex: number) => {
       ) : (
         <div>
           <p>ファイルデータがまだ読み込まれていません。<br />
-          jsonlファイルをアップロードしてください。</p>
+            jsonlファイルをアップロードしてください。</p>
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { indexAtom, jsonDataAtom } from "@/state/atmos/jsonDataAtom";
@@ -7,18 +7,22 @@ import Button from "@/components/atoms/Button/Button";
 import Card from "@/components/molecules/Card/Card";
 import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
 import { parseJsonData } from "@/lib/utils/helpers/helpers";
+import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
+import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
+import FileUploader from "@/state/FileUploader";
 
 export const JsonMainView = () => {
+
   const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
+  const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
+  const customSpeed = useRecoilValue(customSpeedAtom);
 
   const { samples } = jsonData;
 
   const currentCard = samples[index];
   const prevCard = samples[index - 1];
   const nextCard = samples[index + 1];
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePrevClick = () => {
     setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
@@ -30,9 +34,9 @@ export const JsonMainView = () => {
 
   // useCallbackフックをuseEffectの外で定義
   const handleArrowKey = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'ArrowRight') {
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
       setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.samples.length - 1));
-    } else if (event.key === 'ArrowLeft') {
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
       setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
     }
   }, [setIndex, jsonData.samples.length]);
@@ -44,30 +48,41 @@ export const JsonMainView = () => {
     };
   }, [handleArrowKey]);
 
-  const handleLoadJsonFile = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (autoModeSpeed !== 'off') {
+      let delay = 0;
+
+      switch (autoModeSpeed) {
+        case '3s':
+          delay = 3000;
+          break;
+        case '5s':
+          delay = 5000;
+          break;
+        case '10s':
+          delay = 10000;
+          break;
+        case 'custom':
+          delay = customSpeed * 1000;
+          break;
+        case 'textLength':
+          const textLength = jsonData.samples[index]?.input.length || 0;
+          delay = textLength * 50; // 文字数に応じて秒数を計算（例: 1文字あたり50ミリ秒）
+          break;
+      }
+
+      timer = setTimeout(() => {
+        setIndex((prevIndex) => (prevIndex + 1) % jsonData.samples.length);
+      }, delay);
     }
-  };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileReader = new FileReader();
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [autoModeSpeed, customSpeed, index, jsonData.samples]);
 
-    if (event.target.files?.length) {
-      const file = event.target.files[0];
-
-      fileReader.readAsText(file);
-      fileReader.onload = () => {
-        try {
-          const content = fileReader.result as string;
-          const jsonData = parseJsonData(content);
-          setJsonData(jsonData);
-        } catch (error) {
-          console.error('ファイルの読み込みに失敗しました。', error);
-        }
-      };
-    }
-  };
 
   return (
     <div>
@@ -79,17 +94,8 @@ export const JsonMainView = () => {
             disabled={index === 0}
           />
         </div>
-        <div className="w-1/3 flex justify-center">
-          <Button onClick={handleLoadJsonFile}>
-            ファイル読込
-          </Button>
-          <input
-            type="file"
-            accept=".json,.jsonl"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
+        <div className="w-1/3 flex">
+          <FileUploader />
         </div>
         <div className="w-1/3 flex justify-end">
           <ArrowButton
@@ -99,6 +105,9 @@ export const JsonMainView = () => {
           />
         </div>
       </div>
+
+      <AutoModeSelector />
+      <br />
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* 前のデータを表示 */}
