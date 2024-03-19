@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { customThemeColorsAtom, themeAtom } from "@/state/atmos/themeAtom";
+import { ThemeMode, customThemeColorsAtom, themeAtom } from "@/state/atmos/themeAtom";
 
 const ThemeColors = () => {
   const [, setTheme] = useRecoilState(themeAtom);
   const [customColors, setCustomColors] = useRecoilState(customThemeColorsAtom);
   const [editingThemeIndex, setEditingThemeIndex] = useState<number | null>(null);
 
-  const handleThemeChange = (selectedTheme: string) => {
+  const handleThemeChange = (selectedTheme: ThemeMode) => {
     setTheme(selectedTheme);
   };
 
@@ -29,48 +29,32 @@ const ThemeColors = () => {
           <div
             key={`custom${index}`}
             className="p-4 rounded cursor-pointer"
-            onClick={() => handleThemeChange(`custom${index + 1}`)}
+            onClick={() => handleThemeChange(`custom${index + 1}` as ThemeMode)}
           >
             <div className="p-4 rounded" style={{ backgroundColor: theme.main }}>
               <div className="mb-4">
-                <h2 className="text-xl font-bold mb-2">{theme.name}</h2>
-                <p className="text-sm">クリックしてこのテーマを選択</p>
+                <h2 className="text-xl font-bold mb-2" style={{ color: "#000" }}>{theme.name}</h2>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                {Object.entries(theme).map(([key, color]) => (
-                  <div
-                    key={key}
-                    className="p-2 rounded"
-                    style={{ backgroundColor: color }}
-                  >
-                    <p className="text-sm">{key}</p>
+              <div className="rounded overflow-hidden">
+                <div className="px-6 py-4" style={{ backgroundColor: theme.header, color: theme.headerText }}>
+                  <div className="font-bold text-xl mb-2" style={{ color: theme.text }}>Header</div>
+                </div>
+                <div className="flex">
+                  <div className="w-1/4 px-6 py-4" style={{ backgroundColor: theme.sidebar, color: theme.sidebarText }}>
+                    <div className="font-bold text-xl mb-2" style={{ color: theme.text }}>Sidebar</div>
+                    <div className="font-bold text-xl mb-2" style={{ color: theme.sidebarSelected }}>選択</div>
+                    <p className="text-base" style={{ color: theme.text }}>Selected</p>
                   </div>
-                ))}
+                  <div className="w-3/4 px-6 py-4" style={{ backgroundColor: theme.main, color: theme.mainText }}>
+                    <div className="font-bold text-xl mb-2" style={{ color: theme.text }}>Main</div>
+                    <p className="text-base" style={{ color: theme.text }}>Content goes here</p>
+                  </div>
+                </div>
+                <div className="px-6 py-4" style={{ backgroundColor: theme.footer, color: theme.footerText }}>
+                  <div className="font-bold text-xl mb-2" style={{ color: theme.text }}>Footer</div>
+                </div>
               </div>
             </div>
-            <button
-              className="mt-2 px-4 py-2 rounded bg-white text-black"
-              onClick={(e) => {
-                e.stopPropagation();
-                setEditingThemeIndex(index);
-              }}
-            >
-              編集
-            </button>
-            {editingThemeIndex === index && (
-              <div className="mt-4">
-                {Object.entries(theme).map(([key, value]) => (
-                  <div key={key} className="mb-2">
-                    <label className="block">{key}</label>
-                    <input
-                      type="color"
-                      value={value}
-                      onChange={(e) => handleColorChange(index, key, e.target.value)}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         ))}
       </div>

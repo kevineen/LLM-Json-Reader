@@ -25,17 +25,17 @@ const Sidebar: React.FC<SidebarProps> = ({
       className={`p-4 h-full overflow-y-auto`}
       style={{ backgroundColor, color: textColor }}
     >
-      <div>データ件数: {jsonData.length}</div>
-      {jsonData.map((data, i) => (
+      <div>データ件数: {jsonData.samples.length}</div>
+      {jsonData.samples.map((data, i) => (
         <div
           key={i}
-          className={`py-2 px-4 cursor-pointer truncate ${index === i
+          className={`py-2 px-4 cursor-pointer truncate overflow-hidden text-ellipsis whitespace-nowrap ${index === i
             ? `bg-[${selectedBackgroundColor}] text-[${selectedTextColor}]`
             : `hover:bg-[${hoverBackgroundColor}]`
             }`}
           onClick={() => setIndex(i)}
         >
-          {`${i}: ${data.category}`}
+          {`${i}: ${data.input}`}
         </div>
       ))}
     </div>

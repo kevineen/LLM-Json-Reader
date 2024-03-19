@@ -4,12 +4,10 @@ import { ReactNode } from 'react';
 import { cn } from '@/lib/utils/cn';
 import { useRecoilValue } from 'recoil';
 
-import { customThemeColorsAtom, themeAtom } from '@/state/atmos/themeAtom';
-
 import Sidebar from '@/components/template/Sidebar/Sidebar';
 import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
 import { lightColors, darkColors } from '@/styles/themeColorPalette';
-
+import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -47,7 +45,7 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
     <div>
       <div className={wrapperStyles}>
         <div style={{ backgroundColor: colors.main, color: colors.text }}>
-          <header className="py-4 px-6" style={{ backgroundColor: colors.header }}>
+          <header className="py-4 px-6" style={{ backgroundColor: colors.header, color: colors.headerText }}>
             <div className="flex justify-between items-center">
               <ul className="flex items-center gap-10 text-gray-500">
                 {links.map(({ slug, label }) => (
@@ -62,18 +60,20 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
             </div>
           </header>
           <div className="flex flex-1 h-full" style={{ backgroundColor: colors.sidebar }}>
-            <Sidebar
-              backgroundColor={colors.sidebar}
-              textColor={colors.text}
-              selectedBackgroundColor={colors.sidebarSelected}
-              selectedTextColor={colors.text}
-              hoverBackgroundColor={colors.sidebarHover}
-            />
-            <main className="flex-grow p-6">
+            <div className="w-full md:w-[300px] lg:block hidden">
+              <Sidebar
+                backgroundColor={colors.sidebar}
+                textColor={colors.text}
+                selectedBackgroundColor={colors.sidebarSelected}
+                selectedTextColor={colors.text}
+                hoverBackgroundColor={colors.sidebarHover}
+              />
+            </div>
+            <main className="flex-grow p-6 md:w-[calc(100%-300px)] w-full">
               {children}
             </main>
           </div>
-          <footer className="flex items-center justify-center p-4" style={{ backgroundColor: colors.footer }}>
+          <footer className="flex items-center justify-center p-4" style={{ backgroundColor: colors.footer, color: colors.footerText }}>
             ファイル名
           </footer>
         </div>
