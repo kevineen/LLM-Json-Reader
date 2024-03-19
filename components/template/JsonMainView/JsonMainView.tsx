@@ -10,6 +10,7 @@ import { parseJsonData } from "@/lib/utils/helpers/helpers";
 import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
 import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
 import FileUploader from "@/state/FileUploader";
+import FontSizeControl from "@/components/molecules/FontSizeControl/FontSizeControl";
 
 export const JsonMainView = () => {
 
@@ -96,6 +97,7 @@ export const JsonMainView = () => {
         </div>
         <div className="w-1/3 flex">
           <FileUploader />
+          <FontSizeControl /> {/* フォントサイズ制御コンポーネントを追加 */}
         </div>
         <div className="w-1/3 flex justify-end">
           <ArrowButton
@@ -109,9 +111,9 @@ export const JsonMainView = () => {
       <AutoModeSelector />
       <br />
 
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="flex">
         {/* 前のデータを表示 */}
-        <div className="col-span-1">
+        <div className="w-1/2 h-32 .min-h-32 px-2">
           {prevCard ? (
             <Card
               title="Previous Data"
@@ -125,7 +127,7 @@ export const JsonMainView = () => {
         </div>
 
         {/* 次のデータを表示 */}
-        <div className="col-span-1">
+        <div className="w-1/2 h-32 .min-h-32 px-2">
           {nextCard ? (
             <Card
               title="Next Data"
@@ -137,19 +139,19 @@ export const JsonMainView = () => {
             <Card title="No Next Data" content="" displayMode="next" />
           )}
         </div>
+      </div>
 
-        {/* 選択中のデータを表示 */}
-        <div className="col-span-2">
-          {currentCard ? (
-            <Card
-              title="Selected Data"
-              content={`Input: ${currentCard.input}\nOutput: ${currentCard.output}`}
-              displayMode="selected"
-            />
-          ) : (
-            <Card title="No Data" content="" displayMode="selected" />
-          )}
-        </div>
+      {/* 選択中のデータを表示 */}
+      <div className="w-full overflow-hidden px-2 py-2">
+        {currentCard ? (
+          <Card
+            title="Selected Data"
+            content={`Input: ${currentCard.input}\nOutput: ${currentCard.output}`}
+            displayMode="selected"
+          />
+        ) : (
+          <Card title="No Data" content="" displayMode="selected" />
+        )}
       </div>
     </div>
   );

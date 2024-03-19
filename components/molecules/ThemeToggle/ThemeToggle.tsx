@@ -27,7 +27,7 @@ const ThemeToggle = () => {
       </button>
       <Link href="/themeColors">
         <button className="ml-4 px-4 py-2 rounded bg-blue-500 text-white">
-          カスタムテーマ
+          選択テーマ色
         </button>
       </Link>
       {isCustomTheme && (
