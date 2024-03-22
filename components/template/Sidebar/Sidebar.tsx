@@ -24,29 +24,26 @@ const Sidebar: React.FC<SidebarProps> = ({
   const chunkSize = useRecoilValue(chunkSizeAtom);
   const [renderedData, setRenderedData] = useState(jsonData.slice(0, chunkSize));
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [, setJsonData] = useRecoilState(jsonDataAtom);
-  const file = useRecoilValue(fileAtom);
-
   const [index, setIndex] = useRecoilState(indexAtom);
 
   const selectedItemRef = useRef<HTMLDivElement | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const loadMoreData = useCallback(async () => {
-    console.log(jsonData.length, renderedData.length, chunkSize, totalCount, file)
-    if (renderedData.length < jsonData.length && file) {
+    console.log(renderedData.length, jsonData.length, chunkSize)
+    if (renderedData.length < jsonData.length) {
       setIsLoadingMore(true);
       const start = renderedData.length;
       const end = Math.min(start + chunkSize, jsonData.length);
-      const newData = await parseJsonData(file, start, end - start);
-      setRenderedData((prevData: JsonData[]) => [...prevData, ...newData]);
+      const newData = jsonData.slice(start, end);
+      setRenderedData((prevData) => [...prevData, ...newData]);
       setIsLoadingMore(false);
     }
-  }, [renderedData.length, chunkSize, jsonData.length, file]);
+  }, [renderedData.length, chunkSize, jsonData]);
 
   useEffect(() => {
-    loadMoreData();
-  }, [loadMoreData]);
+    setRenderedData(jsonData.slice(0, chunkSize));
+  }, [jsonData, chunkSize]);
 
   useEffect(() => {
   if (selectedItemRef.current && sidebarRef.current) {
@@ -103,7 +100,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         ))
       )}
       {isLoadingMore && <div className="text-center">読み込み中...</div>}
-      {!isLoadingMore && renderedData.length < totalCount && totalCount > 1000 && (
+      {!isLoadingMore && renderedData.length < totalCount && (
         <div className="text-center mt-4">
           <Button onClick={loadMoreData}>次の1000件を読み込む</Button>
         </div>

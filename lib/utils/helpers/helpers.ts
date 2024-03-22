@@ -9,19 +9,11 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
 }
 
 // ファイルを読み込んでJSONデータをパースする関数
-export const parseJsonData = async (file: File, offset: number, length: number): Promise<JsonData[]> => {
-  try {
-    const content = await file.text();
-    const jsonData = JSON.parse(content);
-
-    if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
-      return jsonData.slice(offset, offset + length);
-    } else {
-      console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
-      return [];
-    }
-  } catch (error) {
-    console.error('無効なJSONデータ:', error);
+export const parseJsonData = (jsonData: any[]): JsonData[] => {
+  if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
+    return jsonData;
+  } else {
+    console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
     return [];
   }
 };

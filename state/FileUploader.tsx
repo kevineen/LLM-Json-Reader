@@ -10,30 +10,28 @@ import { errorMessageAtom } from '@/state/atmos/errorMessageAtom';
 const FileUploader = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const setFileName = useSetRecoilState(fileNameAtom);
-  const chunkSize = useRecoilValue(chunkSizeAtom);
-  const [, setIndex] = useRecoilState(indexAtom);
-  const [, setJsonData] = useRecoilState(jsonDataAtom);
-  const [, setFile] = useRecoilState(fileAtom);
+  const setIndex = useSetRecoilState(indexAtom);
+  const setJsonData = useSetRecoilState(jsonDataAtom);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  if (e.target.files && e.target.files.length > 0) {
-    const file = e.target.files[0];
-    setFileName(file.name);
-    setFile(file);
-    setIndex(0);
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setFileName(file.name);
+      setIndex(0);
 
-    try {
-      const initialData = await parseJsonData(file, 0, chunkSize);
-      const jsonData = JSON.parse(await file.text());
-      setJsonData({
-        data: initialData,
-        totalCount: jsonData.length,
-      });
-    } catch (error) {
-      console.error('ファイルの読み込みに失敗しました。', error);
+      try {
+        const content = await file.text();
+        const jsonData = JSON.parse(content);
+        const parsedData = parseJsonData(jsonData);
+        setJsonData({
+          data: parsedData,
+          totalCount: parsedData.length,
+        });
+      } catch (error) {
+        console.error('ファイルの読み込みに失敗しました。', error);
+      }
     }
-  }
-};
+  };
 
   return (
     <div>
