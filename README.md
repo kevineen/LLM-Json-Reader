@@ -1,14 +1,42 @@
 # LLM-Json-Reader
 
-LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧するためのWebアプリケーションです。大規模言語モデル（LLM）の開発に使用されるデータセットの視覚化のためのアプリです。
+LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用です。
+大規模言語モデル（LLM）の開発に使用されるデータセット視覚化のためのアプリです。
 
-開発に辺りディレクトリ構成などで、参考にさせて頂いたサイト様
+開発にあたりディレクトリ構成などで、参考にさせて頂いたサイト様
 ##### https://zenn.dev/siakas/articles/05481bdefacd13
 
-#### HuggingFaceのデータセット対応状況
+<br />
+####llm-jp-eval(LLM-jp 評価スクリプト)の評価に使用されるデータの
+【チューニング共通フォーマット】を閲覧できます。
+[llm-jp-eval](https://github.com/llm-jp/llm-jp-eval/tree/main)
 
-- [x] LLM JP Eval
-- [ ] dolly-dataset-jp
+#### フォーマット例
+```
+[
+    {
+        "ID": "jemhopqa-0",
+        "instruction": "質問を入力とし、回答を出力してください。回答の他には何も含めないことを厳守してください。",
+        "input": "質問：クイーンとビートルズはどちらもイギリス出身のバンドですか？",
+        "output": "YES",
+        "text": "<INSTRUCTION|LLM-jp>質問を入力とし、回答を出力してください。回答の他には何も含めないことを厳守してく>ださい。\n<INPUT|LLM-jp>質問：クイーンとビートルズはどちらもイギリス出身のバンドですか？\n<OUTPUT|LLM-jp>YES"
+    },
+    {
+        "ID": "jemhopqa-1",
+        "instruction": "質問を入力とし、回答を出力してください。回答の他には何も含めないことを厳守してください。",
+        "input": "質問：東京都中央区と中野区、2005年時点での昼間人口が多いのは中央区ですか？",
+        "output": "YES",
+        "text": "<INSTRUCTION|LLM-jp>質問を入力とし、回答を出力してください。回答の他には何も含めないことを厳守してく>ださい。\n<INPUT|LLM-jp>質問：東京都中央区と中野区、2005年時点での昼間人口が多いのは中央区ですか？\n<OUTPUT|LLM-jp>YES"
+    },
+    ...
+]
+
+```
+
+#### 読込データセットの対応状況
+
+- [x] llm-jp-eval
+- [ ] Mt-bench
 
 ## アプリ作動に必要となる事前インストール
 #### Node.js (version20.9.0を使用)
@@ -50,17 +78,18 @@ pnpm dev
    <br />
 
 5. ファイル読込ボタンから、読み込みたいJSONデータなどを選択してください。
+対応データ順次更新中。
 
 ## 使用技術
 
-- Next.js (App Router)
-- TypeScript
-- Tailwind CSS
-- Recoil
-- ESLint
-- Prettier
-- pnpm
-- gulp
+- Next.js (App Router：使ってみたかった)
+- TypeScript（型安全：アプリのバグを防ぐための仕組み）
+- Tailwind CSS（デザイン：デザイン）
+- Recoil（状態管理：変数をうまく使う）
+- ESLint（静的検証ツール：コードのエラー検出）
+- Prettier（コードフォーマット：コード整形）
+- pnpm（パッケージ管理：アプリに使うライブラリーの管理）
+- gulp（タスクランナー：コンパイルや圧縮などの自動化）
 
 #### 後日追加予定（必要になれば
 

@@ -38,10 +38,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# vscode
-/.storybook
-/.vscode
-
 # original
 /data/memo/
 /lib/db.ts
