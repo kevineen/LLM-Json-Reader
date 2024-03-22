@@ -1,14 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { indexAtom, jsonDataAtom } from "@/state/atmos/jsonDataAtom";
+import { chunkSizeAtom, indexAtom, jsonDataAtom, renderedDataAtom } from "@/state/atmos/jsonDataAtom";
 
-import Button from "@/components/atoms/Button/Button";
 import Card from "@/components/molecules/Card/Card";
 import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
-import { parseJsonData } from "@/lib/utils/helpers/helpers";
 import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
 import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
 import FileUploader from "@/state/FileUploader";
@@ -17,32 +15,35 @@ import NowCard from "@/components/molecules/NowCard/NowCard";
 
 export const JsonMainView = () => {
 
-  // const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
-  const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
+  const { data: jsonData } = useRecoilValue(jsonDataAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
   const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
   const customSpeed = useRecoilValue(customSpeedAtom);
+  const renderedData = useRecoilValue(renderedDataAtom);
 
-  const currentCard = jsonData[index];
-  const prevCard = jsonData[index - 1];
-  const nextCard = jsonData[index + 1];
+  const currentCard = renderedData[index];
+  const prevCard = index > 0 ? renderedData[index - 1] : null;
+  const nextCard = index < renderedData.length - 1 ? renderedData[index + 1] : null;
 
   const handlePrevClick = () => {
     setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
   };
 
   const handleNextClick = () => {
-    setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
-  };
+  if (index < renderedData.length - 1 && index < jsonData.length - 1) {
+    setIndex((prevIndex: number) => prevIndex + 1);
+  }
+};
 
-  // useCallbackフックをuseEffectの外で定義
-  const handleArrowKey = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-      setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
-    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-      setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
+const handleArrowKey = useCallback((event: KeyboardEvent) => {
+  if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+    if (index < renderedData.length - 1 && index < jsonData.length - 1) {
+      setIndex((prevIndex: number) => prevIndex + 1);
     }
-  }, [setIndex, jsonData.length]);
+  } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+    setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
+  }
+}, [index, jsonData.length, renderedData.length, setIndex]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleArrowKey);

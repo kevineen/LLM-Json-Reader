@@ -4,8 +4,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import ThemeIcon from '@/components/atoms/ThemeIcon/ThemeIcon';
 import { customThemeColorsAtom, themeAtom } from '@/state/atmos/themeAtom';
 
-import Link from 'next/link';
-
 const ThemeToggle = () => {
 
   const [theme, setTheme] = useRecoilState(themeAtom);

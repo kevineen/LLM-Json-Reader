@@ -1050,8 +1050,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import ThemeIcon from '@/components/atoms/ThemeIcon/ThemeIcon';
 import { customThemeColorsAtom, themeAtom } from '@/state/atmos/themeAtom';
 
-import Link from 'next/link';
-
 const ThemeToggle = () => {
 
   const [theme, setTheme] = useRecoilState(themeAtom);
@@ -1319,15 +1317,13 @@ export * from './JsonMainView';
 ```
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { indexAtom, jsonDataAtom } from "@/state/atmos/jsonDataAtom";
 
-import Button from "@/components/atoms/Button/Button";
 import Card from "@/components/molecules/Card/Card";
 import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
-import { parseJsonData } from "@/lib/utils/helpers/helpers";
 import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
 import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
 import FileUploader from "@/state/FileUploader";
@@ -1519,7 +1515,6 @@ import Sidebar from '@/components/template/Sidebar/Sidebar';
 import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
 import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
-import { fileNameAtom } from '@/state/atmos/fileNameAtom';
 import Footer from '@/components/template/Footer/Footer';
 
 interface MainLayoutProps {
@@ -1610,10 +1605,9 @@ export * from './Sidebar';
 'use client';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { JsonData, JsonDataState, chunkSizeAtom, fileAtom, indexAtom, isLargeFileAtom, isLoadingMoreAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { chunkSizeAtom, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import Button from '@/components/atoms/Button/Button';
-import { parseJsonData } from '@/lib/utils/helpers/helpers';
 
 interface SidebarProps {
   backgroundColor: string;
@@ -1633,29 +1627,26 @@ const Sidebar: React.FC<SidebarProps> = ({
   const chunkSize = useRecoilValue(chunkSizeAtom);
   const [renderedData, setRenderedData] = useState(jsonData.slice(0, chunkSize));
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [, setJsonData] = useRecoilState(jsonDataAtom);
-  const file = useRecoilValue(fileAtom);
-
   const [index, setIndex] = useRecoilState(indexAtom);
 
   const selectedItemRef = useRef<HTMLDivElement | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const loadMoreData = useCallback(async () => {
-    console.log(jsonData.length, renderedData.length, chunkSize, totalCount, file)
-    if (renderedData.length < jsonData.length && file) {
+    console.log(renderedData.length, jsonData.length, chunkSize)
+    if (renderedData.length < jsonData.length) {
       setIsLoadingMore(true);
       const start = renderedData.length;
       const end = Math.min(start + chunkSize, jsonData.length);
-      const newData = await parseJsonData(file, start, end - start);
-      setRenderedData((prevData: JsonData[]) => [...prevData, ...newData]);
+      const newData = jsonData.slice(start, end);
+      setRenderedData((prevData) => [...prevData, ...newData]);
       setIsLoadingMore(false);
     }
-  }, [renderedData.length, chunkSize, jsonData.length, file]);
+  }, [renderedData.length, chunkSize, jsonData]);
 
   useEffect(() => {
-    loadMoreData();
-  }, [loadMoreData]);
+    setRenderedData(jsonData.slice(0, chunkSize));
+  }, [jsonData, chunkSize]);
 
   useEffect(() => {
   if (selectedItemRef.current && sidebarRef.current) {
@@ -1694,7 +1685,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       {jsonData.length === 0 ? (
         <div className="text-center">LLM JP Eval データの<br />ファイルを読み込んでください</div>
       ) : (
-        jsonData.map((data, i) => (
+        renderedData.map((data, i) => (
           <div
             key={i}
             ref={index === i ? selectedItemRef : null}
@@ -1712,7 +1703,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         ))
       )}
       {isLoadingMore && <div className="text-center">読み込み中...</div>}
-      {!isLoadingMore && renderedData.length < totalCount && totalCount > 1000 && (
+      {!isLoadingMore && renderedData.length < totalCount && (
         <div className="text-center mt-4">
           <Button onClick={loadMoreData}>次の1000件を読み込む</Button>
         </div>
@@ -1793,19 +1784,11 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
 }
 
 // ファイルを読み込んでJSONデータをパースする関数
-export const parseJsonData = async (file: File, offset: number, length: number): Promise<JsonData[]> => {
-  try {
-    const content = await file.text();
-    const jsonData = JSON.parse(content);
-
-    if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
-      return jsonData.slice(offset, offset + length);
-    } else {
-      console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
-      return [];
-    }
-  } catch (error) {
-    console.error('無効なJSONデータ:', error);
+export const parseJsonData = (jsonData: any[]): JsonData[] => {
+  if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
+    return jsonData;
+  } else {
+    console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
     return [];
   }
 };
@@ -1822,7 +1805,6 @@ function isValidJsonData(data: any): data is JsonData {
     typeof data.text === 'string'
   );
 }
-
 ```
 
 ### lib\utils\helpers\index.tx
@@ -2276,82 +2258,44 @@ export const customThemeColorsAtom = atom<ThemeColors[]>({
 ### state\FileUploader.tsx
 
 ```
-import { useRef, useState, useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRef } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
-import { chunkSizeAtom, fileAtom, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { parseJsonData } from '@/lib/utils/helpers/helpers';
 import Button from '@/components/atoms/Button/Button';
 import { errorMessageAtom } from '@/state/atmos/errorMessageAtom';
 
 const FileUploader = () => {
-  const setJsonData = useSetRecoilState(jsonDataAtom);
-  const setFileName = useSetRecoilState(fileNameAtom); // setFileNameを取得
-  const setFile = useSetRecoilState(fileAtom);
-  const [index, setIndex] = useRecoilState(indexAtom);
-  const [isFileLoaded, setIsFileLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const chunkSize = useRecoilValue(chunkSizeAtom);
-  const setErrorMessage = useSetRecoilState(errorMessageAtom);
+  const setFileName = useSetRecoilState(fileNameAtom);
+  const setIndex = useSetRecoilState(indexAtom);
+  const setJsonData = useSetRecoilState(jsonDataAtom);
 
-  const handleLoadJsonFile = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setFileName(file.name);
+      setIndex(0);
+
+      try {
+        const content = await file.text();
+        const jsonData = JSON.parse(content);
+        const parsedData = parseJsonData(jsonData);
+        setJsonData({
+          data: parsedData,
+          totalCount: parsedData.length,
+        });
+      } catch (error) {
+        console.error('ファイルの読み込みに失敗しました。', error);
+      }
     }
   };
-
-  useEffect(() => {
-    // ファイル読み込み完了時にコンポーネントをレンダリングする
-  }, [isFileLoaded]);
-
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-  if (event.target.files?.length) {
-    const file = event.target.files[0];
-    setFile(file);
-    setFileName(file.name);
-    setIndex(0); // ファイルを読み込み直した場合は index を 0 に設定
-
-    try {
-      const initialData = await parseJsonData(file, 0, chunkSize);
-      const jsonData = JSON.parse(await file.text());
-      setJsonData({
-        data: initialData,
-        totalCount: jsonData.length,
-      });
-      setIsFileLoaded(true);
-      setErrorMessage('');
-    } catch (error) {
-      console.error('ファイルの読み込みに失敗しました。', error);
-      setErrorMessage('ファイルの読み込みに失敗しました。有効なJSONファイルを選択してください。');
-    }
-  }
-};
-
-  // ファイル名に応じて全件数を取得する関数
-const getTotalCountFromFileName = (fileName: string): number => {
-  // ファイル名に応じて全件数を設定するロジックを実装
-  // 例: データフォルダにファイル名とそれに対応する件数のマッピングを定義しておく
-  const totalCountMap: { [key: string]: number } = {
-    'chabsa.json': 2572,
-    'jamp.json': 8955,
-    'janli.json': 12312,
-    'jcommonsenseqa.json': 8043,
-    'jemhopqa.json': 953,
-    'jnli.json': 18065,
-    'jsem.json': 12667,
-    'jsick.json': 4500,
-    'jsquad.json': 56573,
-    'jsts.json': 11205,
-    'niilc.json': 715,
-  };
-
-  return totalCountMap[fileName] || 0;
-};
 
   return (
     <div>
-      <Button onClick={handleLoadJsonFile}>
+      <Button onClick={() => fileInputRef.current?.click()}>
         ファイル読込
       </Button>
       <input
@@ -2361,7 +2305,6 @@ const getTotalCountFromFileName = (fileName: string): number => {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-      <ErrorMessage />
     </div>
   );
 };

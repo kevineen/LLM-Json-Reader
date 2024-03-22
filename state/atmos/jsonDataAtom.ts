@@ -48,3 +48,8 @@ export const fileAtom = atom<FileAtom | null>({
   key: 'file',
   default: null,
 });
+
+export const renderedDataAtom = atom<JsonData[]>({
+  key: 'renderedData',
+  default: [],
+});

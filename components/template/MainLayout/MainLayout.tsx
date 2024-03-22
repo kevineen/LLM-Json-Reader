@@ -8,7 +8,6 @@ import Sidebar from '@/components/template/Sidebar/Sidebar';
 import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
 import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
-import { fileNameAtom } from '@/state/atmos/fileNameAtom';
 import Footer from '@/components/template/Footer/Footer';
 
 interface MainLayoutProps {

@@ -1,10 +1,9 @@
 'use client';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { JsonData, JsonDataState, chunkSizeAtom, fileAtom, indexAtom, isLargeFileAtom, isLoadingMoreAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { chunkSizeAtom, indexAtom, jsonDataAtom, renderedDataAtom } from '@/state/atmos/jsonDataAtom';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import Button from '@/components/atoms/Button/Button';
-import { parseJsonData } from '@/lib/utils/helpers/helpers';
 
 interface SidebarProps {
   backgroundColor: string;
@@ -22,7 +21,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
   const chunkSize = useRecoilValue(chunkSizeAtom);
-  const [renderedData, setRenderedData] = useState(jsonData.slice(0, chunkSize));
+  const setRenderedData = useSetRecoilState(renderedDataAtom);
+  const renderedData = useRecoilValue(renderedDataAtom);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [index, setIndex] = useRecoilState(indexAtom);
 
@@ -30,20 +30,19 @@ const Sidebar: React.FC<SidebarProps> = ({
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const loadMoreData = useCallback(async () => {
-    console.log(renderedData.length, jsonData.length, chunkSize)
-    if (renderedData.length < jsonData.length) {
-      setIsLoadingMore(true);
-      const start = renderedData.length;
-      const end = Math.min(start + chunkSize, jsonData.length);
-      const newData = jsonData.slice(start, end);
-      setRenderedData((prevData) => [...prevData, ...newData]);
-      setIsLoadingMore(false);
-    }
-  }, [renderedData.length, chunkSize, jsonData]);
+  if (renderedData.length < jsonData.length) {
+    setIsLoadingMore(true);
+    const start = renderedData.length;
+    const end = Math.min(start + chunkSize, jsonData.length);
+    const newData = jsonData.slice(start, end);
+    setRenderedData((prevData) => [...prevData, ...newData]);
+    setIsLoadingMore(false);
+  }
+}, [renderedData.length, chunkSize, jsonData, setRenderedData]);
 
-  useEffect(() => {
-    setRenderedData(jsonData.slice(0, chunkSize));
-  }, [jsonData, chunkSize]);
+useEffect(() => {
+  setRenderedData(jsonData.slice(0, chunkSize));
+}, [jsonData, chunkSize, setRenderedData]);
 
   useEffect(() => {
   if (selectedItemRef.current && sidebarRef.current) {

@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRef } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
-import { chunkSizeAtom, fileAtom, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { parseJsonData } from '@/lib/utils/helpers/helpers';
 import Button from '@/components/atoms/Button/Button';
 import { errorMessageAtom } from '@/state/atmos/errorMessageAtom';
