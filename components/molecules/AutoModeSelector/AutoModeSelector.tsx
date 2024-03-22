@@ -1,3 +1,5 @@
+'use client';
+
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { autoModeSpeedAtom, customSpeedAtom, AutoModeSpeed } from '@/state/atmos/autoModeAtom';
 import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
@@ -6,7 +8,8 @@ import { useEffect, useState } from 'react';
 const AutoModeSelector: React.FC = () => {
   const [autoModeSpeed, setAutoModeSpeed] = useRecoilState(autoModeSpeedAtom);
   const [customSpeed, setCustomSpeed] = useRecoilState(customSpeedAtom);
-  const jsonData = useRecoilValue(jsonDataAtom);
+  const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
+
   const [index, setIndex] = useRecoilState(indexAtom);
   const [isLoading, setIsLoading] = useState(true);
   const [isAutoModeOn, setIsAutoModeOn] = useState(false);

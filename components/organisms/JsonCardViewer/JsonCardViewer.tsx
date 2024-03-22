@@ -27,7 +27,7 @@ const JsonCardViewer = () => {
 
   const nowCard = (item: any, originalIndex: number) => {
     // 選択中のアイテムを表示
-    if (originalIndex === index) {
+    if (originalIndex === index && originalIndex < jsonData.length) {
       return (
         <div key={originalIndex.toString()}>
           <div>{JSON.stringify(item, null, 2)}</div>
@@ -46,7 +46,7 @@ const JsonCardViewer = () => {
           <div>Start</div>
         </div>
       );
-    } else if (originalIndex === index - 1) {
+    } else if (originalIndex === index - 1 && originalIndex < jsonData.length) {
       return (
         <div key={originalIndex}>
           <div>Category: {item.category}</div>
@@ -66,7 +66,7 @@ const JsonCardViewer = () => {
           <div>Last</div>
         </div>
       );
-    } else if (originalIndex === index + 1) {
+    } else if (originalIndex === index + 1 && originalIndex < jsonData.length) {
       return (
         <div key={originalIndex}>
           <div>Category: {item.category}</div>

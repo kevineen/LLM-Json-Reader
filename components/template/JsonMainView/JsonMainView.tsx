@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -15,7 +17,8 @@ import NowCard from "@/components/molecules/NowCard/NowCard";
 
 export const JsonMainView = () => {
 
-  const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
+  // const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
+  const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
   const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
   const customSpeed = useRecoilValue(customSpeedAtom);
@@ -111,45 +114,43 @@ export const JsonMainView = () => {
       <br />
       
       {jsonData.length > 0 && (
-        <div className="flex flex-col md:flex-row"> {/* flex-colを追加 */}
-          <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40"> {/* クラスを変更 */}
-            {prevCard || index !== 0 ? (
-              <Card
-                title="前のデータ"
-                content={`Input: ${prevCard.input}\n Output: ${prevCard.output}`}
-                displayMode="prev"
-                onClick={() => setIndex(index - 1)}
-              />
-            ) : (
-              <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
-            )}
-          </div>
-
-          {/* 次のデータを表示 */}
-          <div className="w-full md:w-1/2 px-2 h-40 max-h-40"> {/* クラスを変更 */}
-            {nextCard || index == jsonData.length + 1 ? (
-              <Card
-                title="次のデータ"
-                content={`Input: ${nextCard.input}\n Output: ${nextCard.output}`}
-                displayMode="next"
-                onClick={() => setIndex(index + 1)}
-              />
-            ) : (
-              <Card title="次のデータはありません" content="最終データ" displayMode="next" />
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 選択中のデータを表示 */}
-      {jsonData.length > 0 && (
-        <div className="w-full py-4 px-2 mb-4 md:mb-0"> {/* クラスを変更 */}
-          {currentCard ? (
-        <NowCard data={currentCard} />
+  <div className="flex flex-col md:flex-row">
+    <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40">
+      {prevCard ? (
+        <Card
+          title="前のデータ"
+          content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
+          displayMode="prev"
+          onClick={() => setIndex(index - 1)}
+        />
       ) : (
-        <Card title="No Data" content="" displayMode="selected" />
+        <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
       )}
     </div>
+
+    <div className="w-full md:w-1/2 px-2 h-40 max-h-40">
+      {nextCard ? (
+        <Card
+          title="次のデータ"
+          content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
+          displayMode="next"
+          onClick={() => setIndex(index + 1)}
+        />
+      ) : (
+        <Card title="次のデータはありません" content="最終データ" displayMode="next" />
+      )}
+    </div>
+  </div>
+)}
+
+{jsonData.length > 0 && (
+  <div className="w-full py-4 px-2 mb-4 md:mb-0">
+    {currentCard ? (
+      <NowCard data={currentCard} />
+    ) : (
+      <Card title="No Data" content="" displayMode="selected" />
+    )}
+  </div>
     )}
   </div>
   );

@@ -50,15 +50,9 @@
       - FontSizeControl/
         - FontSizeControl.tsx
         - index.ts
-      - MainCard/
+      - NowCard/
         - index.ts
-        - MainCard.tsx
-      - SideAccordionItem/
-        - index.ts
-        - SideAccordionItem.tsx
-      - SubCard/
-        - index.ts
-        - SubCard.tsx
+        - NowCard.tsx
       - ThemeSelector/
         - index.ts
         - ThemeSelector.tsx
@@ -104,7 +98,6 @@
         - cn.ts
         - index.ts
       - helpers/
-        - countOccurrences.ts
         - helpers.ts
         - index.tx
   - next.config.mjs
@@ -115,6 +108,7 @@
   - state/
     - atmos/
       - autoModeAtom.ts
+      - errorMessageAtom.ts
       - fileNameAtom.ts
       - fontSizeAtoms.ts
       - jsonDataAtom.ts
@@ -418,10 +412,6 @@ import { RecoilRoot } from 'recoil';
 import { MainProvider } from "@/components/providers/MainProvider"; import { MainLayout } from "@/components/template/MainLayout";
 const inter = Inter({ subsets: ["latin"] });
 
-// export const metadata: Metadata = {
-//   title: "LLM-Json-Reader",
-//   description: "Jsonファイルを読むだけの物",
-// };
 
 export default function RootLayout({
   children,
@@ -430,12 +420,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={inter.className}>
-        <RecoilRoot>
-          <MainProvider>
-            <MainLayout>{children}</MainLayout>
-          </MainProvider>
-        </RecoilRoot>
+      <body>
+        <div className={inter.className}>
+          <RecoilRoot>
+            <MainProvider>
+              <MainLayout>{children}</MainLayout>
+            </MainProvider>
+          </RecoilRoot>
+        </div>
       </body>
     </html>
   );
@@ -446,8 +438,6 @@ export default function RootLayout({
 ### app\page.tsx
 
 ```
-'use client';
-
 import JsonMainView from "@/components/template/JsonMainView/JsonMainView";
 import JsonReadLayout from "@/components/template/JsonReadLayout/JsonReadLayout";
 
@@ -730,6 +720,8 @@ export default ThemeIcon;
 ### components\molecules\AutoModeSelector\AutoModeSelector.tsx
 
 ```
+'use client';
+
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { autoModeSpeedAtom, customSpeedAtom, AutoModeSpeed } from '@/state/atmos/autoModeAtom';
 import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
@@ -738,7 +730,8 @@ import { useEffect, useState } from 'react';
 const AutoModeSelector: React.FC = () => {
   const [autoModeSpeed, setAutoModeSpeed] = useRecoilState(autoModeSpeedAtom);
   const [customSpeed, setCustomSpeed] = useRecoilState(customSpeedAtom);
-  const jsonData = useRecoilValue(jsonDataAtom);
+  const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
+
   const [index, setIndex] = useRecoilState(indexAtom);
   const [isLoading, setIsLoading] = useState(true);
   const [isAutoModeOn, setIsAutoModeOn] = useState(false);
@@ -879,17 +872,18 @@ interface CardProps {
 
 export default function Card({ title, content = '', displayMode, onClick }: CardProps) {
   const fontSize = useRecoilValue(fontSizeAtom);
+  const lineHeight = fontSize * 1.5; // フォントサイズの1.5倍の値を行間隔に設定
 
-  const maxHeightClass = displayMode === 'selected' ? '' : 'max-h-40';
+  // const maxHeightClass = displayMode === 'selected' ? '' : 'max-h-40';
   const preClass = displayMode === 'selected' ? 'whitespace-pre-wrap break-words' : 'overflow-auto whitespace-pre-wrap';
 
   return (
     <div
-      className={`bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden cursor-pointer hover:bg-gray-200 transition-colors duration-300 ${maxHeightClass}`}
+      className={`bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden cursor-pointer hover:bg-gray-200 transition-colors duration-300`}
       onClick={onClick}
     >
       <h3 className="text-xl font-bold mb-2 text-gray-800">{title}</h3>
-      <pre className={`text-sm text-gray-700 ${preClass}`} style={{ fontSize: `${fontSize}px` }}>
+      <pre className={`text-sm text-gray-700 ${preClass}`} style={{ fontSize: `${fontSize}px`, lineHeight: `${lineHeight}px`}}>
         {displayMode === 'selected'
           ? content || 'ファイルを読み込んでください'
           : content
@@ -953,70 +947,53 @@ export * from "./FontSizeControl";
 
 ```
 
-### components\molecules\MainCard\index.ts
+### components\molecules\NowCard\index.ts
 
 ```
-export * from "./MainCard";
+export * from "./NowCard";
 ```
 
-### components\molecules\MainCard\MainCard.tsx
+### components\molecules\NowCard\NowCard.tsx
 
 ```
-const MainCard = ({ children }: any) => {
+import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { fontSizeAtom } from '@/state/atmos/fontSizeAtoms';
+import { JsonData } from '@/state/atmos/jsonDataAtom';
+
+interface NowCardProps {
+  data: JsonData;
+}
+
+const NowCard: React.FC<NowCardProps> = ({ data }) => {
+  const fontSize = useRecoilValue(fontSizeAtom);
+
   return (
-    <div className="card">
-      {children}
+    <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden">
+      <h3 className="text-xl font-bold mb-2 text-gray-800">現在のデータ</h3>
+      <div className="mb-4">
+        <h4 className="text-lg font-bold mb-1">Input</h4>
+        <pre className="whitespace-pre-wrap break-words" style={{ fontSize: `${fontSize}px` }}>
+          {data.input}
+        </pre>
+      </div>
+      <div className="mb-4">
+        <h4 className="text-lg font-bold mb-1">Instruction</h4>
+        <p className="text-gray-700" style={{ fontSize: `${fontSize}px` }}>{data.instruction}</p>
+      </div>
+      <div className="mb-4">
+        <h4 className="text-lg font-bold mb-1">Output</h4>
+        <p className="text-gray-700" style={{ fontSize: `${fontSize}px` }}>{data.output}</p>
+      </div>
+      <div>
+        <h4 className="text-lg font-bold mb-1">Text</h4>
+        <p className="text-gray-700" style={{ fontSize: `${fontSize}px` }}>{data.text}</p>
+      </div>
     </div>
   );
 };
 
-export default MainCard;
-```
-
-### components\molecules\SideAccordionItem\index.ts
-
-```
-export * from "./SideAccordionItem";
-```
-
-### components\molecules\SideAccordionItem\SideAccordionItem.tsx
-
-```
-import { useRecoilState } from "recoil";
-import { indexAtom } from "@/state/atmos/jsonDataAtom";
-
-const SideAccordionItem = ({ children }: any) => {
-  const [index, setIndex] = useRecoilState(indexAtom);
-  
-  return (
-    <div onClick={() => setIndex(index)}>
-      <div>Index: {index}</div>
-      <div>Category: {children.category}</div>
-    </div>
-  );
-};
-
-export default SideAccordionItem;
-```
-
-### components\molecules\SubCard\index.ts
-
-```
-export * from "./SubCard";
-```
-
-### components\molecules\SubCard\SubCard.tsx
-
-```
-const SubCard = ({ children }: any) => {
-  return (
-    <div className="card">
-      {children}
-    </div>
-  );
-};
-
-export default SubCard;
+export default NowCard;
 ```
 
 ### components\molecules\ThemeSelector\index.ts
@@ -1155,7 +1132,7 @@ const JsonCardViewer = () => {
 
   const nowCard = (item: any, originalIndex: number) => {
     // 選択中のアイテムを表示
-    if (originalIndex === index) {
+    if (originalIndex === index && originalIndex < jsonData.length) {
       return (
         <div key={originalIndex.toString()}>
           <div>{JSON.stringify(item, null, 2)}</div>
@@ -1174,7 +1151,7 @@ const JsonCardViewer = () => {
           <div>Start</div>
         </div>
       );
-    } else if (originalIndex === index - 1) {
+    } else if (originalIndex === index - 1 && originalIndex < jsonData.length) {
       return (
         <div key={originalIndex}>
           <div>Category: {item.category}</div>
@@ -1194,7 +1171,7 @@ const JsonCardViewer = () => {
           <div>Last</div>
         </div>
       );
-    } else if (originalIndex === index + 1) {
+    } else if (originalIndex === index + 1 && originalIndex < jsonData.length) {
       return (
         <div key={originalIndex}>
           <div>Category: {item.category}</div>
@@ -1281,11 +1258,15 @@ import { useRecoilValue } from 'recoil';
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
 import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
+import { jsonDataAtom, indexAtom } from '@/state/atmos/jsonDataAtom';
 
 const Footer = () => {
   const fileName = useRecoilValue(fileNameAtom);
   const theme = useRecoilValue(themeAtom);
   const customColors = useRecoilValue(customThemeColorsAtom);
+  const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
+
+  const index = useRecoilValue(indexAtom);
 
   const getColors = () => {
     switch (theme) {
@@ -1306,10 +1287,11 @@ const Footer = () => {
 
   return (
     <footer
-      className="flex items-center justify-center p-4"
+      className="flex items-center justify-between p-4"
       style={{ backgroundColor: colors.footer, color: colors.footerText }}
     >
-      {fileName || ''}
+      <div>【{fileName || ''}】</div>
+      <div> | 現在のindex: {index} |　( ロード済み: {jsonData.length} 件 / 全件数: {totalCount} 件 ) </div>
     </footer>
   );
 };
@@ -1335,6 +1317,8 @@ export * from './JsonMainView';
 ### components\template\JsonMainView\JsonMainView.tsx
 
 ```
+'use client';
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -1348,10 +1332,12 @@ import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
 import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
 import FileUploader from "@/state/FileUploader";
 import FontSizeControl from "@/components/molecules/FontSizeControl/FontSizeControl";
+import NowCard from "@/components/molecules/NowCard/NowCard";
 
 export const JsonMainView = () => {
 
-  const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
+  // const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
+  const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
   const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
   const customSpeed = useRecoilValue(customSpeedAtom);
@@ -1447,51 +1433,45 @@ export const JsonMainView = () => {
       <br />
       
       {jsonData.length > 0 && (
-        <div className="flex">
-          <div className="w-1/2 h-32 .min-h-32 px-2">
-            {prevCard || index !== 0 ? (
-              <Card
-                title="前のデータ"
-                content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
-                displayMode="prev"
-                onClick={() => setIndex(index - 1)}
-              />
-            ) : (
-              <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
-            )}
-          </div>
-
-          {/* 次のデータを表示 */}
-          <div className="w-1/2 h-32 .min-h-32 px-2">
-            {nextCard || index == jsonData.length + 1 ? (
-              <Card
-                title="次のデータ"
-                content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
-                displayMode="next"
-                onClick={() => setIndex(index + 1)}
-              />
-            ) : (
-              <Card title="次のデータはありません" content="最終データ" displayMode="next" />
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 選択中のデータを表示 */}
-      {jsonData.length > 0 && (
-        <div className="w-full overflow-hidden px-2 py-2">
-          {currentCard ? (
+  <div className="flex flex-col md:flex-row">
+    <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40">
+      {prevCard ? (
         <Card
-          title="現在のデータ"
-          content={`Input: ${currentCard.input}\nOutput: ${currentCard.output}`}
-          displayMode="selected"
+          title="前のデータ"
+          content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
+          displayMode="prev"
+          onClick={() => setIndex(index - 1)}
         />
-          ) : (
-        <Card title="No Data" content="" displayMode="selected" />
-          )}
-        </div>
+      ) : (
+        <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
       )}
-        </div>
+    </div>
+
+    <div className="w-full md:w-1/2 px-2 h-40 max-h-40">
+      {nextCard ? (
+        <Card
+          title="次のデータ"
+          content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
+          displayMode="next"
+          onClick={() => setIndex(index + 1)}
+        />
+      ) : (
+        <Card title="次のデータはありません" content="最終データ" displayMode="next" />
+      )}
+    </div>
+  </div>
+)}
+
+{jsonData.length > 0 && (
+  <div className="w-full py-4 px-2 mb-4 md:mb-0">
+    {currentCard ? (
+      <NowCard data={currentCard} />
+    ) : (
+      <Card title="No Data" content="" displayMode="selected" />
+    )}
+  </div>
+    )}
+  </div>
   );
 }
 
@@ -1627,9 +1607,13 @@ export * from './Sidebar';
 ### components\template\Sidebar\Sidebar.tsx
 
 ```
+'use client';
+
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
-import { useRef, useEffect } from 'react';
+import { JsonData, JsonDataState, chunkSizeAtom, fileAtom, indexAtom, isLargeFileAtom, isLoadingMoreAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { useRef, useEffect, useState, useCallback } from 'react';
+import Button from '@/components/atoms/Button/Button';
+import { parseJsonData } from '@/lib/utils/helpers/helpers';
 
 interface SidebarProps {
   backgroundColor: string;
@@ -1644,40 +1628,70 @@ const Sidebar: React.FC<SidebarProps> = ({
   textColor,
   selectedBackgroundColor,
   selectedTextColor,
-  hoverBackgroundColor,
 }) => {
-  const jsonData = useRecoilValue(jsonDataAtom);
+  const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
+  const chunkSize = useRecoilValue(chunkSizeAtom);
+  const [renderedData, setRenderedData] = useState(jsonData.slice(0, chunkSize));
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [, setJsonData] = useRecoilState(jsonDataAtom);
+  const file = useRecoilValue(fileAtom);
+
   const [index, setIndex] = useRecoilState(indexAtom);
+
   const selectedItemRef = useRef<HTMLDivElement | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (selectedItemRef.current && sidebarRef.current) {
-      const selectedItemRect = selectedItemRef.current.getBoundingClientRect();
-      const sidebarRect = sidebarRef.current.getBoundingClientRect();
-
-      const itemHeight = selectedItemRect.height;
-      const visibleItemsHeight = itemHeight * 9; // 選択中のアイテムを含めて9つ分の高さ
-
-      const scrollPosition = index * itemHeight - (sidebarRect.height - visibleItemsHeight) / 2;
-
-      const topVisibleIndex = Math.floor(sidebarRef.current.scrollTop / itemHeight);
-      const bottomVisibleIndex = topVisibleIndex + Math.floor(sidebarRect.height / itemHeight) - 1;
-
-      if (index < topVisibleIndex + 4 || index > bottomVisibleIndex - 4) {
-        sidebarRef.current.scrollTop = scrollPosition;
-      }
+  const loadMoreData = useCallback(async () => {
+    console.log(jsonData.length, renderedData.length, chunkSize, totalCount, file)
+    if (renderedData.length < jsonData.length && file) {
+      setIsLoadingMore(true);
+      const start = renderedData.length;
+      const end = Math.min(start + chunkSize, jsonData.length);
+      const newData = await parseJsonData(file, start, end - start);
+      setRenderedData((prevData: JsonData[]) => [...prevData, ...newData]);
+      setIsLoadingMore(false);
     }
-  }, [index, jsonData.length, jsonData]);
+  }, [renderedData.length, chunkSize, jsonData.length, file]);
 
+  useEffect(() => {
+    loadMoreData();
+  }, [loadMoreData]);
+
+  useEffect(() => {
+  if (selectedItemRef.current && sidebarRef.current) {
+    const sidebar = sidebarRef.current;
+    const selectedItem = selectedItemRef.current;
+    const itemHeight = selectedItem.offsetHeight;
+    const sidebarHeight = sidebar.offsetHeight;
+
+    // 選択中のアイテムの前後に表示されるアイテムの数
+    const bufferItems = 4;
+    let scrollPosition = sidebar.scrollTop;
+
+    // 選択中のアイテムがサイドバーの表示範囲内にあるかどうかをチェック
+    const selectedItemTop = index * itemHeight;
+    const selectedItemBottom = selectedItemTop + itemHeight;
+    const sidebarVisibleTop = sidebar.scrollTop;
+    const sidebarVisibleBottom = sidebarVisibleTop + sidebarHeight;
+
+    // 選択中のアイテムがサイドバーの上部に近づいた場合
+    if (selectedItemTop < sidebarVisibleTop + itemHeight * bufferItems) {
+      scrollPosition = Math.max(selectedItemTop - itemHeight * bufferItems, 0);
+    }
+    // 選択中のアイテムがサイドバーの下部に近づいた場合
+    else if (selectedItemBottom > sidebarVisibleBottom - itemHeight * bufferItems) {
+      // サイドバーの下部に表示されるアイテムの数を考慮してスクロール位置を調整
+      scrollPosition = selectedItemBottom + itemHeight * bufferItems - sidebarHeight;
+    }
+
+    // サイドバーをスクロールする
+    sidebar.scrollTop = scrollPosition;
+  }
+}, [index, jsonData.length]);
 
   return (
-    <div
-      ref={sidebarRef}
-      className="p-4 h-full overflow-y-auto"
-      style={{ backgroundColor, color: textColor }}
-    >
-      {jsonData?.length === 0 ? (
+    <div ref={sidebarRef} className="p-4 h-full overflow-y-auto" style={{ backgroundColor, color: textColor }}>
+      {jsonData.length === 0 ? (
         <div className="text-center">LLM JP Eval データの<br />ファイルを読み込んでください</div>
       ) : (
         jsonData.map((data, i) => (
@@ -1696,6 +1710,12 @@ const Sidebar: React.FC<SidebarProps> = ({
             {`${i}: ${data.input}`}
           </div>
         ))
+      )}
+      {isLoadingMore && <div className="text-center">読み込み中...</div>}
+      {!isLoadingMore && renderedData.length < totalCount && totalCount > 1000 && (
+        <div className="text-center mt-4">
+          <Button onClick={loadMoreData}>次の1000件を読み込む</Button>
+        </div>
       )}
     </div>
   );
@@ -1759,27 +1779,11 @@ export * from './cn';
 
 ```
 
-### lib\utils\helpers\countOccurrences.ts
-
-```
-export function countOccurrences(array: any[], key: string): { [key: string]: number } {
-  return array.reduce((acc, obj) => {
-    const property = obj[key];
-    acc[property] = (acc[property] || 0) + 1;
-    return acc;
-  }, {});
-}
-```
-
 ### lib\utils\helpers\helpers.ts
 
 ```
 import { JsonData } from "@/state/atmos/jsonDataAtom";
 
-// helpers.js
-export default function processJsonData(jsonData: JSON | any) {
-}
-
 export function countOccurrences(array: any[], key: string): { [key: string]: number } {
   return array.reduce((acc, obj) => {
     const property = obj[key];
@@ -1788,22 +1792,25 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
   }, {});
 }
 
-export const parseJsonData = (content: string): JsonData[] => {
+// ファイルを読み込んでJSONデータをパースする関数
+export const parseJsonData = async (file: File, offset: number, length: number): Promise<JsonData[]> => {
   try {
+    const content = await file.text();
     const jsonData = JSON.parse(content);
 
     if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
-      return jsonData;
+      return jsonData.slice(offset, offset + length);
     } else {
       console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
       return [];
     }
   } catch (error) {
-    console.error('無効なJSONデータ:', content);
+    console.error('無効なJSONデータ:', error);
     return [];
   }
 };
 
+// JSONデータのバリデーション関数
 function isValidJsonData(data: any): data is JsonData {
   return (
     typeof data === 'object' &&
@@ -1815,6 +1822,7 @@ function isValidJsonData(data: any): data is JsonData {
     typeof data.text === 'string'
   );
 }
+
 ```
 
 ### lib\utils\helpers\index.tx
@@ -1830,7 +1838,8 @@ export * from './helpers';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: "export",
-    distDir: "dist"
+    distDir: "dist",
+    reactStrictMode: false,
 };
 
 export default nextConfig;
@@ -2058,6 +2067,17 @@ export const customSpeedAtom = atom<number>({
 
 ```
 
+### state\atmos\errorMessageAtom.ts
+
+```
+import { atom } from 'recoil';
+
+export const errorMessageAtom = atom<string>({
+  key: 'errorMessage',
+  default: '',
+});
+```
+
 ### state\atmos\fileNameAtom.ts
 
 ```
@@ -2094,9 +2114,18 @@ export interface JsonData {
   text: string;
 }
 
-export const jsonDataAtom = atom<JsonData[]>({
+export interface JsonDataState {
+  data: JsonData[];
+  totalCount: number;
+  [index: number]: JsonData; // インデックスシグネチャを追加
+}
+
+export const jsonDataAtom = atom<JsonDataState>({
   key: 'jsonData',
-  default: [],
+  default: {
+    data: [],
+    totalCount: 0,
+  },
 });
 
 export const indexAtom = atom({
@@ -2104,6 +2133,28 @@ export const indexAtom = atom({
   default: 0,
 });
 
+export const chunkSizeAtom = atom({
+  key: 'chunkSize',
+  default: 1000, // 初期値は1000件
+});
+
+export const isLoadingMoreAtom = atom({
+  key: 'isLoadingMore',
+  default: false,
+});
+
+export const isLargeFileAtom = atom<boolean>({
+  key: 'isLargeFile',
+  default: false,
+});
+export interface FileAtom extends File {
+  path?: string;
+}
+
+export const fileAtom = atom<FileAtom | null>({
+  key: 'file',
+  default: null,
+});
 ```
 
 ### state\atmos\themeAtom.ts
@@ -2226,21 +2277,23 @@ export const customThemeColorsAtom = atom<ThemeColors[]>({
 
 ```
 import { useRef, useState, useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
-import { JsonData, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { chunkSizeAtom, fileAtom, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { parseJsonData } from '@/lib/utils/helpers/helpers';
 import Button from '@/components/atoms/Button/Button';
+import { errorMessageAtom } from '@/state/atmos/errorMessageAtom';
 
 const FileUploader = () => {
   const setJsonData = useSetRecoilState(jsonDataAtom);
   const setFileName = useSetRecoilState(fileNameAtom); // setFileNameを取得
+  const setFile = useSetRecoilState(fileAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
-
   const [isFileLoaded, setIsFileLoaded] = useState(false);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const chunkSize = useRecoilValue(chunkSizeAtom);
+  const setErrorMessage = useSetRecoilState(errorMessageAtom);
 
   const handleLoadJsonFile = () => {
     if (fileInputRef.current) {
@@ -2252,37 +2305,49 @@ const FileUploader = () => {
     // ファイル読み込み完了時にコンポーネントをレンダリングする
   }, [isFileLoaded]);
 
-  const [errorMessage, setErrorMessage] = useState('');
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  if (event.target.files?.length) {
+    const file = event.target.files[0];
+    setFile(file);
+    setFileName(file.name);
+    setIndex(0); // ファイルを読み込み直した場合は index を 0 に設定
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileReader = new FileReader();
-
-    if (event.target.files?.length) {
-      const file = event.target.files[0];
-      setFileName(file.name);
-
-      fileReader.readAsText(file);
-      fileReader.onload = () => {
-        try {
-          // ファイルの内容をJSON形式に変換
-          const content = fileReader.result as string;
-          const jsonData: JsonData[] = parseJsonData(content);
-
-          if (jsonData.length > 0) {
-            setIndex(0);
-            setJsonData(jsonData);
-            setIsFileLoaded(true);
-            setErrorMessage('');
-          } else {
-            setErrorMessage('ファイルが対応していません。期待される形式のJSONまたはJSONLファイルを選択してください。');
-          }
-        } catch (error) {
-          console.error('ファイルの読み込みに失敗しました。', error);
-          setErrorMessage('ファイルの読み込みに失敗しました。有効なJSONまたはJSONLファイルを選択してください。');
-        }
-      };
+    try {
+      const initialData = await parseJsonData(file, 0, chunkSize);
+      const jsonData = JSON.parse(await file.text());
+      setJsonData({
+        data: initialData,
+        totalCount: jsonData.length,
+      });
+      setIsFileLoaded(true);
+      setErrorMessage('');
+    } catch (error) {
+      console.error('ファイルの読み込みに失敗しました。', error);
+      setErrorMessage('ファイルの読み込みに失敗しました。有効なJSONファイルを選択してください。');
     }
+  }
+};
+
+  // ファイル名に応じて全件数を取得する関数
+const getTotalCountFromFileName = (fileName: string): number => {
+  // ファイル名に応じて全件数を設定するロジックを実装
+  // 例: データフォルダにファイル名とそれに対応する件数のマッピングを定義しておく
+  const totalCountMap: { [key: string]: number } = {
+    'chabsa.json': 2572,
+    'jamp.json': 8955,
+    'janli.json': 12312,
+    'jcommonsenseqa.json': 8043,
+    'jemhopqa.json': 953,
+    'jnli.json': 18065,
+    'jsem.json': 12667,
+    'jsick.json': 4500,
+    'jsquad.json': 56573,
+    'jsts.json': 11205,
+    'niilc.json': 715,
   };
+
+  return totalCountMap[fileName] || 0;
+};
 
   return (
     <div>
@@ -2296,12 +2361,18 @@ const FileUploader = () => {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      <ErrorMessage />
     </div>
   );
 };
 
 export default FileUploader;
+
+const ErrorMessage = () => {
+  const errorMessage = useRecoilValue(errorMessageAtom);
+
+  return errorMessage ? <p className="text-red-500">{errorMessage}</p> : null;
+};
 
 ```
 
@@ -2453,7 +2524,8 @@ const config: Config = {
     },
   },
   plugins: [],
-  darkMode: 'class'
+  darkMode: 'class',
+  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
 };
 export default config;
 

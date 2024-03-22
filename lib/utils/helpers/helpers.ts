@@ -1,9 +1,5 @@
 import { JsonData } from "@/state/atmos/jsonDataAtom";
 
-// helpers.js
-export default function processJsonData(jsonData: JSON | any) {
-}
-
 export function countOccurrences(array: any[], key: string): { [key: string]: number } {
   return array.reduce((acc, obj) => {
     const property = obj[key];
@@ -12,22 +8,25 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
   }, {});
 }
 
-export const parseJsonData = (content: string): JsonData[] => {
+// ファイルを読み込んでJSONデータをパースする関数
+export const parseJsonData = async (file: File, offset: number, length: number): Promise<JsonData[]> => {
   try {
+    const content = await file.text();
     const jsonData = JSON.parse(content);
 
     if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
-      return jsonData;
+      return jsonData.slice(offset, offset + length);
     } else {
       console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
       return [];
     }
   } catch (error) {
-    console.error('無効なJSONデータ:', content);
+    console.error('無効なJSONデータ:', error);
     return [];
   }
 };
 
+// JSONデータのバリデーション関数
 function isValidJsonData(data: any): data is JsonData {
   return (
     typeof data === 'object' &&

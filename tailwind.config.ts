@@ -20,6 +20,7 @@ const config: Config = {
     },
   },
   plugins: [],
-  darkMode: 'class'
+  darkMode: 'class',
+  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
 };
 export default config;

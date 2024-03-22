@@ -1,5 +1,3 @@
-'use client';
-
 import JsonMainView from "@/components/template/JsonMainView/JsonMainView";
 import JsonReadLayout from "@/components/template/JsonReadLayout/JsonReadLayout";
 

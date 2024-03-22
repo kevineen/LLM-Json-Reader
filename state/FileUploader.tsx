@@ -1,65 +1,43 @@
 import { useRef, useState, useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
-import { JsonData, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { chunkSizeAtom, fileAtom, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { parseJsonData } from '@/lib/utils/helpers/helpers';
 import Button from '@/components/atoms/Button/Button';
+import { errorMessageAtom } from '@/state/atmos/errorMessageAtom';
 
 const FileUploader = () => {
-  const setJsonData = useSetRecoilState(jsonDataAtom);
-  const setFileName = useSetRecoilState(fileNameAtom); // setFileNameを取得
-  const [index, setIndex] = useRecoilState(indexAtom);
-
-  const [isFileLoaded, setIsFileLoaded] = useState(false);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const setFileName = useSetRecoilState(fileNameAtom);
+  const chunkSize = useRecoilValue(chunkSizeAtom);
+  const [, setIndex] = useRecoilState(indexAtom);
+  const [, setJsonData] = useRecoilState(jsonDataAtom);
+  const [, setFile] = useRecoilState(fileAtom);
 
-  const handleLoadJsonFile = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (e.target.files && e.target.files.length > 0) {
+    const file = e.target.files[0];
+    setFileName(file.name);
+    setFile(file);
+    setIndex(0);
+
+    try {
+      const initialData = await parseJsonData(file, 0, chunkSize);
+      const jsonData = JSON.parse(await file.text());
+      setJsonData({
+        data: initialData,
+        totalCount: jsonData.length,
+      });
+    } catch (error) {
+      console.error('ファイルの読み込みに失敗しました。', error);
     }
-  };
-
-  useEffect(() => {
-    // ファイル読み込み完了時にコンポーネントをレンダリングする
-  }, [isFileLoaded]);
-
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileReader = new FileReader();
-
-    if (event.target.files?.length) {
-      const file = event.target.files[0];
-      setFileName(file.name);
-
-      fileReader.readAsText(file);
-      fileReader.onload = () => {
-        try {
-          // ファイルの内容をJSON形式に変換
-          const content = fileReader.result as string;
-          const jsonData: JsonData[] = parseJsonData(content);
-
-          if (jsonData.length > 0) {
-            setIndex(0);
-            setJsonData(jsonData);
-            setIsFileLoaded(true);
-            setErrorMessage('');
-          } else {
-            setErrorMessage('ファイルが対応していません。期待される形式のJSONまたはJSONLファイルを選択してください。');
-          }
-        } catch (error) {
-          console.error('ファイルの読み込みに失敗しました。', error);
-          setErrorMessage('ファイルの読み込みに失敗しました。有効なJSONまたはJSONLファイルを選択してください。');
-        }
-      };
-    }
-  };
+  }
+};
 
   return (
     <div>
-      <Button onClick={handleLoadJsonFile}>
+      <Button onClick={() => fileInputRef.current?.click()}>
         ファイル読込
       </Button>
       <input
@@ -69,9 +47,14 @@ const FileUploader = () => {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </div>
   );
 };
 
 export default FileUploader;
+
+const ErrorMessage = () => {
+  const errorMessage = useRecoilValue(errorMessageAtom);
+
+  return errorMessage ? <p className="text-red-500">{errorMessage}</p> : null;
+};

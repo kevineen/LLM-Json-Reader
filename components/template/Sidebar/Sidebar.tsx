@@ -1,6 +1,10 @@
+'use client';
+
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
-import { useRef, useEffect } from 'react';
+import { JsonData, JsonDataState, chunkSizeAtom, fileAtom, indexAtom, isLargeFileAtom, isLoadingMoreAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { useRef, useEffect, useState, useCallback } from 'react';
+import Button from '@/components/atoms/Button/Button';
+import { parseJsonData } from '@/lib/utils/helpers/helpers';
 
 interface SidebarProps {
   backgroundColor: string;
@@ -15,43 +19,73 @@ const Sidebar: React.FC<SidebarProps> = ({
   textColor,
   selectedBackgroundColor,
   selectedTextColor,
-  hoverBackgroundColor,
 }) => {
-  const jsonData = useRecoilValue(jsonDataAtom);
+  const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
+  const chunkSize = useRecoilValue(chunkSizeAtom);
+  const [renderedData, setRenderedData] = useState(jsonData.slice(0, chunkSize));
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [, setJsonData] = useRecoilState(jsonDataAtom);
+  const file = useRecoilValue(fileAtom);
+
   const [index, setIndex] = useRecoilState(indexAtom);
+
   const selectedItemRef = useRef<HTMLDivElement | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (selectedItemRef.current && sidebarRef.current) {
-      const selectedItemRect = selectedItemRef.current.getBoundingClientRect();
-      const sidebarRect = sidebarRef.current.getBoundingClientRect();
-
-      const itemHeight = selectedItemRect.height;
-      const visibleItemsHeight = itemHeight * 9; // 選択中のアイテムを含めて9つ分の高さ
-
-      const scrollPosition = index * itemHeight - (sidebarRect.height - visibleItemsHeight) / 2;
-
-      const topVisibleIndex = Math.floor(sidebarRef.current.scrollTop / itemHeight);
-      const bottomVisibleIndex = topVisibleIndex + Math.floor(sidebarRect.height / itemHeight) - 1;
-
-      if (index < topVisibleIndex + 4 || index > bottomVisibleIndex - 4) {
-        sidebarRef.current.scrollTop = scrollPosition;
-      }
+  const loadMoreData = useCallback(async () => {
+    console.log(jsonData.length, renderedData.length, chunkSize, totalCount, file)
+    if (renderedData.length < jsonData.length && file) {
+      setIsLoadingMore(true);
+      const start = renderedData.length;
+      const end = Math.min(start + chunkSize, jsonData.length);
+      const newData = await parseJsonData(file, start, end - start);
+      setRenderedData((prevData: JsonData[]) => [...prevData, ...newData]);
+      setIsLoadingMore(false);
     }
-  }, [index, jsonData.length, jsonData]);
+  }, [renderedData.length, chunkSize, jsonData.length, file]);
 
+  useEffect(() => {
+    loadMoreData();
+  }, [loadMoreData]);
+
+  useEffect(() => {
+  if (selectedItemRef.current && sidebarRef.current) {
+    const sidebar = sidebarRef.current;
+    const selectedItem = selectedItemRef.current;
+    const itemHeight = selectedItem.offsetHeight;
+    const sidebarHeight = sidebar.offsetHeight;
+
+    // 選択中のアイテムの前後に表示されるアイテムの数
+    const bufferItems = 4;
+    let scrollPosition = sidebar.scrollTop;
+
+    // 選択中のアイテムがサイドバーの表示範囲内にあるかどうかをチェック
+    const selectedItemTop = index * itemHeight;
+    const selectedItemBottom = selectedItemTop + itemHeight;
+    const sidebarVisibleTop = sidebar.scrollTop;
+    const sidebarVisibleBottom = sidebarVisibleTop + sidebarHeight;
+
+    // 選択中のアイテムがサイドバーの上部に近づいた場合
+    if (selectedItemTop < sidebarVisibleTop + itemHeight * bufferItems) {
+      scrollPosition = Math.max(selectedItemTop - itemHeight * bufferItems, 0);
+    }
+    // 選択中のアイテムがサイドバーの下部に近づいた場合
+    else if (selectedItemBottom > sidebarVisibleBottom - itemHeight * bufferItems) {
+      // サイドバーの下部に表示されるアイテムの数を考慮してスクロール位置を調整
+      scrollPosition = selectedItemBottom + itemHeight * bufferItems - sidebarHeight;
+    }
+
+    // サイドバーをスクロールする
+    sidebar.scrollTop = scrollPosition;
+  }
+}, [index, jsonData.length]);
 
   return (
-    <div
-      ref={sidebarRef}
-      className="p-4 h-full overflow-y-auto"
-      style={{ backgroundColor, color: textColor }}
-    >
-      {jsonData?.length === 0 ? (
+    <div ref={sidebarRef} className="p-4 h-full overflow-y-auto" style={{ backgroundColor, color: textColor }}>
+      {jsonData.length === 0 ? (
         <div className="text-center">LLM JP Eval データの<br />ファイルを読み込んでください</div>
       ) : (
-        jsonData.map((data, i) => (
+        renderedData.map((data, i) => (
           <div
             key={i}
             ref={index === i ? selectedItemRef : null}
@@ -67,6 +101,12 @@ const Sidebar: React.FC<SidebarProps> = ({
             {`${i}: ${data.input}`}
           </div>
         ))
+      )}
+      {isLoadingMore && <div className="text-center">読み込み中...</div>}
+      {!isLoadingMore && renderedData.length < totalCount && totalCount > 1000 && (
+        <div className="text-center mt-4">
+          <Button onClick={loadMoreData}>次の1000件を読み込む</Button>
+        </div>
       )}
     </div>
   );
