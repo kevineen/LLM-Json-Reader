@@ -37,3 +37,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# vscode
+/.storybook
+/.vscode
+
+# original
+/data/memo/
+/lib/db.ts
+
+# AI開発用
+.summaryignore
+generate_project_summary.py
+llm-json-reader_project_summary.txt
