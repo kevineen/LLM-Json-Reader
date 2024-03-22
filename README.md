@@ -1,10 +1,10 @@
 # LLM-Json-Reader
 
-LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用です。
+LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用です。<br />
 大規模言語モデル（LLM）の開発に使用されるデータセット視覚化のためのアプリです。
 
-ディレクトリ構成などで、参考にさせて頂いたサイト様
-##### https://zenn.dev/siakas/articles/05481bdefacd13
+開発にあたり、参考にさせて頂いたサイト様
+[Next.js 14 + TypeScript + Tailwind + ESLint + Prettier 環境構築手順](https://zenn.dev/siakas/articles/05481bdefacd13)
 
 #### 読込データセットの対応状況
 
@@ -13,9 +13,9 @@ LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用�
 
 ##### llm-jp-eval
 複数のデータセットを横断して日本語の大規模言語モデルを自動評価するもの。
-【チューニング共通フォーマット】を閲覧できます。
+【チューニング共通フォーマット】を閲覧できます。<br />
 [llm-jp-eval (github)](https://github.com/llm-jp/llm-jp-eval/tree/main)
-上記リンク先のダウンロード方法でダウンロードしたものを、データ読込として選択ください。
+上記リンク先のダウンロード方法でダウンロードしたものを、データ読込として選択ください。<br />
 例: llm-jp-eval/dataset_dir/(version)/tuning/dev/train/chabsa.json
 
 #### フォーマット例
@@ -46,7 +46,7 @@ LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用�
 
 ## アプリ作動に必要となる事前インストール
 #### Node.js (version20.9.0を使用)
-Node.jsは、ブラウザ外でJavaScriptを実行するためのプラットフォームです。これにより、JavaScriptを使ってサーバーサイドのアプリケーションを開発することが可能になります。
+Node.jsは、ブラウザ外でJavaScriptを実行するためのプラットフォームです。これにより、JavaScriptを使ってサーバーサイドのアプリケーションを開発することが可能になります。<br />
 Node.jsを使用するにあたっては、nvmなどのNode.jsバージョン管理ツールを使用することを推奨します。pythonで言うところのpyenv（複数のpythonバージョンを切り替えて使用できる技術）。
 
 #### pnpm
@@ -60,11 +60,11 @@ pnpmは「performant npm」という意味で、npmやyarnと並ぶJavaScriptの
 git clone https://github.com/yourusername/llm-json-reader.git
 ```
 
-2. 必要な依存関係をインストールするために、フォルダ内に移動し、
-   インストールのためのコマンドを入力します。
-   （※ フォルダに移動するまえにpnpm installを実行してしまいがち。
-   必ず対象のフォルダに移動してください。
-   やってしまった場合は、削除してからやり直すのが一番簡単。
+2. 必要な依存関係をインストールするために、フォルダ内に移動し、<br />
+   インストールのためのコマンドを入力します。<br />
+   （※ フォルダに移動するまえにpnpm installを実行してしまいがち。<br />
+   必ず対象のフォルダに移動してください。<br />
+   やってしまった場合は、削除してからやり直すのが一番簡単。<br />
    又は、出来上がったファイルをllm-json-readerフォルダ内に移動。）
 
 ```bash
@@ -127,7 +127,7 @@ pnpm dev
 
 "プルリクエストは歓迎します。大きな変更を加える場合は、まずIssueを開いて変更内容について議論してください。"
 
-Githubの共同開発経験が不十分なため、どのように他人との更新をしてゆけばよいかなどの経験がありません。
+Githubの共同開発経験が不十分なため、どのように他人との更新をしてゆけばよいかなどの経験がありません。<br />
 要望はIssueにて頂き、暖かく見守って頂ければ幸いです。
 
 ## ライセンス
