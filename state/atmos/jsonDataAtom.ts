@@ -1,27 +1,15 @@
 import { atom } from 'recoil';
-
-// dolly json 用
-// export const jsonDataAtom = atom<any[]>({
-//   key: 'jsonData',
-//   default: [],
-// });
-
-// llm json eval用
-export const jsonDataAtom = atom<{
+export interface JsonData {
+  ID: string;
   instruction: string;
-  output_length: number;
-  metrics: string[];
-  few_shots: any[];
-  samples: { input: string; output: string }[];
-}>({
+  input: string;
+  output: string;
+  text: string;
+}
+
+export const jsonDataAtom = atom<JsonData[]>({
   key: 'jsonData',
-  default: {
-    instruction: '',
-    output_length: 0,
-    metrics: [],
-    few_shots: [],
-    samples: [],
-  },
+  default: [],
 });
 
 export const indexAtom = atom({

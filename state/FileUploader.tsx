@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
-import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { JsonData, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { parseJsonData } from '@/lib/utils/helpers/helpers';
 import Button from '@/components/atoms/Button/Button';
 
@@ -20,36 +20,36 @@ const FileUploader = () => {
     }
   };
 
-
   useEffect(() => {
     // ファイル読み込み完了時にコンポーネントをレンダリングする
   }, [isFileLoaded]);
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
 
     if (event.target.files?.length) {
       const file = event.target.files[0];
-      setFileName(file.name); // ファイル名を設定
+      setFileName(file.name);
 
       fileReader.readAsText(file);
       fileReader.onload = () => {
         try {
           const content = fileReader.result as string;
-          const jsonData = parseJsonData(content);
-          setJsonData(jsonData);
-          setIsFileLoaded(true); // ファイル読み込み完了時にisFileLoadedをtrueに設定
+          const jsonData: JsonData[] = parseJsonData(content);
+
+          if (jsonData.length > 0) {
+            setJsonData(jsonData);
+            setIsFileLoaded(true);
+            setErrorMessage('');
+          } else {
+            setErrorMessage('ファイルが対応していません。期待される形式のJSONまたはJSONLファイルを選択してください。');
+          }
         } catch (error) {
           console.error('ファイルの読み込みに失敗しました。', error);
+          setErrorMessage('ファイルの読み込みに失敗しました。有効なJSONまたはJSONLファイルを選択してください。');
         }
-        // try {
-        //   const content = fileReader.result as string;
-        //   const jsonData = parseJsonData(content);
-        //   setJsonData(jsonData);
-        //   setIsFileLoaded(true); // ファイル読み込み完了時にisFileLoadedをtrueに設定
-        // } catch (error) {
-        //   console.error('ファイルの読み込みに失敗しました。', error);
-        // }
       };
     }
   };
@@ -66,6 +66,7 @@ const FileUploader = () => {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </div>
   );
 };

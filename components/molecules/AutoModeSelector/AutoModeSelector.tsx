@@ -14,10 +14,10 @@ const AutoModeSelector: React.FC = () => {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
 
   useEffect(() => {
-    if (jsonData.samples.length > 0) {
+    if (jsonData.length > 0) {
       setIsLoading(false);
     }
-  }, [jsonData.samples]);
+  }, [jsonData]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -39,7 +39,7 @@ const AutoModeSelector: React.FC = () => {
           totalSeconds = customSpeed;
           break;
         case 'textLength':
-          const textLength = jsonData.samples[index]?.input.length + jsonData.samples[index]?.output.length || 0;
+          const textLength = jsonData[index]?.input.length + jsonData[index]?.output.length || 0;
           totalSeconds = Math.ceil(textLength / 10); // 10文字あたり1秒
           break;
       }
@@ -56,7 +56,7 @@ const AutoModeSelector: React.FC = () => {
     return () => {
       clearInterval(timer);
     };
-  }, [autoModeSpeed, customSpeed, isAutoModeOn, jsonData.samples, index]);
+  }, [autoModeSpeed, customSpeed, isAutoModeOn, jsonData, index]);
 
   const handleSpeedChange = (speed: AutoModeSpeed) => {
     setAutoModeSpeed(speed);

@@ -1,3 +1,5 @@
+import { JsonData } from "@/state/atmos/jsonDataAtom";
+
 // helpers.js
 export default function processJsonData(jsonData: JSON | any) {
 }
@@ -10,29 +12,30 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
   }, {});
 }
 
-export const parseJsonData = (content: string) => {
-  const jsonData = [];
-
-  // llm-jp-evalのデータを読み込む
+export const parseJsonData = (content: string): JsonData[] => {
   try {
-    return JSON.parse(content);
+    const jsonData = JSON.parse(content);
+
+    if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
+      return jsonData;
+    } else {
+      console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
+      return [];
+    }
   } catch (error) {
     console.error('無効なJSONデータ:', content);
     return [];
   }
-
-  // 通常のJSONデータを読み込む
-  // const lines = content.split(/\r?\n/);
-  // for (const line of lines) {
-  //   if (line.trim()) {
-  //     try {
-  //       const parsedLine = JSON.parse(line);
-  //       jsonData.push(parsedLine);
-  //     } catch (error) {
-  //       console.error('無効なJSONデータ:', line);
-  //     }
-  //   }
-  // }
-
-  return jsonData;
 };
+
+function isValidJsonData(data: any): data is JsonData {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    typeof data.ID === 'string' &&
+    typeof data.instruction === 'string' &&
+    typeof data.input === 'string' &&
+    typeof data.output === 'string' &&
+    typeof data.text === 'string'
+  );
+}

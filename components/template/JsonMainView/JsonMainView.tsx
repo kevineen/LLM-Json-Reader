@@ -19,28 +19,26 @@ export const JsonMainView = () => {
   const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
   const customSpeed = useRecoilValue(customSpeedAtom);
 
-  const { samples } = jsonData;
-
-  const currentCard = samples[index];
-  const prevCard = samples[index - 1];
-  const nextCard = samples[index + 1];
+  const currentCard = jsonData[index];
+  const prevCard = jsonData[index - 1];
+  const nextCard = jsonData[index + 1];
 
   const handlePrevClick = () => {
     setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
   };
 
   const handleNextClick = () => {
-    setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.samples.length - 1));
+    setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
   };
 
   // useCallbackフックをuseEffectの外で定義
   const handleArrowKey = useCallback((event: KeyboardEvent) => {
     if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-      setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.samples.length - 1));
+      setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
     } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
       setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
     }
-  }, [setIndex, jsonData.samples.length]);
+  }, [setIndex, jsonData.length]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleArrowKey);
@@ -69,20 +67,20 @@ export const JsonMainView = () => {
           delay = customSpeed * 1000;
           break;
         case 'textLength':
-          const textLength = jsonData.samples[index]?.input.length || 0;
+          const textLength = jsonData[index]?.input.length || 0;
           delay = textLength * 50; // 文字数に応じて秒数を計算（例: 1文字あたり50ミリ秒）
           break;
       }
 
       timer = setTimeout(() => {
-        setIndex((prevIndex) => (prevIndex + 1) % jsonData.samples.length);
+        setIndex((prevIndex) => (prevIndex + 1) % jsonData.length);
       }, delay);
     }
 
     return () => {
       clearTimeout(timer);
     };
-  }, [autoModeSpeed, customSpeed, index, jsonData.samples]);
+  }, [autoModeSpeed, customSpeed, index, jsonData]);
 
 
   return (
@@ -103,7 +101,7 @@ export const JsonMainView = () => {
           <ArrowButton
             direction="right"
             onClick={handleNextClick}
-            disabled={index === jsonData.samples.length - 1}
+            disabled={index === jsonData.length - 1}
           />
         </div>
       </div>

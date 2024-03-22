@@ -21,4 +21,5 @@
   "[scss]": {
     "editor.tabSize": 2
   },
+  "CodeGPT.apiKey": "CodeGPT Plus Beta",
 }

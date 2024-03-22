@@ -6,6 +6,7 @@
   - .editorconfig
   - .eslintignore
   - .eslintrc.json
+  - .next/
   - .prettierignore
   - .prettierrc
   - .storybook/
@@ -45,6 +46,9 @@
         - index.ts
       - Card/
         - Card.tsx
+        - index.ts
+      - FontSizeControl/
+        - FontSizeControl.tsx
         - index.ts
       - MainCard/
         - index.ts
@@ -89,7 +93,6 @@
         - index.ts
         - Sidebar.tsx
   - data/
-    - 1.2.0/
     - carddesign.jpg (binary file)
     - evalDatasetlist.csv
     - features.txt
@@ -115,13 +118,12 @@
   - package.json
   - postcss.config.js
   - public/
-    - next.svg
-    - vercel.svg
   - README.md
   - state/
     - atmos/
       - autoModeAtom.ts
       - fileNameAtom.ts
+      - fontSizeAtoms.ts
       - jsonDataAtom.ts
       - themeAtom.ts
     - FileUploader.tsx
@@ -322,6 +324,7 @@ export const parameters = {
   "[scss]": {
     "editor.tabSize": 2
   },
+  "CodeGPT.apiKey": "CodeGPT Plus Beta",
 }
 
 ```
@@ -865,6 +868,9 @@ export * from "./AutoModeSelector";
 
 ```
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+
+import { fontSizeAtom } from '@/state/atmos/fontSizeAtoms';
 
 interface CardProps {
   title: string;
@@ -874,6 +880,8 @@ interface CardProps {
 }
 
 export default function Card({ title, content = '', displayMode, onClick }: CardProps) {
+  const fontSize = useRecoilValue(fontSizeAtom);
+
   const maxHeightClass = displayMode === 'selected' ? '' : 'max-h-40';
   const preClass = displayMode === 'selected' ? 'whitespace-pre-wrap break-words' : 'overflow-auto whitespace-pre-wrap';
 
@@ -883,22 +891,68 @@ export default function Card({ title, content = '', displayMode, onClick }: Card
       onClick={onClick}
     >
       <h3 className="text-xl font-bold mb-2 text-gray-800">{title}</h3>
-      <pre className={`text-sm text-gray-700 ${preClass}`}>
+      <pre className={`text-sm text-gray-700 ${preClass}`} style={{ fontSize: `${fontSize}px` }}>
         {displayMode === 'selected'
           ? content || 'ファイルを読み込んでください'
           : content
-          ? `${content.slice(0, 100)}...`
-          : 'ファイルを読み込んでください'}
+            ? `${content.slice(0, 100)}...`
+            : 'ファイルを読み込んでください'}
       </pre>
     </div>
   );
 }
+
 ```
 
 ### components\molecules\Card\index.ts
 
 ```
 export * from "./Card";
+```
+
+### components\molecules\FontSizeControl\FontSizeControl.tsx
+
+```
+import React from 'react';
+import { useRecoilState } from 'recoil';
+
+import { fontSizeAtom } from '@/state/atmos/fontSizeAtoms';
+
+const FontSizeControl: React.FC = () => {
+  const [fontSize, setFontSize] = useRecoilState(fontSizeAtom);
+
+  const increaseFontSize = () => {
+    setFontSize((prevSize) => Math.min(prevSize + 1, 40));
+  };
+
+  const decreaseFontSize = () => {
+    setFontSize((prevSize) => Math.max(prevSize - 1, 12));
+  };
+
+  return (
+    <div className='px-4 flex items-center'>
+      <button className={`w-8 h-8 text-white text-lg rounded-full flex items-center justify-center ${fontSize === 12 ? 'bg-gray-500' : 'bg-blue-500'}`} onClick={decreaseFontSize}>
+        -
+      </button>
+      <div className='min-w-[4rem] text-right px-4'>
+        <span className="text-lg">{fontSize}px</span>
+      </div>
+      <button className={`w-8 h-8 bg-blue-500 text-white text-lg rounded-full flex items-center justify-center ${fontSize === 40 ? 'bg-gray-500' : 'bg-blue-500'}`} onClick={increaseFontSize}>
+        +</button>
+    </div>
+
+  );
+};
+
+export default FontSizeControl;
+
+```
+
+### components\molecules\FontSizeControl\index.ts
+
+```
+export * from "./FontSizeControl";
+
 ```
 
 ### components\molecules\MainCard\index.ts
@@ -1044,7 +1098,7 @@ const ThemeToggle = () => {
       </button>
       <Link href="/themeColors">
         <button className="ml-4 px-4 py-2 rounded bg-blue-500 text-white">
-          カスタムテーマ
+          選択テーマ色
         </button>
       </Link>
       {isCustomTheme && (
@@ -1294,22 +1348,21 @@ import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
 import { parseJsonData } from "@/lib/utils/helpers/helpers";
 import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
 import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
+import FileUploader from "@/state/FileUploader";
+import FontSizeControl from "@/components/molecules/FontSizeControl/FontSizeControl";
 
 export const JsonMainView = () => {
 
   const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
-  const [isFileLoaded, setIsFileLoaded] = useState(false);
   const [index, setIndex] = useRecoilState(indexAtom);
   const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
   const customSpeed = useRecoilValue(customSpeedAtom);
 
-  const { samples } = jsonData;
+  const { samples = []} = jsonData || {};
 
   const currentCard = samples[index];
   const prevCard = samples[index - 1];
   const nextCard = samples[index + 1];
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePrevClick = () => {
     setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
@@ -1334,36 +1387,6 @@ export const JsonMainView = () => {
       window.removeEventListener('keydown', handleArrowKey);
     };
   }, [handleArrowKey]);
-
-  const handleLoadJsonFile = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileReader = new FileReader();
-
-    if (event.target.files?.length) {
-      const file = event.target.files[0];
-
-      fileReader.readAsText(file);
-      fileReader.onload = () => {
-        try {
-          const content = fileReader.result as string;
-          const jsonData = parseJsonData(content);
-          setJsonData(jsonData);
-          setIsFileLoaded(true); // ファイル読み込み完了時にisFileLoadedをtrueに設定
-        } catch (error) {
-          console.error('ファイルの読み込みに失敗しました。', error);
-        }
-      };
-    }
-  };
-
-  useEffect(() => {
-    // ファイル読み込み完了時にコンポーネントをレンダリングする
-  }, [isFileLoaded]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -1412,16 +1435,8 @@ export const JsonMainView = () => {
           />
         </div>
         <div className="w-1/3 flex">
-          <Button onClick={handleLoadJsonFile}>
-            ファイル読込
-          </Button>
-          <input
-            type="file"
-            accept=".json,.jsonl"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
+          <FileUploader />
+          <FontSizeControl /> {/* フォントサイズ制御コンポーネントを追加 */}
         </div>
         <div className="w-1/3 flex justify-end">
           <ArrowButton
@@ -1435,9 +1450,9 @@ export const JsonMainView = () => {
       <AutoModeSelector />
       <br />
 
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="flex">
         {/* 前のデータを表示 */}
-        <div className="col-span-1">
+        <div className="w-1/2 h-32 .min-h-32 px-2">
           {prevCard ? (
             <Card
               title="Previous Data"
@@ -1451,7 +1466,7 @@ export const JsonMainView = () => {
         </div>
 
         {/* 次のデータを表示 */}
-        <div className="col-span-1">
+        <div className="w-1/2 h-32 .min-h-32 px-2">
           {nextCard ? (
             <Card
               title="Next Data"
@@ -1463,19 +1478,19 @@ export const JsonMainView = () => {
             <Card title="No Next Data" content="" displayMode="next" />
           )}
         </div>
+      </div>
 
-        {/* 選択中のデータを表示 */}
-        <div className="col-span-2">
-          {currentCard ? (
-            <Card
-              title="Selected Data"
-              content={`Input: ${currentCard.input}\nOutput: ${currentCard.output}`}
-              displayMode="selected"
-            />
-          ) : (
-            <Card title="No Data" content="" displayMode="selected" />
-          )}
-        </div>
+      {/* 選択中のデータを表示 */}
+      <div className="w-full overflow-hidden px-2 py-2">
+        {currentCard ? (
+          <Card
+            title="Selected Data"
+            content={`Input: ${currentCard.input}\nOutput: ${currentCard.output}`}
+            displayMode="selected"
+          />
+        ) : (
+          <Card title="No Data" content="" displayMode="selected" />
+        )}
       </div>
     </div>
   );
@@ -1654,7 +1669,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         sidebarRef.current.scrollTop = scrollPosition;
       }
     }
-  }, [index, jsonData.samples.length]);
+  }, [index, jsonData.samples.length, jsonData]);
 
 
   return (
@@ -1663,10 +1678,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       className="p-4 h-full overflow-y-auto"
       style={{ backgroundColor, color: textColor }}
     >
-      {jsonData.samples.length === 0 ? (
+      {jsonData?.samples?.length === 0 ? (
         <div className="text-center">LLM JP Eval<br />ファイルを読み込んでください</div>
       ) : (
-        jsonData.samples.map((data, i) => (
+        jsonData.samples?.map((data, i) => (
           <div
             key={i}
             ref={index === i ? selectedItemRef : null}
@@ -1686,8 +1701,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     </div>
   );
 };
-
-
 
 export default Sidebar;
 
@@ -1905,7 +1918,7 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
 export const parseJsonData = (content: string) => {
   const jsonData = [];
 
-  // llm-jp-evalのデータを読み込む
+    // llm-jp-evalのデータを読み込む
   try {
     return JSON.parse(content);
   } catch (error) {
@@ -1913,18 +1926,18 @@ export const parseJsonData = (content: string) => {
     return [];
   }
 
-  // 通常のJSONデータを読み込む
-  // const lines = content.split(/\r?\n/);
-  // for (const line of lines) {
-  //   if (line.trim()) {
-  //     try {
-  //       const parsedLine = JSON.parse(line);
-  //       jsonData.push(parsedLine);
-  //     } catch (error) {
-  //       console.error('無効なJSONデータ:', line);
-  //     }
-  //   }
-  // }
+  // dollyのデータを読み込む
+  const lines = content.split(/\r?\n/);
+  for (const line of lines) {
+    if (line.trim()) {
+      try {
+        const parsedLine = JSON.parse(line);
+        jsonData.push(parsedLine);
+      } catch (error) {
+        console.error('無効なJSONデータ:', line);
+      }
+    }
+  }
 
   return jsonData;
 };
@@ -2003,7 +2016,6 @@ module.exports = {
     autoprefixer: {},
   },
 };
-
 
 ```
 
@@ -2112,6 +2124,18 @@ import { atom } from 'recoil';
 export const fileNameAtom = atom<string>({
   key: 'fileName',
   default: '',
+});
+
+```
+
+### state\atmos\fontSizeAtoms.ts
+
+```
+import { atom } from 'recoil';
+
+export const fontSizeAtom = atom<number>({
+  key: 'fontSize',
+  default: 16, // デフォルトのフォントサイズを設定
 });
 
 ```
@@ -2271,14 +2295,32 @@ export const customThemeColorsAtom = atom<ThemeColors[]>({
 ### state\FileUploader.tsx
 
 ```
+import { useRef, useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
 import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { parseJsonData } from '@/lib/utils/helpers/helpers';
+import Button from '@/components/atoms/Button/Button';
 
 const FileUploader = () => {
   const setJsonData = useSetRecoilState(jsonDataAtom);
   const setFileName = useSetRecoilState(fileNameAtom); // setFileNameを取得
+
+  const [isFileLoaded, setIsFileLoaded] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLoadJsonFile = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+
+  useEffect(() => {
+    // ファイル読み込み完了時にコンポーネントをレンダリングする
+  }, [isFileLoaded]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
@@ -2290,10 +2332,10 @@ const FileUploader = () => {
       fileReader.readAsText(file);
       fileReader.onload = () => {
         try {
-          // JSONLファイルを行ごとに分割し、各行をJSONオブジェクトとしてパース
-          const jsonLines = (fileReader.result as string).split(/\r?\n/);
-          const jsonData = jsonLines.map(line => line ? JSON.parse(line) : null).filter(line => line);
+          const content = fileReader.result as string;
+          const jsonData = parseJsonData(content);
           setJsonData(jsonData);
+          setIsFileLoaded(true); // ファイル読み込み完了時にisFileLoadedをtrueに設定
         } catch (error) {
           console.error('ファイルの読み込みに失敗しました。', error);
         }
@@ -2303,8 +2345,16 @@ const FileUploader = () => {
 
   return (
     <div>
-      <p>JSONLファイルを選択してください。</p>
-      <input type="file" onChange={handleFileChange} accept=".json,.jsonl" />
+      <Button onClick={handleLoadJsonFile}>
+        ファイル読込
+      </Button>
+      <input
+        type="file"
+        accept=".json,.jsonl"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+      />
     </div>
   );
 };

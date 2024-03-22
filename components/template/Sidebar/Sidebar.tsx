@@ -39,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         sidebarRef.current.scrollTop = scrollPosition;
       }
     }
-  }, [index, jsonData.samples.length]);
+  }, [index, jsonData.length, jsonData]);
 
 
   return (
@@ -48,10 +48,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       className="p-4 h-full overflow-y-auto"
       style={{ backgroundColor, color: textColor }}
     >
-      {jsonData.samples.length === 0 ? (
+      {jsonData?.length === 0 ? (
         <div className="text-center">LLM JP Eval<br />ファイルを読み込んでください</div>
       ) : (
-        jsonData.samples.map((data, i) => (
+        jsonData.map((data, i) => (
           <div
             key={i}
             ref={index === i ? selectedItemRef : null}
@@ -71,7 +71,5 @@ const Sidebar: React.FC<SidebarProps> = ({
     </div>
   );
 };
-
-
 
 export default Sidebar;
