@@ -11,6 +11,7 @@ import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
 import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
 import FileUploader from "@/state/FileUploader";
 import FontSizeControl from "@/components/molecules/FontSizeControl/FontSizeControl";
+import NowCard from "@/components/molecules/NowCard/NowCard";
 
 export const JsonMainView = () => {
 
@@ -108,50 +109,49 @@ export const JsonMainView = () => {
 
       <AutoModeSelector />
       <br />
+      
+      {jsonData.length > 0 && (
+        <div className="flex flex-col md:flex-row"> {/* flex-colを追加 */}
+          <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40"> {/* クラスを変更 */}
+            {prevCard || index !== 0 ? (
+              <Card
+                title="前のデータ"
+                content={`Input: ${prevCard.input}\n Output: ${prevCard.output}`}
+                displayMode="prev"
+                onClick={() => setIndex(index - 1)}
+              />
+            ) : (
+              <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
+            )}
+          </div>
 
-      <div className="flex">
-        {/* 前のデータを表示 */}
-        <div className="w-1/2 h-32 .min-h-32 px-2">
-          {prevCard ? (
-            <Card
-              title="Previous Data"
-              content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
-              displayMode="prev"
-              onClick={() => setIndex(index - 1)}
-            />
-          ) : (
-            <Card title="No Previous Data" content="" displayMode="prev" />
-          )}
+          {/* 次のデータを表示 */}
+          <div className="w-full md:w-1/2 px-2 h-40 max-h-40"> {/* クラスを変更 */}
+            {nextCard || index == jsonData.length + 1 ? (
+              <Card
+                title="次のデータ"
+                content={`Input: ${nextCard.input}\n Output: ${nextCard.output}`}
+                displayMode="next"
+                onClick={() => setIndex(index + 1)}
+              />
+            ) : (
+              <Card title="次のデータはありません" content="最終データ" displayMode="next" />
+            )}
+          </div>
         </div>
-
-        {/* 次のデータを表示 */}
-        <div className="w-1/2 h-32 .min-h-32 px-2">
-          {nextCard ? (
-            <Card
-              title="Next Data"
-              content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
-              displayMode="next"
-              onClick={() => setIndex(index + 1)}
-            />
-          ) : (
-            <Card title="No Next Data" content="" displayMode="next" />
-          )}
-        </div>
-      </div>
+      )}
 
       {/* 選択中のデータを表示 */}
-      <div className="w-full overflow-hidden px-2 py-2">
-        {currentCard ? (
-          <Card
-            title="Selected Data"
-            content={`Input: ${currentCard.input}\nOutput: ${currentCard.output}`}
-            displayMode="selected"
-          />
-        ) : (
-          <Card title="No Data" content="" displayMode="selected" />
-        )}
-      </div>
+      {jsonData.length > 0 && (
+        <div className="w-full py-4 px-2 mb-4 md:mb-0"> {/* クラスを変更 */}
+          {currentCard ? (
+        <NowCard data={currentCard} />
+      ) : (
+        <Card title="No Data" content="" displayMode="selected" />
+      )}
     </div>
+    )}
+  </div>
   );
 }
 

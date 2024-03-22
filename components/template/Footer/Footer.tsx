@@ -32,7 +32,7 @@ const Footer = () => {
       className="flex items-center justify-center p-4"
       style={{ backgroundColor: colors.footer, color: colors.footerText }}
     >
-      {fileName || 'ファイル名'}
+      {fileName || ''}
     </footer>
   );
 };

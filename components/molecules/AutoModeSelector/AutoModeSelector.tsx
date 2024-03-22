@@ -48,9 +48,9 @@ const AutoModeSelector: React.FC = () => {
       setRemainingSeconds(totalSeconds);
 
       timer = setInterval(() => {
-        setCurrentSecond((prevSecond) => prevSecond + 0.1); // 500ミリ秒ごとに更新
+        setCurrentSecond((prevSecond) => prevSecond + 0.1); // 100ミリ秒ごとに更新
         setRemainingSeconds((prevSeconds) => prevSeconds - 0.1);
-      }, 100); // 500ミリ秒ごとに実行
+      }, 100); // 100ミリ秒ごとに実行
     }
 
     return () => {
@@ -78,7 +78,7 @@ const AutoModeSelector: React.FC = () => {
         className={`px-4 py-2 rounded ${isAutoModeOn ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-800'}`}
         onClick={() => handleSpeedChange(isAutoModeOn ? 'off' : '3s')}
       >
-        {isAutoModeOn ? 'オート' : 'オート'}
+        {isAutoModeOn ? 'オートモード' : 'オートモード'}
       </button>
       <div className="flex ml-4">
         <button
@@ -99,12 +99,12 @@ const AutoModeSelector: React.FC = () => {
         >
           10秒
         </button>
-        <button
+        {/* <button
           className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === 'textLength' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}
           onClick={() => handleSpeedChange('textLength')}
         >
           テキストの長さ
-        </button>
+        </button> */}
       </div>
       <div className="ml-4 flex items-center relative">
         {isAutoModeOn && (

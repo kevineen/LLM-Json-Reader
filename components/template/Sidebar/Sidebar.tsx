@@ -49,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       style={{ backgroundColor, color: textColor }}
     >
       {jsonData?.length === 0 ? (
-        <div className="text-center">LLM JP Eval<br />ファイルを読み込んでください</div>
+        <div className="text-center">LLM JP Eval データの<br />ファイルを読み込んでください</div>
       ) : (
         jsonData.map((data, i) => (
           <div

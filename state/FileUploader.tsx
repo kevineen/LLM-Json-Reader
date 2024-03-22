@@ -1,14 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
-import { JsonData, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { JsonData, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { parseJsonData } from '@/lib/utils/helpers/helpers';
 import Button from '@/components/atoms/Button/Button';
 
 const FileUploader = () => {
   const setJsonData = useSetRecoilState(jsonDataAtom);
   const setFileName = useSetRecoilState(fileNameAtom); // setFileNameを取得
+  const [index, setIndex] = useRecoilState(indexAtom);
 
   const [isFileLoaded, setIsFileLoaded] = useState(false);
 
@@ -36,10 +37,12 @@ const FileUploader = () => {
       fileReader.readAsText(file);
       fileReader.onload = () => {
         try {
+          // ファイルの内容をJSON形式に変換
           const content = fileReader.result as string;
           const jsonData: JsonData[] = parseJsonData(content);
 
           if (jsonData.length > 0) {
+            setIndex(0);
             setJsonData(jsonData);
             setIsFileLoaded(true);
             setErrorMessage('');

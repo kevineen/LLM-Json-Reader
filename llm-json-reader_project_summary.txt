@@ -92,16 +92,9 @@
       - Sidebar/
         - index.ts
         - Sidebar.tsx
-  - data/
-    - carddesign.jpg (binary file)
-    - evalDatasetlist.csv
-    - features.txt
-    - prompt_for_claude.txt
   - dist/
   - hooks/
-    - useFileUpload.ts
   - lib/
-    - db.ts
     - declarations/
     - env/
       - env.mjs
@@ -129,8 +122,6 @@
     - FileUploader.tsx
     - JsonPaginator.tsx
     - selectors/
-      - currentThemeColorsSelector.ts
-      - filteredDataSelector.ts
   - styles/
     - globals.css
     - themeColorPalette.ts
@@ -334,7 +325,14 @@ export const parameters = {
 ```
 // `app/page.tsx` is the UI for the `/` URL
 export default function About() {
-  const featuresItems = [{ icon: '🏎️', name: 'XML対応' }];
+  const featuresItems = [
+    { icon: '🏎️', name: 'XML対応' },
+    { icon: '🔍', name: '検索機能' },
+    { icon: '📦', name: 'データベース連携' },
+    { icon: '🎤', name: 'アプリ使用者のTTSと連携した音声出力モード' },
+    { icon: '🔒', name: 'MQTT、又はgRPCを使用したスマホからの操作' },
+    { icon: '🎨', name: 'デザインカスタマイズ' },
+  ];
 
   return (
     <div>
@@ -358,7 +356,7 @@ export default function About() {
             key={name}
             className="flex flex-col text-center items-center hover:scale-105 transition-all hover:shadow-xl duration-300 justify-center gap-2 px-4 py-6 border rounded-lg shadow"
           >
-            <span className="text-xl">{icon}</span>
+            {/* <span className="text-xl">{icon}</span> */}
             <span>{name}</span>
           </li>
         ))}
@@ -748,10 +746,10 @@ const AutoModeSelector: React.FC = () => {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
 
   useEffect(() => {
-    if (jsonData.samples.length > 0) {
+    if (jsonData.length > 0) {
       setIsLoading(false);
     }
-  }, [jsonData.samples]);
+  }, [jsonData]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -773,7 +771,7 @@ const AutoModeSelector: React.FC = () => {
           totalSeconds = customSpeed;
           break;
         case 'textLength':
-          const textLength = jsonData.samples[index]?.input.length + jsonData.samples[index]?.output.length || 0;
+          const textLength = jsonData[index]?.input.length + jsonData[index]?.output.length || 0;
           totalSeconds = Math.ceil(textLength / 10); // 10文字あたり1秒
           break;
       }
@@ -782,15 +780,15 @@ const AutoModeSelector: React.FC = () => {
       setRemainingSeconds(totalSeconds);
 
       timer = setInterval(() => {
-        setCurrentSecond((prevSecond) => prevSecond + 0.1); // 500ミリ秒ごとに更新
+        setCurrentSecond((prevSecond) => prevSecond + 0.1); // 100ミリ秒ごとに更新
         setRemainingSeconds((prevSeconds) => prevSeconds - 0.1);
-      }, 100); // 500ミリ秒ごとに実行
+      }, 100); // 100ミリ秒ごとに実行
     }
 
     return () => {
       clearInterval(timer);
     };
-  }, [autoModeSpeed, customSpeed, isAutoModeOn, jsonData.samples, index]);
+  }, [autoModeSpeed, customSpeed, isAutoModeOn, jsonData, index]);
 
   const handleSpeedChange = (speed: AutoModeSpeed) => {
     setAutoModeSpeed(speed);
@@ -812,7 +810,7 @@ const AutoModeSelector: React.FC = () => {
         className={`px-4 py-2 rounded ${isAutoModeOn ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-800'}`}
         onClick={() => handleSpeedChange(isAutoModeOn ? 'off' : '3s')}
       >
-        {isAutoModeOn ? 'オート' : 'オート'}
+        {isAutoModeOn ? 'オートモード' : 'オートモード'}
       </button>
       <div className="flex ml-4">
         <button
@@ -833,12 +831,12 @@ const AutoModeSelector: React.FC = () => {
         >
           10秒
         </button>
-        <button
+        {/* <button
           className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === 'textLength' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}
           onClick={() => handleSpeedChange('textLength')}
         >
           テキストの長さ
-        </button>
+        </button> */}
       </div>
       <div className="ml-4 flex items-center relative">
         {isAutoModeOn && (
@@ -1032,7 +1030,7 @@ export * from "./ThemeSelector";
 
 ```
 import { useRecoilState } from 'recoil';
-import { originalColors } from '@/styles/themeColorPalette';
+// import { originalColors } from '@/styles/themeColorPalette';
 import { themeAtom, ThemeMode } from '@/state/atmos/themeAtom';
 
 const ThemeSelector = () => {
@@ -1046,11 +1044,11 @@ const ThemeSelector = () => {
     <div>
       <button onClick={() => handleThemeChange('light')}>Light</button>
       <button onClick={() => handleThemeChange('dark')}>Dark</button>
-      {originalColors.map((color, index) => (
+      {/* {originalColors.map((color, index) => (
         <button key={color.name} onClick={() => handleThemeChange(`original${index}` as ThemeMode)}>
           {color.name}
         </button>
-      ))}
+      ))} */}
     </div>
   );
 };
@@ -1094,13 +1092,13 @@ const ThemeToggle = () => {
         onClick={toggleTheme}
         className={`p-2 rounded ${isCustomTheme ? 'opacity-50' : ''}`}
       >
-        <ThemeIcon theme={theme} />
+        <ThemeIcon theme={theme as 'light' | 'dark' | string} />
       </button>
-      <Link href="/themeColors">
+      {/* <Link href="/themeColors">
         <button className="ml-4 px-4 py-2 rounded bg-blue-500 text-white">
           選択テーマ色
         </button>
-      </Link>
+      </Link> */}
       {isCustomTheme && (
         <div
           className="ml-4 w-6 h-6 rounded-full"
@@ -1311,7 +1309,7 @@ const Footer = () => {
       className="flex items-center justify-center p-4"
       style={{ backgroundColor: colors.footer, color: colors.footerText }}
     >
-      {fileName || 'ファイル名'}
+      {fileName || ''}
     </footer>
   );
 };
@@ -1358,28 +1356,26 @@ export const JsonMainView = () => {
   const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
   const customSpeed = useRecoilValue(customSpeedAtom);
 
-  const { samples = []} = jsonData || {};
-
-  const currentCard = samples[index];
-  const prevCard = samples[index - 1];
-  const nextCard = samples[index + 1];
+  const currentCard = jsonData[index];
+  const prevCard = jsonData[index - 1];
+  const nextCard = jsonData[index + 1];
 
   const handlePrevClick = () => {
     setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
   };
 
   const handleNextClick = () => {
-    setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.samples.length - 1));
+    setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
   };
 
   // useCallbackフックをuseEffectの外で定義
   const handleArrowKey = useCallback((event: KeyboardEvent) => {
     if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-      setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.samples.length - 1));
+      setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
     } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
       setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
     }
-  }, [setIndex, jsonData.samples.length]);
+  }, [setIndex, jsonData.length]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleArrowKey);
@@ -1408,20 +1404,20 @@ export const JsonMainView = () => {
           delay = customSpeed * 1000;
           break;
         case 'textLength':
-          const textLength = jsonData.samples[index]?.input.length || 0;
+          const textLength = jsonData[index]?.input.length || 0;
           delay = textLength * 50; // 文字数に応じて秒数を計算（例: 1文字あたり50ミリ秒）
           break;
       }
 
       timer = setTimeout(() => {
-        setIndex((prevIndex) => (prevIndex + 1) % jsonData.samples.length);
+        setIndex((prevIndex) => (prevIndex + 1) % jsonData.length);
       }, delay);
     }
 
     return () => {
       clearTimeout(timer);
     };
-  }, [autoModeSpeed, customSpeed, index, jsonData.samples]);
+  }, [autoModeSpeed, customSpeed, index, jsonData]);
 
 
   return (
@@ -1442,57 +1438,60 @@ export const JsonMainView = () => {
           <ArrowButton
             direction="right"
             onClick={handleNextClick}
-            disabled={index === jsonData.samples.length - 1}
+            disabled={index === jsonData.length - 1}
           />
         </div>
       </div>
 
       <AutoModeSelector />
       <br />
+      
+      {jsonData.length > 0 && (
+        <div className="flex">
+          <div className="w-1/2 h-32 .min-h-32 px-2">
+            {prevCard || index !== 0 ? (
+              <Card
+                title="前のデータ"
+                content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
+                displayMode="prev"
+                onClick={() => setIndex(index - 1)}
+              />
+            ) : (
+              <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
+            )}
+          </div>
 
-      <div className="flex">
-        {/* 前のデータを表示 */}
-        <div className="w-1/2 h-32 .min-h-32 px-2">
-          {prevCard ? (
-            <Card
-              title="Previous Data"
-              content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
-              displayMode="prev"
-              onClick={() => setIndex(index - 1)}
-            />
-          ) : (
-            <Card title="No Previous Data" content="" displayMode="prev" />
-          )}
+          {/* 次のデータを表示 */}
+          <div className="w-1/2 h-32 .min-h-32 px-2">
+            {nextCard || index == jsonData.length + 1 ? (
+              <Card
+                title="次のデータ"
+                content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
+                displayMode="next"
+                onClick={() => setIndex(index + 1)}
+              />
+            ) : (
+              <Card title="次のデータはありません" content="最終データ" displayMode="next" />
+            )}
+          </div>
         </div>
-
-        {/* 次のデータを表示 */}
-        <div className="w-1/2 h-32 .min-h-32 px-2">
-          {nextCard ? (
-            <Card
-              title="Next Data"
-              content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
-              displayMode="next"
-              onClick={() => setIndex(index + 1)}
-            />
-          ) : (
-            <Card title="No Next Data" content="" displayMode="next" />
-          )}
-        </div>
-      </div>
+      )}
 
       {/* 選択中のデータを表示 */}
-      <div className="w-full overflow-hidden px-2 py-2">
-        {currentCard ? (
-          <Card
-            title="Selected Data"
-            content={`Input: ${currentCard.input}\nOutput: ${currentCard.output}`}
-            displayMode="selected"
-          />
-        ) : (
-          <Card title="No Data" content="" displayMode="selected" />
-        )}
-      </div>
-    </div>
+      {jsonData.length > 0 && (
+        <div className="w-full overflow-hidden px-2 py-2">
+          {currentCard ? (
+        <Card
+          title="現在のデータ"
+          content={`Input: ${currentCard.input}\nOutput: ${currentCard.output}`}
+          displayMode="selected"
+        />
+          ) : (
+        <Card title="No Data" content="" displayMode="selected" />
+          )}
+        </div>
+      )}
+        </div>
   );
 }
 
@@ -1669,7 +1668,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         sidebarRef.current.scrollTop = scrollPosition;
       }
     }
-  }, [index, jsonData.samples.length, jsonData]);
+  }, [index, jsonData.length, jsonData]);
 
 
   return (
@@ -1678,10 +1677,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       className="p-4 h-full overflow-y-auto"
       style={{ backgroundColor, color: textColor }}
     >
-      {jsonData?.samples?.length === 0 ? (
-        <div className="text-center">LLM JP Eval<br />ファイルを読み込んでください</div>
+      {jsonData?.length === 0 ? (
+        <div className="text-center">LLM JP Eval データの<br />ファイルを読み込んでください</div>
       ) : (
-        jsonData.samples?.map((data, i) => (
+        jsonData.map((data, i) => (
           <div
             key={i}
             ref={index === i ? selectedItemRef : null}
@@ -1704,134 +1703,6 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 export default Sidebar;
 
-```
-
-### data\evalDatasetlist.csv
-
-```
-﻿https://zenn.dev/toshi_456/articles/957518bef2317b,https://llm-jp.github.io/awesome-japanese-llm/,
-
-jglue
-
-"jamp: JAMPDatasetProcessor,"
-"janli: JaNLIDatasetProcessor,"
-"jcommonsenseqa: JCommonsenseQADatasetProcessor,"
-"jemhopqa: JEMHopQADatasetProcessor,"
-"jnli: JNLIDatasetProcessor,"
-"jsem: JSeMDatasetProcessor,"
-"jsick: JSICKDatasetProcessor,"
-"jsquad: JSQuADDatasetProcessor,"
-"jsts: JSTSDatasetProcessor,"
-"niilc: NIILCDatasetProcessor,"
-"chabsa: ChabsaDatasetProcessor,"
-"mawps: MawpsDatasetProcessor,"
-"wiki_reading: WikipediaReadingDatasetProcessor,"
-"wiki_ner: WikipediaNERDatasetProcessor,"
-"wiki_dependency: WikipediaDependencyDatasetProcessor,"
-"wiki_pas: WikipediaPASDatasetProcessor,"
-"wiki_coreference: WikipediaCoreferenceDatasetProcessor,"
-
-```
-
-### data\features.txt
-
-```
-Storybookの導入 各コンポーネントのデザイン案を視覚的に確認・共有できるようにStorybookを導入しましょう。
-Storybookを使うことで、コンポーネントの再利用性が高まり、保守性も向上します。 日本のデザインを意識したシンプルで美しいUIを目指しましょう。
-SQLiteからPostgreSQLへの移行を見据えたデータ層の設計 現在はSQLiteを使用していますが、将来的にはPostgreSQLへの移行を検討しているとのことです。
- 移行をスムーズに行えるよう、データアクセス層を抽象化し、DBの差異を吸収できる設計にしておくと良いでしょう。 例えば、リポジトリパターンを採用し、
- インターフェースを定義しておくことで、DBの変更に柔軟に対応できます。
-機能アイデアについて 以下のような機能があると便利だと思います。
-
-検索機能: ファイル内のテキストを検索できると便利です。
-タグ付け機能: ファイルにタグを付けることで、分類・整理がしやすくなります。
-メモ機能: ファイルに対してメモを残せると、読んだ内容を振り返りやすくなります。
-シェア機能: ファイルを他のユーザーと共有できると、コラボレーションが捗ります。
-音声読み上げ機能: ファイルの内容を音声で読み上げてくれると、目が疲れているときなどに便利です。
-
-```
-
-### data\prompt_for_claude.txt
-
-```
-<system>
-あなたは大手の多国籍企業で30年の経験を得たのち、自分のアイデアで起業し、数々の実績を達成してきたエンジニアです。
-どんな顧客の要求にも相手の立場を考えて、相手の知識レベルに合わせて例をあげて説明してくれる能力に長けています。
-</system>
-<requirement>
-顧客の要求は、JsonまたはJsonlファイルを読むことができるWEBアプリです。
-</requirement>
-<user>
-私はプログラミングを独学で勉強し、現在は、少しわかる程度で経験不足な駆け出しエンジニアです。
-あなたの会社に入社いたしました。
-将来的に必要であればデザインパターンなどを採用します、経験不足な私のようなエンジニアでも、
-勉強すれば分かる程度の採用理由・使い方・将来性を考えたコメントなどを残すようにしてください。
-</user>
-<tech>
-アトミックデザインルールを採用し、TypeScriptメインで、Next.jsのapp router構成でアプリを作成します。
-また、pnpmとgulpを使用します。
-再利用性・保守性を考えたフォルダ構成、ファイル名を使用してください。
-</tech>
-<design>
-デザインはTailwind CSSを採用します。
-デザインはマルチプラットフォームへの拡張を考えたもので、アメリカのデザインのようなシンプルなものよりも、
-日本のデザイン配色を意識した形にしてください。
-</design>
-<features>
-SQLiteでのCRUD機能をつけて10件ほどのモックデータを入れてください。
-ただし、将来的にPostgreSQLに切り替えることができるように、簡単に切り替える仕様にしてください。
-</features>
-
-```
-
-### hooks\useFileUpload.ts
-
-```
-'use client';
-
-import { useState } from 'react';
-
-const useFileUpload = () => {
-  const [fileData, setFileData] = useState<File | null>(null);
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-
-    if (file && file.type === 'application/json') {
-      setFileData(file);
-    } else {
-      // ここでエラーメッセージを表示するか、不正なファイルタイプであることをユーザーに知らせる
-      console.error("Invalid file type. Please select a json or jsonl file.");
-    }
-  };
-
-  return { fileData, handleFileUpload };
-};
-
-export default useFileUpload;
-
-```
-
-### lib\db.ts
-
-```
-import { Database } from 'sqlite3';
-
-const sqlite3 = require('sqlite3').verbose();
-
-const db = new sqlite3.Database(':memory:');
-
-export async function query(sql: string, params?: any[]) {
-  return new Promise((resolve, reject) => {
-    db.all(sql, params, (err: Error | null, rows: any[]) => { // Added type annotation for 'err' parameter
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-}
 ```
 
 ### lib\env\env.mjs
@@ -1903,6 +1774,8 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
 ### lib\utils\helpers\helpers.ts
 
 ```
+import { JsonData } from "@/state/atmos/jsonDataAtom";
+
 // helpers.js
 export default function processJsonData(jsonData: JSON | any) {
 }
@@ -1915,33 +1788,33 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
   }, {});
 }
 
-export const parseJsonData = (content: string) => {
-  const jsonData = [];
-
-    // llm-jp-evalのデータを読み込む
+export const parseJsonData = (content: string): JsonData[] => {
   try {
-    return JSON.parse(content);
+    const jsonData = JSON.parse(content);
+
+    if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
+      return jsonData;
+    } else {
+      console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
+      return [];
+    }
   } catch (error) {
     console.error('無効なJSONデータ:', content);
     return [];
   }
-
-  // dollyのデータを読み込む
-  const lines = content.split(/\r?\n/);
-  for (const line of lines) {
-    if (line.trim()) {
-      try {
-        const parsedLine = JSON.parse(line);
-        jsonData.push(parsedLine);
-      } catch (error) {
-        console.error('無効なJSONデータ:', line);
-      }
-    }
-  }
-
-  return jsonData;
 };
 
+function isValidJsonData(data: any): data is JsonData {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    typeof data.ID === 'string' &&
+    typeof data.instruction === 'string' &&
+    typeof data.input === 'string' &&
+    typeof data.output === 'string' &&
+    typeof data.text === 'string'
+  );
+}
 ```
 
 ### lib\utils\helpers\index.tx
@@ -2022,54 +1895,83 @@ module.exports = {
 ### README.md
 
 ```
-参考にしたサイト
-# https://zenn.dev/siakas/articles/05481bdefacd13
-
 # LLM-Json-Reader
 
-LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧するためのWebアプリケーションです。大規模言語モデル（LLM）の開発に使用されるデータセットの視覚化と操作に特化しています。
+LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用です。<br />
+大規模言語モデル（LLM）の開発に使用されるデータセット視覚化のためのアプリです。
 
-## 特徴
+開発にあたり、参考にさせて頂いたサイト様<br />
+[Next.js 14 + TypeScript + Tailwind + ESLint + Prettier 環境構築手順](https://zenn.dev/siakas/articles/05481bdefacd13)
 
-1. JSONおよびJSONL形式のファイルの読み込みと表示
-2. 複数のJSONファイルの統合表示
-3. JSONデータのCSVおよびExcelファイルへのエクスポート
-4. JSONデータのグラフィカルな可視化（棒グラフ、円グラフ、折れ線グラフなど）
-5. JSONデータ内の特定のキーワード検索
-6. JSONデータのソート（特定のキーを基準に昇順または降順）
-7. JSONデータのフィルタリング（特定の条件を満たすデータのみ表示）
-8. JSONデータの編集（値の変更、要素の追加・削除など）
-9. JSONデータのバリデーション（データの整合性チェック）
-10. JSONデータのバージョン管理（変更履歴の追跡、特定のバージョンへの復元など）
-11. ユーザー認証とアクセス制御（ログイン、ロール別のアクセス制限など）
+#### 読込データセットの対応状況
 
-## 使用技術
+- [x] llm-jp-eval
+- [ ] Mt-bench
 
-- Next.js (App Router)
-- TypeScript
-- Tailwind CSS
-- Recoil
-- SQLite (将来的にはPostgreSQLへの移行を想定)
-- ESLint
-- Prettier
-- Storybook
-- pnpm
-- gulp
+##### llm-jp-eval
+複数のデータセットを横断して日本語の大規模言語モデルを自動評価するもの。
+【チューニング共通フォーマット】を閲覧できます。<br />
+[llm-jp-eval (github)](https://github.com/llm-jp/llm-jp-eval/tree/main)<br />
+上記リンク先のダウンロード方法でダウンロードしたものを、データ読込として選択ください。<br />
+例: llm-jp-eval/dataset_dir/(version)/tuning/dev/train/chabsa.json
 
-## インストール
+#### フォーマット例
+```
+[
+    {
+        "ID": "jemhopqa-0",
+        "instruction": "質問を入力とし、回答を出力してください。回答の他には何も含めないことを厳守してください。",
+        "input": "質問：クイーンとビートルズはどちらもイギリス出身のバンドですか？",
+        "output": "YES",
+        "text": "<INSTRUCTION|LLM-jp>質問を入力とし、回答を出力してください。回答の他には何も含めないことを厳守してく>ださい。\n<INPUT|LLM-jp>質問：クイーンとビートルズはどちらもイギリス出身のバンドですか？\n<OUTPUT|LLM-jp>YES"
+    },
+    {
+        "ID": "jemhopqa-1",
+        "instruction": "質問を入力とし、回答を出力してください。回答の他には何も含めないことを厳守してください。",
+        "input": "質問：東京都中央区と中野区、2005年時点での昼間人口が多いのは中央区ですか？",
+        "output": "YES",
+        "text": "<INSTRUCTION|LLM-jp>質問を入力とし、回答を出力してください。回答の他には何も含めないことを厳守してく>ださい。\n<INPUT|LLM-jp>質問：東京都中央区と中野区、2005年時点での昼間人口が多いのは中央区ですか？\n<OUTPUT|LLM-jp>YES"
+    },
+    ...
+]
 
-1. リポジトリをクローンします。
+```
+<br />
+
+#### MT-bench
+対応予定
+
+## アプリ作動に必要となる事前インストール物
+#### Node.js (version20.9.0を使用)
+Node.jsは、ブラウザ外でJavaScriptを実行するためのプラットフォームです。これにより、JavaScriptを使ってサーバーサイドのアプリケーションを開発することが可能になります。<br />
+Node.jsを使用するにあたっては、nvmなどのNode.jsバージョン管理ツールを使用することを推奨します。<br />
+pythonで言うところのpyenv（複数のpythonバージョンを切り替えて使用できる技術）。
+
+#### pnpm
+pnpmは「performant npm」という意味で、npmやyarnと並ぶJavaScriptのパッケージマネージャーです。<br />
+yarnを使用する予定でしたが、インストールの際の高速化、容量の効率化のため採用してあります。
+
+## インストール（使用方法）
+
+1. リポジトリをクローンします。（自分のパソコンにダウンロードするようなもの）
 
 ```bash
 git clone https://github.com/yourusername/llm-json-reader.git
 ```
 
-2. 必要な依存関係をインストールします。
+2. 必要な依存関係をインストールするために、フォルダ内に移動し、<br />
+   インストールのためのコマンドを入力します。
 
 ```bash
 cd llm-json-reader
+```
+```bash
 pnpm install
 ```
+
+（※ フォルダに移動するまえにpnpm installを実行してしまいがち。必ず対象のフォルダに移動してください。<br />
+   やってしまった場合は、削除してからやり直すのが一番簡単。<br />
+   又は、出来上がったファイルをllm-json-readerフォルダ内に移動。）
 
 3. 開発サーバーを起動します。
 
@@ -2078,22 +1980,62 @@ pnpm dev
 ```
 
 4. ブラウザで`http://localhost:3000`を開きます。
+   <br />
+
+5. ファイル読込ボタンから、読み込みたいJSONデータなどを選択してください。<br />
+6. 対応データ順次更新中。
+
+### 使用技術
+
+- Next.js (App Router：使ってみたかった)
+- TypeScript（型安全：アプリのバグを防ぐための仕組み）
+- Tailwind CSS（デザイン：デザイン）
+- Recoil（状態管理：変数をうまく使う）
+- ESLint（静的検証ツール：コードのエラー検出）
+- Prettier（コードフォーマット：コード整形）
+- pnpm（パッケージ管理：アプリに使うライブラリーの管理）
+- gulp（タスクランナー：コンパイルや圧縮などの自動化）
+
+#### 後日追加予定（必要になれば
+
+- ライトモード、ダークモードのほかにカスタムテーマ（やっぱり不必要に感じたため、一度削除）
+- テキストの長さに合わせた秒数表示モード（微調整中）
+- SQLite (将来的にはPostgreSQLへの移行か併用を想定)
+- Storybook
+
+### Features (追加機能)
+
+- [ ] XML形式対応
+- [ ] データベースと連携し、何らかの機能
+- [ ] アプリ使用者のTTSと連携した音声出力モード
+- [ ] MQTT、又はgRPCを使用したスマホからの操作
+
+## AIからの機能要望リスト（検討中
+
+~~1. JSONおよびJSONL形式のファイルの読み込みと表示~~<br />
+2. 複数のJSONファイルの統合表示<br />
+3. JSONデータのCSVおよびExcelファイルへのエクスポート<br />
+4. JSONデータのグラフィカルな可視化（棒グラフ、円グラフ、折れ線グラフなど）<br />
+5. JSONデータ内の特定のキーワード検索<br />
+6. JSONデータのソート（特定のキーを基準に昇順または降順）<br />
+7. JSONデータのフィルタリング（特定の条件を満たすデータのみ表示）<br />
+8. JSONデータの編集（値の変更、要素の追加・削除など）<br />
+9. JSONデータのバリデーション（データの整合性チェック）<br />
+10. JSONデータのバージョン管理（変更履歴の追跡、特定のバージョンへの復元など）<br />
+11. ユーザー認証とアクセス制御（ログイン、ロール別のアクセス制限など）
 
 ## 貢献
 
-プルリクエストは歓迎します。大きな変更を加える場合は、まずIssueを開いて変更内容について議論してください。
+"プルリクエストは歓迎します。<br />まずIssueを開いて変更内容について議論してください。"
+
+Githubの共同開発経験が不十分なため、どのように他人との更新をしてゆけばよいかなどの経験がありません。<br />
+要望はIssueにて頂き、暖かく見守って頂ければ幸いです。
 
 ## ライセンス
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+閲覧用のデータセットは、データ元のライセンスに準じます。
 
 ```
 
@@ -2144,29 +2086,17 @@ export const fontSizeAtom = atom<number>({
 
 ```
 import { atom } from 'recoil';
-
-// dolly json 用
-// export const jsonDataAtom = atom<any[]>({
-//   key: 'jsonData',
-//   default: [],
-// });
-
-// llm json eval用
-export const jsonDataAtom = atom<{
+export interface JsonData {
+  ID: string;
   instruction: string;
-  output_length: number;
-  metrics: string[];
-  few_shots: any[];
-  samples: { input: string; output: string }[];
-}>({
+  input: string;
+  output: string;
+  text: string;
+}
+
+export const jsonDataAtom = atom<JsonData[]>({
   key: 'jsonData',
-  default: {
-    instruction: '',
-    output_length: 0,
-    metrics: [],
-    few_shots: [],
-    samples: [],
-  },
+  default: [],
 });
 
 export const indexAtom = atom({
@@ -2296,16 +2226,17 @@ export const customThemeColorsAtom = atom<ThemeColors[]>({
 
 ```
 import { useRef, useState, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
-import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { JsonData, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { parseJsonData } from '@/lib/utils/helpers/helpers';
 import Button from '@/components/atoms/Button/Button';
 
 const FileUploader = () => {
   const setJsonData = useSetRecoilState(jsonDataAtom);
   const setFileName = useSetRecoilState(fileNameAtom); // setFileNameを取得
+  const [index, setIndex] = useRecoilState(indexAtom);
 
   const [isFileLoaded, setIsFileLoaded] = useState(false);
 
@@ -2317,27 +2248,37 @@ const FileUploader = () => {
     }
   };
 
-
   useEffect(() => {
     // ファイル読み込み完了時にコンポーネントをレンダリングする
   }, [isFileLoaded]);
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
 
     if (event.target.files?.length) {
       const file = event.target.files[0];
-      setFileName(file.name); // ファイル名を設定
+      setFileName(file.name);
 
       fileReader.readAsText(file);
       fileReader.onload = () => {
         try {
+          // ファイルの内容をJSON形式に変換
           const content = fileReader.result as string;
-          const jsonData = parseJsonData(content);
-          setJsonData(jsonData);
-          setIsFileLoaded(true); // ファイル読み込み完了時にisFileLoadedをtrueに設定
+          const jsonData: JsonData[] = parseJsonData(content);
+
+          if (jsonData.length > 0) {
+            setIndex(0);
+            setJsonData(jsonData);
+            setIsFileLoaded(true);
+            setErrorMessage('');
+          } else {
+            setErrorMessage('ファイルが対応していません。期待される形式のJSONまたはJSONLファイルを選択してください。');
+          }
         } catch (error) {
           console.error('ファイルの読み込みに失敗しました。', error);
+          setErrorMessage('ファイルの読み込みに失敗しました。有効なJSONまたはJSONLファイルを選択してください。');
         }
       };
     }
@@ -2355,6 +2296,7 @@ const FileUploader = () => {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </div>
   );
 };
@@ -2396,41 +2338,6 @@ const JsonPaginator = () => {
 };
 
 export default JsonPaginator;
-```
-
-### state\selectors\currentThemeColorsSelector.ts
-
-```
-import { selector } from 'recoil';
-import { themeAtom, lightThemeColors, darkThemeColors, originalThemeColors, trendy1ThemeColors, trendy2ThemeColors, trendy3ThemeColors, trendy4ThemeColors, trendy5ThemeColors } from '@/state/atmos/themeAtom';
-
-export const currentThemeColorsSelector = selector({
-  key: 'currentThemeColorsSelector',
-  get: ({ get }) => {
-    const themeMode = get(themeAtom);
-    switch (themeMode) {
-      case 'light':
-        return get(lightThemeColors);
-      case 'dark':
-        return get(darkThemeColors);
-      case 'original':
-        return get(originalThemeColors);
-      case 'trendy1':
-        return get(trendy1ThemeColors);
-      case 'trendy2':
-        return get(trendy2ThemeColors);
-      case 'trendy3':
-        return get(trendy3ThemeColors);
-      case 'trendy4':
-        return get(trendy4ThemeColors);
-      case 'trendy5':
-        return get(trendy5ThemeColors);
-      default:
-        return get(lightThemeColors); // デフォルトのテーマカラー
-    }
-  },
-});
-
 ```
 
 ### styles\globals.css

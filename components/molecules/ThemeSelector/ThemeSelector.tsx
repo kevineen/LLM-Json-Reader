@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil';
-import { originalColors } from '@/styles/themeColorPalette';
+// import { originalColors } from '@/styles/themeColorPalette';
 import { themeAtom, ThemeMode } from '@/state/atmos/themeAtom';
 
 const ThemeSelector = () => {
@@ -13,11 +13,11 @@ const ThemeSelector = () => {
     <div>
       <button onClick={() => handleThemeChange('light')}>Light</button>
       <button onClick={() => handleThemeChange('dark')}>Dark</button>
-      {originalColors.map((color, index) => (
+      {/* {originalColors.map((color, index) => (
         <button key={color.name} onClick={() => handleThemeChange(`original${index}` as ThemeMode)}>
           {color.name}
         </button>
-      ))}
+      ))} */}
     </div>
   );
 };

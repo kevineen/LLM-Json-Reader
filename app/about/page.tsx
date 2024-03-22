@@ -1,6 +1,13 @@
 // `app/page.tsx` is the UI for the `/` URL
 export default function About() {
-  const featuresItems = [{ icon: '🏎️', name: 'XML対応' }];
+  const featuresItems = [
+    { icon: '🏎️', name: 'XML対応' },
+    { icon: '🔍', name: '検索機能' },
+    { icon: '📦', name: 'データベース連携' },
+    { icon: '🎤', name: 'アプリ使用者のTTSと連携した音声出力モード' },
+    { icon: '🔒', name: 'MQTT、又はgRPCを使用したスマホからの操作' },
+    { icon: '🎨', name: 'デザインカスタマイズ' },
+  ];
 
   return (
     <div>
@@ -24,7 +31,7 @@ export default function About() {
             key={name}
             className="flex flex-col text-center items-center hover:scale-105 transition-all hover:shadow-xl duration-300 justify-center gap-2 px-4 py-6 border rounded-lg shadow"
           >
-            <span className="text-xl">{icon}</span>
+            {/* <span className="text-xl">{icon}</span> */}
             <span>{name}</span>
           </li>
         ))}

@@ -23,13 +23,13 @@ const ThemeToggle = () => {
         onClick={toggleTheme}
         className={`p-2 rounded ${isCustomTheme ? 'opacity-50' : ''}`}
       >
-        <ThemeIcon theme={theme} />
+        <ThemeIcon theme={theme as 'light' | 'dark' | string} />
       </button>
-      <Link href="/themeColors">
+      {/* <Link href="/themeColors">
         <button className="ml-4 px-4 py-2 rounded bg-blue-500 text-white">
           選択テーマ色
         </button>
-      </Link>
+      </Link> */}
       {isCustomTheme && (
         <div
           className="ml-4 w-6 h-6 rounded-full"
