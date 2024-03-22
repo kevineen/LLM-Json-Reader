@@ -12,11 +12,11 @@ const JsonCardViewer = () => {
   const handleArrowKey = useCallback((event: KeyboardEvent) => {
     console.log(index)
     if (event.key === 'ArrowRight') {
-      setIndex((index) => Math.min(index + 1, jsonData.length - 1));
+      setIndex((index) => Math.min(index + 1, jsonData.data.length - 1));
     } else if (event.key === 'ArrowLeft') {
       setIndex((index) => Math.max(index - 1, 0));
     }
-  }, [index, jsonData.length]);
+  }, [index, jsonData.data.length]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleArrowKey);
@@ -27,7 +27,7 @@ const JsonCardViewer = () => {
 
   const nowCard = (item: any, originalIndex: number) => {
     // 選択中のアイテムを表示
-    if (originalIndex === index && originalIndex < jsonData.length) {
+    if (originalIndex === index && originalIndex < jsonData.data.length) {
       return (
         <div key={originalIndex.toString()}>
           <div>{JSON.stringify(item, null, 2)}</div>
@@ -46,7 +46,7 @@ const JsonCardViewer = () => {
           <div>Start</div>
         </div>
       );
-    } else if (originalIndex === index - 1 && originalIndex < jsonData.length) {
+    } else if (originalIndex === index - 1 && originalIndex < jsonData.data.length) {
       return (
         <div key={originalIndex}>
           <div>Category: {item.category}</div>
@@ -59,14 +59,14 @@ const JsonCardViewer = () => {
 
   const nextCard = (item: any, originalIndex: number) => {
     // 選択中のアイテムの1つ後のアイテムを表示
-    if (originalIndex === jsonData.length) {
+    if (originalIndex === jsonData.data.length) {
       // インデックスがjsonDataの最後の要素の場合は "Last" を表示
       return (
         <div key={originalIndex}>
           <div>Last</div>
         </div>
       );
-    } else if (originalIndex === index + 1 && originalIndex < jsonData.length) {
+    } else if (originalIndex === index + 1 && originalIndex < jsonData.data.length) {
       return (
         <div key={originalIndex}>
           <div>Category: {item.category}</div>
@@ -79,7 +79,7 @@ const JsonCardViewer = () => {
 
   return (
     <div>
-      {jsonData && jsonData.length > 0 ? (
+      {jsonData && jsonData.data.length > 0 ? (
         <>
           {previousCard(jsonData[index - 1], index - 1)}
           <div key={index}>

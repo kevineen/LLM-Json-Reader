@@ -7,7 +7,7 @@ const JsonPaginator = () => {
 
   // 次のアイテムを表示する関数
   const showNextItems = () => {
-    if (index + 1 < jsonData.length) {
+    if (index + 1 < jsonData.data.length) {
       setIndex(index + 1);
     }
   };
@@ -21,8 +21,8 @@ const JsonPaginator = () => {
 
   return (
     <div>
-      {jsonData && jsonData.length > 0 ? (<button onClick={showPreviousItems} disabled={index === 0}>前へ</button>): null}
-      {jsonData && jsonData.length > 0 ? (<button onClick={showNextItems} disabled={index + 1 >= jsonData.length}>次へ</button>): null }
+      {jsonData && jsonData.data.length > 0 ? (<button onClick={showPreviousItems} disabled={index === 0}>前へ</button>): null}
+      {jsonData && jsonData.data.length > 0 ? (<button onClick={showNextItems} disabled={index + 1 >= jsonData.data.length}>次へ</button>): null }
     </div>
   );
 };
