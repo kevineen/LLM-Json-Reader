@@ -3,13 +3,20 @@
 LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用です。
 大規模言語モデル（LLM）の開発に使用されるデータセット視覚化のためのアプリです。
 
-開発にあたりディレクトリ構成などで、参考にさせて頂いたサイト様
+ディレクトリ構成などで、参考にさせて頂いたサイト様
 ##### https://zenn.dev/siakas/articles/05481bdefacd13
 
-<br />
-####llm-jp-eval(LLM-jp 評価スクリプト)の評価に使用されるデータの
+#### 読込データセットの対応状況
+
+- [x] llm-jp-eval
+- [ ] Mt-bench
+
+##### llm-jp-eval
+複数のデータセットを横断して日本語の大規模言語モデルを自動評価するもの。
 【チューニング共通フォーマット】を閲覧できます。
-[llm-jp-eval](https://github.com/llm-jp/llm-jp-eval/tree/main)
+[llm-jp-eval (github)](https://github.com/llm-jp/llm-jp-eval/tree/main)
+上記リンク先のダウンロード方法でダウンロードしたものを、データ読込として選択ください。
+例: llm-jp-eval/dataset_dir/(version)/tuning/dev/train/chabsa.json
 
 #### フォーマット例
 ```
@@ -32,11 +39,10 @@ LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用�
 ]
 
 ```
+<br />
 
-#### 読込データセットの対応状況
-
-- [x] llm-jp-eval
-- [ ] Mt-bench
+##### MT-bench
+対応予定
 
 ## アプリ作動に必要となる事前インストール
 #### Node.js (version20.9.0を使用)
@@ -80,7 +86,7 @@ pnpm dev
 5. ファイル読込ボタンから、読み込みたいJSONデータなどを選択してください。
 対応データ順次更新中。
 
-## 使用技術
+### 使用技術
 
 - Next.js (App Router：使ってみたかった)
 - TypeScript（型安全：アプリのバグを防ぐための仕組み）
@@ -96,9 +102,8 @@ pnpm dev
 - SQLite (将来的にはPostgreSQLへの移行か併用を想定)
 - Storybook
 
-## Features (追加機能)
+### Features (追加機能)
 
-- [ ] MT-bench
 - [ ] XML形式対応
 - [ ] データベースと連携し、何らかの機能
 - [ ] アプリ使用者のTTSと連携した音声出力モード
@@ -106,7 +111,7 @@ pnpm dev
 
 ## AIからの機能要望リスト（検討中
 
-1. JSONおよびJSONL形式のファイルの読み込みと表示
+~~1. JSONおよびJSONL形式のファイルの読み込みと表示~~
 2. 複数のJSONファイルの統合表示
 3. JSONデータのCSVおよびExcelファイルへのエクスポート
 4. JSONデータのグラフィカルな可視化（棒グラフ、円グラフ、折れ線グラフなど）
@@ -128,3 +133,5 @@ Githubの共同開発経験が不十分なため、どのように他人との�
 ## ライセンス
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+閲覧用のデータセットは、データ元のライセンスに準じます。
