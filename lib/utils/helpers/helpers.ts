@@ -1,6 +1,4 @@
-import { invalidDataAtom } from "@/state/atmos/invalidDataAtom";
 import { JsonData } from "@/state/atmos/jsonDataAtom";
-import { useSetRecoilState } from "recoil";
 
 export function countOccurrences(array: any[], key: string): { [key: string]: number } {
   return array.reduce((acc, obj) => {

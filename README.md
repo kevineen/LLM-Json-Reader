@@ -8,7 +8,7 @@ LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用�
 
 #### 読込データセットの対応状況
 
-- [x] llm-jp-eval
+- [x] llm-jp-evalのtuningデータ
 - [ ] Mt-bench
 
 ##### llm-jp-eval
@@ -17,6 +17,7 @@ LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用�
 [llm-jp-eval (github)](https://github.com/llm-jp/llm-jp-eval/tree/main)<br />
 上記リンク先のダウンロード方法でダウンロードしたものを、データ読込として選択ください。<br />
 例: llm-jp-eval/dataset_dir/(version)/tuning/dev/train/chabsa.json
+v1.2.0にて確認済み
 
 #### フォーマット例
 ```

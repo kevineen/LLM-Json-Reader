@@ -80,7 +80,9 @@ useEffect(() => {
     <div ref={sidebarRef} className="p-4 h-full overflow-y-auto" style={{ backgroundColor, color: textColor }}>
       {jsonData.length === 0 ? (
         <div className="text-center">LLM JP Eval データの<br />ファイルを読み込んでください<br />
-        <br />現在 : llm-jp-evalの<br />tuningデータにのみ対応</div>
+        <br />現在 : llm-jp-evalの<br />tuningデータにのみ対応<br /><br />
+        {/* llm-jp-eval/<br />dataset_dir/<br />1.2.0/<br />tuning/以下フォルダ */}
+        </div>
       ) : (
         renderedData.map((data, i) => (
           <div
