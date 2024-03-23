@@ -538,7 +538,7 @@ interface ArrowButtonProps {
 }
 
 export default function ArrowButton({ onClick, disabled, direction }: ArrowButtonProps) {
-  const arrowIcon = direction === 'left' ? '←' : '→';
+  const arrowIcon = direction === 'left' ? '← (左・上矢印キー)' : '→ (右・下矢印キー)';
 
   return (
     <button
@@ -797,51 +797,51 @@ const AutoModeSelector: React.FC = () => {
     return <div></div>;
   }
 
-  return (
-    <div className="flex items-center">
+  // components/molecules/AutoModeSelector/AutoModeSelector.tsx
+
+// ...
+
+return (
+  <div className="flex min-w-lg mx-auto flex-grow-0 flex-shrink-0">
+    <button
+      className={`px-4 py-2 rounded whitespace-nowrap ${isAutoModeOn ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-800'}`}
+      onClick={() => handleSpeedChange(isAutoModeOn ? 'off' : '3s')}
+    >
+      {isAutoModeOn ? 'オートモード' : 'オートモード'}
+    </button>
+    <div className="flex ml-4">
       <button
-        className={`px-4 py-2 rounded ${isAutoModeOn ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-800'}`}
-        onClick={() => handleSpeedChange(isAutoModeOn ? 'off' : '3s')}
+        className={`px-4 py-2 rounded mx-1 whitespace-nowrap ${autoModeSpeed === '3s' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}
+        onClick={() => handleSpeedChange('3s')}
       >
-        {isAutoModeOn ? 'オートモード' : 'オートモード'}
+        3秒
       </button>
-      <div className="flex ml-4">
-        <button
-          className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === '3s' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'} whitespace-nowrap`}
-          onClick={() => handleSpeedChange('3s')}
-        >
-          3秒
-        </button>
-        <button
-          className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === '5s' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'} whitespace-nowrap`}
-          onClick={() => handleSpeedChange('5s')}
-        >
-          5秒
-        </button>
-        <button
-          className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === '10s' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}
-          onClick={() => handleSpeedChange('10s')}
-        >
-          10秒
-        </button>
-        {/* <button
-          className={`px-4 py-2 rounded mx-1 ${autoModeSpeed === 'textLength' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}
-          onClick={() => handleSpeedChange('textLength')}
-        >
-          テキストの長さ
-        </button> */}
-      </div>
-      <div className="ml-4 flex items-center relative">
-        {isAutoModeOn && (
-          <>
-            <progress value={currentSecond} max={currentSecond + remainingSeconds} className="mr-2" />
-            <span className="remaining-seconds">{remainingSeconds.toFixed(1)}秒</span>
-          </>
-        )}
-        <span className="remaining-seconds empty"></span>
-      </div>
+      <button
+        className={`px-4 py-2 rounded mx-1 whitespace-nowrap ${autoModeSpeed === '5s' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}
+        onClick={() => handleSpeedChange('5s')}
+      >
+        5秒
+      </button>
+      <button
+        className={`px-4 py-2 rounded mx-1 whitespace-nowrap ${autoModeSpeed === '10s' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800'}`}
+        onClick={() => handleSpeedChange('10s')}
+      >
+        10秒
+      </button>
     </div>
-  );
+    <div className="ml-4 flex items-center">
+      {isAutoModeOn && (
+        <>
+          <progress value={currentSecond} max={currentSecond + remainingSeconds} className="mr-2" />
+          <span className="remaining-seconds">{remainingSeconds.toFixed(1)}秒</span>
+        </>
+      )}
+      <span className="remaining-seconds empty"></span>
+    </div>
+  </div>
+);
+
+// ...
 };
 
 export default AutoModeSelector;
@@ -922,17 +922,19 @@ const FontSizeControl: React.FC = () => {
   };
 
   return (
-    <div className='px-4 flex items-center'>
+    <div className='px-4 flex items-center relative'>
+      <span className='absolute -top-5 left-1 text-sm'>min【12】:</span>
       <button className={`w-8 h-8 text-white text-lg rounded-full flex items-center justify-center ${fontSize === 12 ? 'bg-gray-500' : 'bg-blue-500'}`} onClick={decreaseFontSize}>
         -
       </button>
       <div className='min-w-[4rem] text-right px-4'>
         <span className="text-lg">{fontSize}px</span>
       </div>
+      <span className='absolute -top-5 right-1 text-sm'>max【40】</span>
       <button className={`w-8 h-8 bg-blue-500 text-white text-lg rounded-full flex items-center justify-center ${fontSize === 40 ? 'bg-gray-500' : 'bg-blue-500'}`} onClick={increaseFontSize}>
-        +</button>
+        +
+      </button>
     </div>
-
   );
 };
 
@@ -1115,11 +1117,11 @@ const JsonCardViewer = () => {
   const handleArrowKey = useCallback((event: KeyboardEvent) => {
     console.log(index)
     if (event.key === 'ArrowRight') {
-      setIndex((index) => Math.min(index + 1, jsonData.length - 1));
+      setIndex((index) => Math.min(index + 1, jsonData.data.length - 1));
     } else if (event.key === 'ArrowLeft') {
       setIndex((index) => Math.max(index - 1, 0));
     }
-  }, [index, jsonData.length]);
+  }, [index, jsonData.data.length]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleArrowKey);
@@ -1130,7 +1132,7 @@ const JsonCardViewer = () => {
 
   const nowCard = (item: any, originalIndex: number) => {
     // 選択中のアイテムを表示
-    if (originalIndex === index && originalIndex < jsonData.length) {
+    if (originalIndex === index && originalIndex < jsonData.data.length) {
       return (
         <div key={originalIndex.toString()}>
           <div>{JSON.stringify(item, null, 2)}</div>
@@ -1149,7 +1151,7 @@ const JsonCardViewer = () => {
           <div>Start</div>
         </div>
       );
-    } else if (originalIndex === index - 1 && originalIndex < jsonData.length) {
+    } else if (originalIndex === index - 1 && originalIndex < jsonData.data.length) {
       return (
         <div key={originalIndex}>
           <div>Category: {item.category}</div>
@@ -1162,14 +1164,14 @@ const JsonCardViewer = () => {
 
   const nextCard = (item: any, originalIndex: number) => {
     // 選択中のアイテムの1つ後のアイテムを表示
-    if (originalIndex === jsonData.length) {
+    if (originalIndex === jsonData.data.length) {
       // インデックスがjsonDataの最後の要素の場合は "Last" を表示
       return (
         <div key={originalIndex}>
           <div>Last</div>
         </div>
       );
-    } else if (originalIndex === index + 1 && originalIndex < jsonData.length) {
+    } else if (originalIndex === index + 1 && originalIndex < jsonData.data.length) {
       return (
         <div key={originalIndex}>
           <div>Category: {item.category}</div>
@@ -1182,7 +1184,7 @@ const JsonCardViewer = () => {
 
   return (
     <div>
-      {jsonData && jsonData.length > 0 ? (
+      {jsonData && jsonData.data.length > 0 ? (
         <>
           {previousCard(jsonData[index - 1], index - 1)}
           <div key={index}>
@@ -1257,6 +1259,7 @@ import { fileNameAtom } from '@/state/atmos/fileNameAtom';
 import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
 import { jsonDataAtom, indexAtom } from '@/state/atmos/jsonDataAtom';
+import AutoModeSelector from '@/components/molecules/AutoModeSelector/AutoModeSelector';
 
 const Footer = () => {
   const fileName = useRecoilValue(fileNameAtom);
@@ -1288,8 +1291,25 @@ const Footer = () => {
       className="flex items-center justify-between p-4"
       style={{ backgroundColor: colors.footer, color: colors.footerText }}
     >
-      <div>【{fileName || ''}】</div>
-      <div> | 現在のindex: {index} |　( ロード済み: {jsonData.length} 件 / 全件数: {totalCount} 件 ) </div>
+      <div>{fileName || ''}</div>
+      <div className="">
+        {jsonData.length > 0 ? (
+          <div className="flex">
+            {/* <FontSizeControl /> */} 
+            <AutoModeSelector />
+          </div>
+        ): (
+            <div></div>
+        )}
+      </div>
+      {jsonData.length > 0 ? (
+        <div>
+          <span>現在のindex: {index} / 全件数: {totalCount} 件</span>
+        </div>
+      ): (
+        <span>LLM-JSON-READER</span>
+      )
+      }
     </footer>
   );
 };
@@ -1320,44 +1340,45 @@ export * from './JsonMainView';
 import { useCallback, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { indexAtom, jsonDataAtom } from "@/state/atmos/jsonDataAtom";
+import { indexAtom, jsonDataAtom, renderedDataAtom } from "@/state/atmos/jsonDataAtom";
 
 import Card from "@/components/molecules/Card/Card";
-import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
 import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
 import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
-import FileUploader from "@/state/FileUploader";
 import FontSizeControl from "@/components/molecules/FontSizeControl/FontSizeControl";
 import NowCard from "@/components/molecules/NowCard/NowCard";
 
 export const JsonMainView = () => {
 
-  // const [jsonData, setJsonData] = useRecoilState(jsonDataAtom);
-  const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
+  const { data: jsonData } = useRecoilValue(jsonDataAtom);
   const [index, setIndex] = useRecoilState(indexAtom);
   const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
   const customSpeed = useRecoilValue(customSpeedAtom);
+  const renderedData = useRecoilValue(renderedDataAtom);
 
-  const currentCard = jsonData[index];
-  const prevCard = jsonData[index - 1];
-  const nextCard = jsonData[index + 1];
+  const currentCard = renderedData[index];
+  const prevCard = index > 0 ? renderedData[index - 1] : null;
+  const nextCard = index < renderedData.length - 1 ? renderedData[index + 1] : null;
 
   const handlePrevClick = () => {
     setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
   };
 
   const handleNextClick = () => {
-    setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
-  };
+  if (index < renderedData.length - 1 && index < jsonData.length - 1) {
+    setIndex((prevIndex: number) => prevIndex + 1);
+  }
+};
 
-  // useCallbackフックをuseEffectの外で定義
-  const handleArrowKey = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-      setIndex((prevIndex: number) => Math.min(prevIndex + 1, jsonData.length - 1));
-    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-      setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
+const handleArrowKey = useCallback((event: KeyboardEvent) => {
+  if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+    if (index < renderedData.length - 1 && index < jsonData.length - 1) {
+      setIndex((prevIndex: number) => prevIndex + 1);
     }
-  }, [setIndex, jsonData.length]);
+  } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+    setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
+  }
+}, [index, jsonData.length, renderedData.length, setIndex]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleArrowKey);
@@ -1404,71 +1425,49 @@ export const JsonMainView = () => {
 
   return (
     <div>
-      <div className="mb-4 flex justify-between items-center">
-        <div className="w-1/3 flex justify-start">
-          <ArrowButton
-            direction="left"
-            onClick={handlePrevClick}
-            disabled={index === 0}
-          />
-        </div>
-        <div className="w-1/3 flex">
-          <FileUploader />
-          <FontSizeControl /> {/* フォントサイズ制御コンポーネントを追加 */}
-        </div>
-        <div className="w-1/3 flex justify-end">
-          <ArrowButton
-            direction="right"
-            onClick={handleNextClick}
-            disabled={index === jsonData.length - 1}
-          />
-        </div>
-      </div>
-
-      <AutoModeSelector />
-      <br />
       
+      <br />
       {jsonData.length > 0 && (
-  <div className="flex flex-col md:flex-row">
-    <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40">
-      {prevCard ? (
-        <Card
-          title="前のデータ"
-          content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
-          displayMode="prev"
-          onClick={() => setIndex(index - 1)}
-        />
-      ) : (
-        <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
-      )}
-    </div>
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40">
+            {prevCard ? (
+              <Card
+                title="前のデータ"
+                content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
+                displayMode="prev"
+                onClick={() => setIndex(index - 1)}
+              />
+            ) : (
+              <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
+            )}
+          </div>
 
-    <div className="w-full md:w-1/2 px-2 h-40 max-h-40">
-      {nextCard ? (
-        <Card
-          title="次のデータ"
-          content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
-          displayMode="next"
-          onClick={() => setIndex(index + 1)}
-        />
-      ) : (
-        <Card title="次のデータはありません" content="最終データ" displayMode="next" />
+          <div className="w-full md:w-1/2 px-2 h-40 max-h-40">
+            {nextCard ? (
+              <Card
+                title="次のデータ"
+                content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
+                displayMode="next"
+                onClick={() => setIndex(index + 1)}
+              />
+            ) : (
+              <Card title="次のデータはありません" content="最終データ" displayMode="next" />
+            )}
+          </div>
+        </div>
       )}
-    </div>
-  </div>
-)}
 
-{jsonData.length > 0 && (
-  <div className="w-full py-4 px-2 mb-4 md:mb-0">
-    {currentCard ? (
-      <NowCard data={currentCard} />
-    ) : (
-      <Card title="No Data" content="" displayMode="selected" />
-    )}
-  </div>
-    )}
-  </div>
-  );
+      {jsonData.length > 0 && (
+        <div className="w-full py-4 px-2 mb-4 md:mb-0">
+          {currentCard ? (
+            <NowCard data={currentCard} />
+          ) : (
+            <Card title="No Data" content="" displayMode="selected" />
+          )}
+        </div>
+          )}
+        </div>
+        );
 }
 
 export default JsonMainView;
@@ -1516,6 +1515,10 @@ import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
 import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
 import Footer from '@/components/template/Footer/Footer';
+import FileUploader from '@/state/FileUploader';
+import AutoModeSelector from '@/components/molecules/AutoModeSelector/AutoModeSelector';
+import FontSizeControl from '@/components/molecules/FontSizeControl/FontSizeControl';
+import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -1531,6 +1534,7 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
   const theme = useRecoilValue(themeAtom);
   const customColors = useRecoilValue(customThemeColorsAtom);
   const wrapperStyles = cn('layout flex flex-col min-h-screen 100vh', className);
+  const { data: jsonData } = useRecoilValue(jsonDataAtom);
 
   const getColors = () => {
     switch (theme) {
@@ -1564,6 +1568,8 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
                   </li>
                 ))}
               </ul>
+              
+              <FileUploader/>              
               <ThemeToggle />
             </div>
           </header>
@@ -1604,8 +1610,8 @@ export * from './Sidebar';
 ```
 'use client';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { chunkSizeAtom, indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { chunkSizeAtom, indexAtom, jsonDataAtom, renderedDataAtom } from '@/state/atmos/jsonDataAtom';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import Button from '@/components/atoms/Button/Button';
 
@@ -1625,7 +1631,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const { data: jsonData, totalCount } = useRecoilValue(jsonDataAtom);
   const chunkSize = useRecoilValue(chunkSizeAtom);
-  const [renderedData, setRenderedData] = useState(jsonData.slice(0, chunkSize));
+  const setRenderedData = useSetRecoilState(renderedDataAtom);
+  const renderedData = useRecoilValue(renderedDataAtom);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [index, setIndex] = useRecoilState(indexAtom);
 
@@ -1633,20 +1640,19 @@ const Sidebar: React.FC<SidebarProps> = ({
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const loadMoreData = useCallback(async () => {
-    console.log(renderedData.length, jsonData.length, chunkSize)
-    if (renderedData.length < jsonData.length) {
-      setIsLoadingMore(true);
-      const start = renderedData.length;
-      const end = Math.min(start + chunkSize, jsonData.length);
-      const newData = jsonData.slice(start, end);
-      setRenderedData((prevData) => [...prevData, ...newData]);
-      setIsLoadingMore(false);
-    }
-  }, [renderedData.length, chunkSize, jsonData]);
+  if (renderedData.length < jsonData.length) {
+    setIsLoadingMore(true);
+    const start = renderedData.length;
+    const end = Math.min(start + chunkSize, jsonData.length);
+    const newData = jsonData.slice(start, end);
+    setRenderedData((prevData) => [...prevData, ...newData]);
+    setIsLoadingMore(false);
+  }
+}, [renderedData.length, chunkSize, jsonData, setRenderedData]);
 
-  useEffect(() => {
-    setRenderedData(jsonData.slice(0, chunkSize));
-  }, [jsonData, chunkSize]);
+useEffect(() => {
+  setRenderedData(jsonData.slice(0, chunkSize));
+}, [jsonData, chunkSize, setRenderedData]);
 
   useEffect(() => {
   if (selectedItemRef.current && sidebarRef.current) {
@@ -2120,15 +2126,6 @@ export const chunkSizeAtom = atom({
   default: 1000, // 初期値は1000件
 });
 
-export const isLoadingMoreAtom = atom({
-  key: 'isLoadingMore',
-  default: false,
-});
-
-export const isLargeFileAtom = atom<boolean>({
-  key: 'isLargeFile',
-  default: false,
-});
 export interface FileAtom extends File {
   path?: string;
 }
@@ -2136,6 +2133,11 @@ export interface FileAtom extends File {
 export const fileAtom = atom<FileAtom | null>({
   key: 'file',
   default: null,
+});
+
+export const renderedDataAtom = atom<JsonData[]>({
+  key: 'renderedData',
+  default: [],
 });
 ```
 
@@ -2331,7 +2333,7 @@ const JsonPaginator = () => {
 
   // 次のアイテムを表示する関数
   const showNextItems = () => {
-    if (index + 1 < jsonData.length) {
+    if (index + 1 < jsonData.data.length) {
       setIndex(index + 1);
     }
   };
@@ -2345,8 +2347,8 @@ const JsonPaginator = () => {
 
   return (
     <div>
-      {jsonData && jsonData.length > 0 ? (<button onClick={showPreviousItems} disabled={index === 0}>前へ</button>): null}
-      {jsonData && jsonData.length > 0 ? (<button onClick={showNextItems} disabled={index + 1 >= jsonData.length}>次へ</button>): null }
+      {jsonData && jsonData.data.length > 0 ? (<button onClick={showPreviousItems} disabled={index === 0}>前へ</button>): null}
+      {jsonData && jsonData.data.length > 0 ? (<button onClick={showNextItems} disabled={index + 1 >= jsonData.data.length}>次へ</button>): null }
     </div>
   );
 };
@@ -2377,8 +2379,11 @@ body {
   font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, メイリオ, Osaka, 'MS PGothic', arial, helvetica, sans-serif;
 }
 
+
 .remaining-seconds {
-  white-space: nowrap;
+  display: inline-block;
+  width: 50px; /* または必要な幅に設定 */
+  text-align: center;
 }
 
 .remaining-seconds.empty::before {
@@ -2414,7 +2419,7 @@ export const lightColors = {
   headerText: '#333333',
   sidebar: '#e9ecef',
   sidebarText: '#333333',
-  sidebarSelected: '#dee2e6',
+  sidebarSelected: '#aec4e8',
   sidebarHover: '#ced4da',
   main: '#ffffff',
   mainText: '#333333',
@@ -2430,7 +2435,7 @@ export const darkColors = {
   headerText: '#f8f9fa',
   sidebar: '#495057',
   sidebarText: '#f8f9fa',
-  sidebarSelected: '#6c757d',
+  sidebarSelected: '#2c272d',
   sidebarHover: '#ced4da',
   main: '#212529',
   mainText: '#f8f9fa',

@@ -5,6 +5,7 @@ import { fileNameAtom } from '@/state/atmos/fileNameAtom';
 import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
 import { jsonDataAtom, indexAtom } from '@/state/atmos/jsonDataAtom';
+import AutoModeSelector from '@/components/molecules/AutoModeSelector/AutoModeSelector';
 
 const Footer = () => {
   const fileName = useRecoilValue(fileNameAtom);
@@ -36,8 +37,25 @@ const Footer = () => {
       className="flex items-center justify-between p-4"
       style={{ backgroundColor: colors.footer, color: colors.footerText }}
     >
-      <div>【{fileName || ''}】</div>
-      <div> | 現在のindex: {index} |　( ロード済み: {jsonData.length} 件 / 全件数: {totalCount} 件 ) </div>
+      <div>{fileName || ''}</div>
+      <div className="">
+        {jsonData.length > 0 ? (
+          <div className="flex">
+            {/* <FontSizeControl /> */} 
+            <AutoModeSelector />
+          </div>
+        ): (
+            <div></div>
+        )}
+      </div>
+      {jsonData.length > 0 ? (
+        <div>
+          <span>現在のindex: {index} / 全件数: {totalCount} 件</span>
+        </div>
+      ): (
+        <span>LLM-JSON-READER</span>
+      )
+      }
     </footer>
   );
 };

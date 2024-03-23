@@ -9,6 +9,10 @@ import ThemeToggle from '@/components/molecules/ThemeToggle/ThemeToggle';
 import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
 import Footer from '@/components/template/Footer/Footer';
+import FileUploader from '@/state/FileUploader';
+import AutoModeSelector from '@/components/molecules/AutoModeSelector/AutoModeSelector';
+import FontSizeControl from '@/components/molecules/FontSizeControl/FontSizeControl';
+import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -24,6 +28,7 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
   const theme = useRecoilValue(themeAtom);
   const customColors = useRecoilValue(customThemeColorsAtom);
   const wrapperStyles = cn('layout flex flex-col min-h-screen 100vh', className);
+  const { data: jsonData } = useRecoilValue(jsonDataAtom);
 
   const getColors = () => {
     switch (theme) {
@@ -57,6 +62,8 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
                   </li>
                 ))}
               </ul>
+              
+              <FileUploader/>              
               <ThemeToggle />
             </div>
           </header>

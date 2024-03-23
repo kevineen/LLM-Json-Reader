@@ -1,15 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { chunkSizeAtom, indexAtom, jsonDataAtom, renderedDataAtom } from "@/state/atmos/jsonDataAtom";
+import { indexAtom, jsonDataAtom, renderedDataAtom } from "@/state/atmos/jsonDataAtom";
 
 import Card from "@/components/molecules/Card/Card";
-import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
 import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
 import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
-import FileUploader from "@/state/FileUploader";
 import FontSizeControl from "@/components/molecules/FontSizeControl/FontSizeControl";
 import NowCard from "@/components/molecules/NowCard/NowCard";
 
@@ -90,71 +88,49 @@ const handleArrowKey = useCallback((event: KeyboardEvent) => {
 
   return (
     <div>
-      <div className="mb-4 flex justify-between items-center">
-        <div className="w-1/3 flex justify-start">
-          <ArrowButton
-            direction="left"
-            onClick={handlePrevClick}
-            disabled={index === 0}
-          />
-        </div>
-        <div className="w-1/3 flex">
-          <FileUploader />
-          <FontSizeControl /> {/* フォントサイズ制御コンポーネントを追加 */}
-        </div>
-        <div className="w-1/3 flex justify-end">
-          <ArrowButton
-            direction="right"
-            onClick={handleNextClick}
-            disabled={index === jsonData.length - 1}
-          />
-        </div>
-      </div>
-
-      <AutoModeSelector />
-      <br />
       
+      <br />
       {jsonData.length > 0 && (
-  <div className="flex flex-col md:flex-row">
-    <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40">
-      {prevCard ? (
-        <Card
-          title="前のデータ"
-          content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
-          displayMode="prev"
-          onClick={() => setIndex(index - 1)}
-        />
-      ) : (
-        <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
-      )}
-    </div>
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40">
+            {prevCard ? (
+              <Card
+                title="前のデータ"
+                content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
+                displayMode="prev"
+                onClick={() => setIndex(index - 1)}
+              />
+            ) : (
+              <Card title="1つ前のデータはありません" content="先頭データ" displayMode="prev" />
+            )}
+          </div>
 
-    <div className="w-full md:w-1/2 px-2 h-40 max-h-40">
-      {nextCard ? (
-        <Card
-          title="次のデータ"
-          content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
-          displayMode="next"
-          onClick={() => setIndex(index + 1)}
-        />
-      ) : (
-        <Card title="次のデータはありません" content="最終データ" displayMode="next" />
+          <div className="w-full md:w-1/2 px-2 h-40 max-h-40">
+            {nextCard ? (
+              <Card
+                title="次のデータ"
+                content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
+                displayMode="next"
+                onClick={() => setIndex(index + 1)}
+              />
+            ) : (
+              <Card title="次のデータはありません" content="最終データ" displayMode="next" />
+            )}
+          </div>
+        </div>
       )}
-    </div>
-  </div>
-)}
 
-{jsonData.length > 0 && (
-  <div className="w-full py-4 px-2 mb-4 md:mb-0">
-    {currentCard ? (
-      <NowCard data={currentCard} />
-    ) : (
-      <Card title="No Data" content="" displayMode="selected" />
-    )}
-  </div>
-    )}
-  </div>
-  );
+      {jsonData.length > 0 && (
+        <div className="w-full py-4 px-2 mb-4 md:mb-0">
+          {currentCard ? (
+            <NowCard data={currentCard} />
+          ) : (
+            <Card title="No Data" content="" displayMode="selected" />
+          )}
+        </div>
+          )}
+        </div>
+        );
 }
 
 export default JsonMainView;

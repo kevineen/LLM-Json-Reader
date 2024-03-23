@@ -31,15 +31,6 @@ export const chunkSizeAtom = atom({
   default: 1000, // 初期値は1000件
 });
 
-export const isLoadingMoreAtom = atom({
-  key: 'isLoadingMore',
-  default: false,
-});
-
-export const isLargeFileAtom = atom<boolean>({
-  key: 'isLargeFile',
-  default: false,
-});
 export interface FileAtom extends File {
   path?: string;
 }

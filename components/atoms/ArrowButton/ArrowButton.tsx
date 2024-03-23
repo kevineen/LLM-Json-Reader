@@ -7,7 +7,7 @@ interface ArrowButtonProps {
 }
 
 export default function ArrowButton({ onClick, disabled, direction }: ArrowButtonProps) {
-  const arrowIcon = direction === 'left' ? '←' : '→';
+  const arrowIcon = direction === 'left' ? '← (左・上矢印キー)' : '→ (右・下矢印キー)';
 
   return (
     <button
