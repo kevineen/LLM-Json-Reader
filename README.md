@@ -11,7 +11,7 @@ LLM-Json-Readerは、JSONおよびJSONL形式のデータセットを閲覧用�
 - [x] llm-jp-evalのtuningデータ
 - [ ] Mt-bench
 
-##### llm-jp-eval
+### llm-jp-eval
 複数のデータセットを横断して日本語の大規模言語モデルを自動評価するもの。
 【チューニング共通フォーマット】を閲覧できます。<br />
 [llm-jp-eval (github)](https://github.com/llm-jp/llm-jp-eval/tree/main)<br />
@@ -42,7 +42,7 @@ v1.2.0にて確認済み
 ```
 <br />
 
-#### MT-bench
+### MT-bench
 対応予定
 
 ## アプリ作動に必要となる事前インストール物
