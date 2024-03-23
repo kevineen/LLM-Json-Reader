@@ -1,15 +1,15 @@
 'use client';
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { indexAtom, jsonDataAtom, renderedDataAtom } from "@/state/atmos/jsonDataAtom";
 
 import Card from "@/components/molecules/Card/Card";
 import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
-import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
-import FontSizeControl from "@/components/molecules/FontSizeControl/FontSizeControl";
 import NowCard from "@/components/molecules/NowCard/NowCard";
+import { invalidDataAtom } from "@/state/atmos/invalidDataAtom";
+;
 
 export const JsonMainView = () => {
 
@@ -18,10 +18,12 @@ export const JsonMainView = () => {
   const autoModeSpeed = useRecoilValue(autoModeSpeedAtom);
   const customSpeed = useRecoilValue(customSpeedAtom);
   const renderedData = useRecoilValue(renderedDataAtom);
+  const invalidData = useRecoilValue(invalidDataAtom);
 
   const currentCard = renderedData[index];
   const prevCard = index > 0 ? renderedData[index - 1] : null;
   const nextCard = index < renderedData.length - 1 ? renderedData[index + 1] : null;
+
 
   const handlePrevClick = () => {
     setIndex((prevIndex: number) => Math.max(prevIndex - 1, 0));
@@ -88,14 +90,31 @@ const handleArrowKey = useCallback((event: KeyboardEvent) => {
 
   return (
     <div>
-      
-      <br />
+      {invalidData ? (
+        <div>
+        <div className="text-red-500">
+          対応していないデータが含まれています。データの形式を確認してください。<br />
+          現在対応中のデータは、llm-jp-evalのtuningデータのみです。<br />
+        </div>
+          <a href="https://github.com/llm-jp/llm-jp-eval">(Github) llm-jp-eval </a>
+        </div>
+      )
+       : jsonData.length > 0 && (
+        <div className="w-full px-2 mb-4 md:mb-0">
+          {currentCard ? (
+            <NowCard data={currentCard} />
+          ) : (
+            <Card title="No Data" content="" displayMode="selected" />
+          )}
+        </div>
+      )}
+      {jsonData.length > 0 && (<br />)}
       {jsonData.length > 0 && (
         <div className="flex flex-col md:flex-row">
           <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40">
             {prevCard ? (
               <Card
-                title="前のデータ"
+                title="前データ　(←・↑)"
                 content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
                 displayMode="prev"
                 onClick={() => setIndex(index - 1)}
@@ -108,7 +127,7 @@ const handleArrowKey = useCallback((event: KeyboardEvent) => {
           <div className="w-full md:w-1/2 px-2 h-40 max-h-40">
             {nextCard ? (
               <Card
-                title="次のデータ"
+                title="次のデータ　(→・↓)"
                 content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
                 displayMode="next"
                 onClick={() => setIndex(index + 1)}
@@ -119,18 +138,8 @@ const handleArrowKey = useCallback((event: KeyboardEvent) => {
           </div>
         </div>
       )}
-
-      {jsonData.length > 0 && (
-        <div className="w-full py-4 px-2 mb-4 md:mb-0">
-          {currentCard ? (
-            <NowCard data={currentCard} />
-          ) : (
-            <Card title="No Data" content="" displayMode="selected" />
-          )}
-        </div>
-          )}
-        </div>
-        );
+    </div>
+    );
 }
 
 export default JsonMainView;

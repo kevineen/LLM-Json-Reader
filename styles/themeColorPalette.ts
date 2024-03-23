@@ -12,6 +12,8 @@ export interface ThemeColors {
   footerText: string;
   text: string;
   link: string;
+  cardBg: string; // カードの背景色
+  cardText: string; // カードのテキスト色
 }
 
 
@@ -29,6 +31,8 @@ export const lightColors = {
   footerText: '#333333',
   text: '#212529',
   link: '#007bff',
+  cardBg: '#fff', // 白
+  cardText: '#333', // 暗いグレー
 };
 
 // dark テーマカラー
@@ -45,4 +49,6 @@ export const darkColors = {
   footerText: '#f8f9fa',
   text: '#f8f9fa',
   link: '#00d4ff',
+  cardBg: '#333', // 暗いグレー
+  cardText: '#fff', // 白
 };

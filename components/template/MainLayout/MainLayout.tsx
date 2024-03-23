@@ -10,9 +10,6 @@ import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
 import Footer from '@/components/template/Footer/Footer';
 import FileUploader from '@/state/FileUploader';
-import AutoModeSelector from '@/components/molecules/AutoModeSelector/AutoModeSelector';
-import FontSizeControl from '@/components/molecules/FontSizeControl/FontSizeControl';
-import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -20,15 +17,14 @@ interface MainLayoutProps {
 }
 
 const links = [
-  { slug: '/', label: 'Home' },
-  { slug: '/about', label: 'About' },
+  { slug: '/', label: 'Home', isActive: true },
+  { slug: '/about', label: 'About', isActive: false },
 ];
 
 export const MainLayout = ({ children, className }: MainLayoutProps) => {
   const theme = useRecoilValue(themeAtom);
   const customColors = useRecoilValue(customThemeColorsAtom);
   const wrapperStyles = cn('layout flex flex-col min-h-screen 100vh', className);
-  const { data: jsonData } = useRecoilValue(jsonDataAtom);
 
   const getColors = () => {
     switch (theme) {
@@ -54,15 +50,19 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
           <header className="py-4 px-6" style={{ backgroundColor: colors.header, color: colors.headerText }}>
             <div className="flex justify-between items-center">
               <ul className="flex items-center gap-10 text-gray-500">
-                {links.map(({ slug, label }) => (
+                {links.map(({ slug, label, isActive }) => (
                   <li key={slug}>
-                    <Link href={slug} className="inline-block p-2 transition-colors hover:text-green-300">
+                    <Link
+                      href={slug}
+                      className={`inline-block p-2 transition-colors ${
+                        isActive ? 'text-primary' : 'hover:text-green-300'
+                      }`}
+                    >
                       {label}
                     </Link>
                   </li>
                 ))}
               </ul>
-              
               <FileUploader/>              
               <ThemeToggle />
             </div>

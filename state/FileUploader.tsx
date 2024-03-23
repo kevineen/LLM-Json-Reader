@@ -1,17 +1,19 @@
 import { useRef } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { fileNameAtom } from '@/state/atmos/fileNameAtom';
 import { indexAtom, jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 import { parseJsonData } from '@/lib/utils/helpers/helpers';
 import Button from '@/components/atoms/Button/Button';
 import { errorMessageAtom } from '@/state/atmos/errorMessageAtom';
+import { invalidDataAtom } from '@/state/atmos/invalidDataAtom';
 
 const FileUploader = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const setFileName = useSetRecoilState(fileNameAtom);
   const setIndex = useSetRecoilState(indexAtom);
   const setJsonData = useSetRecoilState(jsonDataAtom);
+  const [, setInvalidData] = useRecoilState(invalidDataAtom);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -22,7 +24,7 @@ const FileUploader = () => {
       try {
         const content = await file.text();
         const jsonData = JSON.parse(content);
-        const parsedData = parseJsonData(jsonData);
+        const parsedData = parseJsonData(jsonData, setInvalidData);
         setJsonData({
           data: parsedData,
           totalCount: parsedData.length,

@@ -16,6 +16,7 @@ const config: Config = {
       colors: {
         'light-text': '#000',
         'dark-text': '#fff',
+        primary: '#3b82f6', // 好きな色を選んでください
       },
     },
   },
@@ -23,4 +24,5 @@ const config: Config = {
   darkMode: 'class',
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
 };
+
 export default config;

@@ -1,4 +1,6 @@
+import { invalidDataAtom } from "@/state/atmos/invalidDataAtom";
 import { JsonData } from "@/state/atmos/jsonDataAtom";
+import { useSetRecoilState } from "recoil";
 
 export function countOccurrences(array: any[], key: string): { [key: string]: number } {
   return array.reduce((acc, obj) => {
@@ -9,14 +11,16 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
 }
 
 // ファイルを読み込んでJSONデータをパースする関数
-export const parseJsonData = (jsonData: any[]): JsonData[] => {
+export function parseJsonData(jsonData: any[], setInvalidData: (value: boolean) => void): JsonData[] {
   if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
+    setInvalidData(false); // 有効なデータの場合、invalidDataを false に設定
     return jsonData;
   } else {
+    setInvalidData(true); // 無効なデータの場合、invalidDataを true に設定
     console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
     return [];
   }
-};
+}
 
 // JSONデータのバリデーション関数
 function isValidJsonData(data: any): data is JsonData {

@@ -797,12 +797,8 @@ const AutoModeSelector: React.FC = () => {
     return <div></div>;
   }
 
-  // components/molecules/AutoModeSelector/AutoModeSelector.tsx
-
-// ...
-
 return (
-  <div className="flex min-w-lg mx-auto flex-grow-0 flex-shrink-0">
+  <div className="flex w-96 mx-auto flex-grow-0 flex-shrink-0">
     <button
       className={`px-4 py-2 rounded whitespace-nowrap ${isAutoModeOn ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-800'}`}
       onClick={() => handleSpeedChange(isAutoModeOn ? 'off' : '3s')}
@@ -974,21 +970,21 @@ const NowCard: React.FC<NowCardProps> = ({ data }) => {
     <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden">
       <h3 className="text-xl font-bold mb-2 text-gray-800">現在のデータ</h3>
       <div className="mb-4">
-        <h4 className="text-lg font-bold mb-1">Input</h4>
-        <pre className="whitespace-pre-wrap break-words" style={{ fontSize: `${fontSize}px` }}>
+        <h4 className="text-lg font-bold mb-1 text-gray-700">Instruction</h4>
+        <p className="text-gray-700" style={{ fontSize: `${fontSize}px` }}>{data.instruction}</p>
+      </div>
+      <div className="mb-4">
+        <h4 className="text-lg font-bold mb-1 text-gray-700">Input</h4>
+        <pre className="whitespace-pre-wrap break-words text-gray-700" style={{ fontSize: `${fontSize}px` }}>
           {data.input}
         </pre>
       </div>
       <div className="mb-4">
-        <h4 className="text-lg font-bold mb-1">Instruction</h4>
-        <p className="text-gray-700" style={{ fontSize: `${fontSize}px` }}>{data.instruction}</p>
-      </div>
-      <div className="mb-4">
-        <h4 className="text-lg font-bold mb-1">Output</h4>
+        <h4 className="text-lg font-bold mb-1 text-gray-700">Output</h4>
         <p className="text-gray-700" style={{ fontSize: `${fontSize}px` }}>{data.output}</p>
       </div>
       <div>
-        <h4 className="text-lg font-bold mb-1">Text</h4>
+        <h4 className="text-lg font-bold mb-1 text-gray-700">Text</h4>
         <p className="text-gray-700" style={{ fontSize: `${fontSize}px` }}>{data.text}</p>
       </div>
     </div>
@@ -1425,14 +1421,21 @@ const handleArrowKey = useCallback((event: KeyboardEvent) => {
 
   return (
     <div>
-      
-      <br />
+      {jsonData.length > 0 && (
+        <div className="w-full px-2 mb-4 md:mb-0">
+          {currentCard ? (
+            <NowCard data={currentCard} />
+          ) : (
+            <Card title="No Data" content="" displayMode="selected" />
+          )}
+        </div>
+      )}
       {jsonData.length > 0 && (
         <div className="flex flex-col md:flex-row">
           <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0 h-40 max-h-40">
             {prevCard ? (
               <Card
-                title="前のデータ"
+                title="前データ　(←・↑)"
                 content={`Input: ${prevCard.input}\nOutput: ${prevCard.output}`}
                 displayMode="prev"
                 onClick={() => setIndex(index - 1)}
@@ -1445,7 +1448,7 @@ const handleArrowKey = useCallback((event: KeyboardEvent) => {
           <div className="w-full md:w-1/2 px-2 h-40 max-h-40">
             {nextCard ? (
               <Card
-                title="次のデータ"
+                title="次のデータ　(→・↓)"
                 content={`Input: ${nextCard.input}\nOutput: ${nextCard.output}`}
                 displayMode="next"
                 onClick={() => setIndex(index + 1)}
@@ -1456,18 +1459,8 @@ const handleArrowKey = useCallback((event: KeyboardEvent) => {
           </div>
         </div>
       )}
-
-      {jsonData.length > 0 && (
-        <div className="w-full py-4 px-2 mb-4 md:mb-0">
-          {currentCard ? (
-            <NowCard data={currentCard} />
-          ) : (
-            <Card title="No Data" content="" displayMode="selected" />
-          )}
-        </div>
-          )}
-        </div>
-        );
+    </div>
+    );
 }
 
 export default JsonMainView;
@@ -1516,9 +1509,6 @@ import { lightColors, darkColors } from '@/styles/themeColorPalette';
 import { themeAtom, customThemeColorsAtom } from '@/state/atmos/themeAtom';
 import Footer from '@/components/template/Footer/Footer';
 import FileUploader from '@/state/FileUploader';
-import AutoModeSelector from '@/components/molecules/AutoModeSelector/AutoModeSelector';
-import FontSizeControl from '@/components/molecules/FontSizeControl/FontSizeControl';
-import { jsonDataAtom } from '@/state/atmos/jsonDataAtom';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -1534,7 +1524,6 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
   const theme = useRecoilValue(themeAtom);
   const customColors = useRecoilValue(customThemeColorsAtom);
   const wrapperStyles = cn('layout flex flex-col min-h-screen 100vh', className);
-  const { data: jsonData } = useRecoilValue(jsonDataAtom);
 
   const getColors = () => {
     switch (theme) {
@@ -1568,7 +1557,6 @@ export const MainLayout = ({ children, className }: MainLayoutProps) => {
                   </li>
                 ))}
               </ul>
-              
               <FileUploader/>              
               <ThemeToggle />
             </div>
