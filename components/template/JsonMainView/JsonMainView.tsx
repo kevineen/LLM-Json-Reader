@@ -3,10 +3,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 
 import { indexAtom, jsonDataAtom } from "@/state/atmos/jsonDataAtom";
 
-import Button from "@/components/atoms/Button/Button";
 import Card from "@/components/molecules/Card/Card";
 import ArrowButton from "@/components/atoms/ArrowButton/ArrowButton";
-import { parseJsonData } from "@/lib/utils/helpers/helpers";
 import { autoModeSpeedAtom, customSpeedAtom } from "@/state/atmos/autoModeAtom";
 import AutoModeSelector from "@/components/molecules/AutoModeSelector/AutoModeSelector";
 import FileUploader from "@/state/FileUploader";

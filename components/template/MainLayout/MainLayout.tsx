@@ -19,6 +19,7 @@ interface MainLayoutProps {
 const links = [
   { slug: '/', label: 'Home' },
   { slug: '/about', label: 'About' },
+  { slug: '/datas', label: 'Data' },
 ];
 
 export const MainLayout = ({ children, className }: MainLayoutProps) => {

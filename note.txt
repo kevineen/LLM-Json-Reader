@@ -1,0 +1,95 @@
+
+### NLI (Natural Language Inference)
+
+#### Jamp
+- 出処：https://github.com/tomo-ut/temporalNLI_dataset
+- ライセンス：CC BY-SA 4.0
+
+#### JaNLI
+- 出処：https://github.com/verypluming/JaNLI
+- ライセンス：CC BY-SA 4.0
+
+#### JNLI
+- 出処：https://github.com/yahoojapan/JGLUE
+- ライセンス：CC BY-SA 4.0
+
+#### JSeM
+- 出処：https://github.com/DaisukeBekki/JSeM
+- ライセンス：BSD 3-Clause
+
+#### JSICK
+- 出処：https://github.com/verypluming/JSICK
+- ライセンス：CC BY-SA 4.0
+
+### QA (Question Answering)
+
+#### JEMHopQA
+- 出処：https://github.com/aiishii/JEMHopQA
+- ライセンス：CC BY-SA 4.0
+
+#### NIILC
+- 出処：https://github.com/mynlp/niilc-qa
+- ライセンス：CC BY-SA 4.0
+
+### RC (Reading Comprehension)
+
+#### JSQuAD
+- 出処：https://github.com/yahoojapan/JGLUE
+- ライセンス：CC BY-SA 4.0
+
+### MC (Multiple Choice question answering)
+
+#### JCommonsenseQA
+- 出処：https://github.com/yahoojapan/JGLUE
+- ライセンス：CC BY-SA 4.0
+
+### EL (Entity Linking)
+
+#### chABSA
+- 出処：https://github.com/chakki-works/chABSA-dataset
+- ライセンス：CC BY 4.0
+
+### FA (Fundamental Analysis)
+
+#### Wikipedia Annotated Corpus
+- 出処：https://github.com/ku-nlp/WikipediaAnnotatedCorpus
+- ライセンス：CC BY-SA 4.0
+- タスク一覧
+  - Reading prediction
+  - Named entity recognition
+  - Dependency parsing
+  - Predicate-argument structure analysis
+  - Coreference resolution
+
+### MR (Mathematical Reasoning)
+
+#### MAWPS
+- 出処：https://github.com/nlp-waseda/chain-of-thought-ja-dataset
+- ライセンス：Apache-2.0
+
+### MT (Machine Translation)
+
+#### Asian Language Treebank (ALT) - Parallel Corpus
+- 出処： https://www2.nict.go.jp/astrec-att/member/mutiyama/ALT/index.html
+- ライセンス：CC BY 4.0
+
+#### Wikipedia日英京都関連文書対訳コーパス
+- 出処： https://alaginrc.nict.go.jp/WikiCorpus/
+- ライセンス：CC BY-SA 3.0 deed
+
+### STS (Semantic Textual Similarity)
+このタスクはllm-jp-evalでサポートしますが、評価スコアの平均には含まれません．
+
+#### JSTS
+- 出処：https://github.com/yahoojapan/JGLUE
+- ライセンス：CC BY-SA 4.0
+
+### HE (Human Examination)
+
+#### MMLU
+- 出処：https://github.com/hendrycks/test
+- ライセンス：MIT License
+
+#### JMMLU
+- 出処：https://github.com/nlp-waseda/JMMLU
+- ライセンス：CC BY-SA 4.0（CC BY-NC-ND 4.0 ライセンスの3タスクは対応していません）
