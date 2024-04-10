@@ -46,6 +46,9 @@
       - Card/
         - Card.tsx
         - index.ts
+      - DatasetCard.tsx/
+        - DatasetCard.tsx
+        - index.ts
       - FontSizeControl/
         - FontSizeControl.tsx
         - index.ts
@@ -71,6 +74,9 @@
       - SideAccordion/
         - index.ts
         - SideAccordion.tsx
+      - SideDatasets/
+        - index.ts
+        - SideDatasets.tsx
     - providers/
       - MainProvider/
         - index.ts
@@ -92,8 +98,6 @@
         - index.ts
         - Sidebar.tsx
   - data/
-    - 1.2.0/
-    - memo/
   - dist/
   - hooks/
   - lib/
@@ -309,12 +313,26 @@ export default function About() {
 ### app\datas\page.tsx
 
 ```
+import { useState } from "react";
+
 // `app/page.tsx` is the UI for the `/` URL
 export default function About() {
   const featuresItems = [{ icon: '', name: 'llm-jp-eval' }];
+  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+
+  const handleFolderSelect = async () => {
+    const result = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+    if (!result.canceled && result.filePaths.length > 0) {
+      setSelectedFolder(result.filePaths[0]);
+    }
+  };
+
 
   return (
-    <div>      <h2 className="text-bold mt-8 mb-10 text-3xl">読込データセット一覧</h2>
+    <div>
+      <h2 className="text-bold mt-8 mb-10 text-3xl">読込データセット一覧</h2>
+      <button onClick={handleFolderSelect}>データ保存フォルダを選択</button>
+      {selectedFolder && <p>選択されたフォルダ: {selectedFolder}</p>}
       <ul className="grid grid-cols-1 grid-rows-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
         {featuresItems.map(({ icon, name }) => (
           <li
@@ -418,7 +436,7 @@ import JsonMainView from "@/components/template/JsonMainView/JsonMainView";
 import JsonReadLayout from "@/components/template/JsonReadLayout/JsonReadLayout";
 
 const HomePage = () => {
-  
+
   return (
     <div>
       <JsonReadLayout>
@@ -874,6 +892,73 @@ export default function Card({ title, content = '', displayMode, onClick }: Card
 export * from "./Card";
 ```
 
+### components\molecules\DatasetCard.tsx\DatasetCard.tsx
+
+```
+import { useState, useEffect } from 'react';
+
+interface Dataset {
+  name: string;
+  url: string;
+  license: string;
+}
+
+const DatasetCard = ({ dataset }: { dataset: Dataset }) => {
+  const handleDownload = () => {
+    downloadDataset(dataset.url, selectedFolder);
+  };
+
+  const handleDelete = () => {
+    deleteDataset(dataset.name, selectedFolder);
+  };
+
+  return (
+    <div className="dataset-card">
+      <h3>{dataset.name}</h3>
+      <p>ライセンス: {dataset.license}</p>
+      <button onClick={handleDownload}>ダウンロード</button>
+      <button onClick={handleDelete}>削除</button>
+    </div>
+  );
+};
+
+const Datas = () => {
+  const [datasets, setDatasets] = useState<Dataset[]>([]);
+
+  useEffect(() => {
+    // データセットの一覧を取得する処理
+    const fetchDatasets = async () => {
+      // データセットの取得処理を実装
+      const fetchedDatasets: Dataset[] = []; // 取得したデータセットを格納
+      setDatasets(fetchedDatasets);
+    };
+
+    fetchDatasets();
+  }, []);
+
+  return (
+    <div>
+      {/* フォルダ選択ボタンの実装 */}
+      <div className="dataset-list">
+        {datasets.map((dataset) => (
+          <DatasetCard key={dataset.name} dataset={dataset} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Datas;
+
+```
+
+### components\molecules\DatasetCard.tsx\index.ts
+
+```
+export * from "./DatasetCard";
+
+```
+
 ### components\molecules\FontSizeControl\FontSizeControl.tsx
 
 ```
@@ -953,7 +1038,7 @@ import { indexAtom } from "@/state/atmos/jsonDataAtom";
 
 const SideAccordionItem = ({ children }: any) => {
   const [index, setIndex] = useRecoilState(indexAtom);
-  
+
   return (
     <div onClick={() => setIndex(index)}>
       <div>Index: {index}</div>
@@ -1209,12 +1294,54 @@ export * from './SideAccordion';
 const SideAccordion = () => {
   return (
     <div>
-      
+
     </div>
   );
 }
 
 export default SideAccordion;
+```
+
+### components\organisms\SideDatasets\index.ts
+
+```
+export * from './SidebarDatasets';
+
+```
+
+### components\organisms\SideDatasets\SideDatasets.tsx
+
+```
+import { useState, useEffect } from "react";
+
+const SidebarDatasets = () => {
+  const [downloadedDatasets, setDownloadedDatasets] = useState<string[]>([]);
+
+  useEffect(() => {
+    // ダウンロード済みのデータセット名を取得する処理
+    const fetchDownloadedDatasets = async () => {
+      // ダウンロード済みのデータセット名を取得する処理を実装
+      const downloaded: string[] = []; // ダウンロード済みのデータセット名を格納
+      setDownloadedDatasets(downloaded);
+    };
+
+    fetchDownloadedDatasets();
+  }, []);
+
+  return (
+    <div className="sidebar">
+      <h2>ダウンロード済みのデータ</h2>
+      <ul>
+        {downloadedDatasets.map((dataset) => (
+          <li key={dataset}>{dataset}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default SidebarDatasets;
+
 ```
 
 ### components\providers\MainProvider\index.ts
@@ -1664,8 +1791,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     </div>
   );
 };
-
-
 
 export default Sidebar;
 
@@ -2612,4 +2737,3 @@ export default config;
 }
 
 ```
-

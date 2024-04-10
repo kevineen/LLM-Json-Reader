@@ -21,4 +21,24 @@
   "[scss]": {
     "editor.tabSize": 2
   },
+  "cSpell.words": [
+    "chabsa",
+    "coreference",
+    "Datas",
+    "ic",
+    "jamp",
+    "janli",
+    "jcommonsenseqa",
+    "jemhopqa",
+    "jmmlu",
+    "jnli",
+    "jsem",
+    "jsick",
+    "jsquad",
+    "jsts",
+    "mawps",
+    "mmluen",
+    "niilc",
+    "wikicorpus"
+  ],
 }
