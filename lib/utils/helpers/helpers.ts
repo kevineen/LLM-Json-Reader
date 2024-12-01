@@ -10,12 +10,13 @@ export function countOccurrences(array: any[], key: string): { [key: string]: nu
 
 // ファイルを読み込んでJSONデータをパースする関数
 export function parseJsonData(jsonData: any[], setInvalidData: (value: boolean) => void): JsonData[] {
-  if (Array.isArray(jsonData) && jsonData.every(isValidJsonData)) {
-    setInvalidData(false); // 有効なデータの場合、invalidDataを false に設定
+  // 全ての要素がオブジェクトであることをチェック
+  if (Array.isArray(jsonData) && jsonData.every(item => typeof item === 'object' && item !== null)) {
+    setInvalidData(false);
     return jsonData;
   } else {
-    setInvalidData(true); // 無効なデータの場合、invalidDataを true に設定
-    console.error('無効なファイル形式です。期待される形式のJSONデータではありません。');
+    setInvalidData(true);
+    console.error('無効なファイル形式です。JSONの配列である必要があります。');
     return [];
   }
 }

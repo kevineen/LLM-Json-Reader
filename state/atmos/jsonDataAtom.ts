@@ -1,10 +1,11 @@
 import { atom } from 'recoil';
 export interface JsonData {
-  ID: string;
-  instruction: string;
-  input: string;
-  output: string;
-  text: string;
+  [key: string]: string | undefined; // キーは文字列、値は文字列かundefinedを許容
+  // ID: string;
+  // instruction: string;
+  // input: string;
+  // output: string;
+  // text: string;
 }
 
 export interface JsonDataState {

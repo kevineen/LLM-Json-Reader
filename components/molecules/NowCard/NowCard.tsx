@@ -28,24 +28,21 @@ const NowCard: React.FC<NowCardProps> = ({ data }) => {
   return (
     <div className="border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden" style={{ backgroundColor: cardBg }}>
       <h3 className="text-xl font-bold mb-2" style={{ color: cardText }}>現在のデータ</h3>
-      <div className="mb-4">
-        <h4 className="text-lg font-bold mb-1" style={{ color: cardText }}>Instruction</h4>
-        <p style={{ fontSize: `${fontSize}px`, color: cardText }}>{data.instruction}</p>
-      </div>
-      <div className="mb-4">
-        <h4 className="text-lg font-bold mb-1" style={{ color: cardText }}>Input</h4>
-        <pre className="whitespace-pre-wrap break-words" style={{ fontSize: `${fontSize}px`, color: cardText }}>
-          {data.input}
-        </pre>
-      </div>
-      <div className="mb-4">
-        <h4 className="text-lg font-bold mb-1" style={{ color: cardText }}>Output</h4>
-        <p style={{ fontSize: `${fontSize}px`, color: cardText }}>{data.output}</p>
-      </div>
-      <div>
-        <h4 className="text-lg font-bold mb-1" style={{ color: cardText }}>Text</h4>
-        <p style={{ fontSize: `${fontSize}px`, color: cardText }}>{data.text}</p>
-      </div>
+      {Object.entries(data).map(([key, value]) => (
+        <div key={key} className="mb-4">
+          <h4 className="text-lg font-bold mb-1" style={{ color: cardText }}>{key}</h4>
+          {/* valueが文字列でない場合の処理を追加 */}
+          {typeof value === 'string' ? (
+            <pre className="whitespace-pre-wrap break-words" style={{ fontSize: `${fontSize}px`, color: cardText }}>
+              {value}
+            </pre>
+            ) : (
+            <pre className="whitespace-pre-wrap break-words" style={{ fontSize: `${fontSize}px`, color: cardText }}>
+            {JSON.stringify(value, null, 2)}
+          </pre>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
